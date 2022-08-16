@@ -1,0 +1,21 @@
+.\developer
+!T3sting@123
+
+azureadmin@mikhanoutlook.onmicrosoft.com
+Luha3315
+
+
+sqladminuser
+
+
+
+Server=tcp:synapse-lab-ws.sql.azuresynapse.net,1433;Initial Catalog=synapsesqlpool;Persist Security Info=False;User ID={your_username};MultipleActiveResultSets=False
+
+blob key:
+TtFrUe8rehP9V0o8VQALZ/hqutQHt44uYj3bwDlaTJChH9iNBJR5Bgc1OLs/WvkOgpTpe+WmrhBwB00JBteg/g==
+
+
+blob path
+https://demodwstorageaccmik.blob.core.windows.net/blobcontainer
+
+DefaultEndpointsProtocol=https;AccountName=demodwstorageaccmik;AccountKey=TtFrUe8rehP9V0o8VQALZ/hqutQHt44uYj3bwDlaTJChH9iNBJR5Bgc1OLs/WvkOgpTpe+WmrhBwB00JBteg/g==;EndpointSuffix=core.windows.net

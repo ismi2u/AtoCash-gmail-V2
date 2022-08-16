@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtoCash", "AtoCash\AtoCash.csproj", "{FE5A5BD2-FF52-44E4-BFCB-DBB186668EC3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailService", "EmailService\EmailService.csproj", "{3B1C62B9-348A-43B2-859D-C94219D190A2}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BA7CDA00-F88C-4639-8D95-CCD5A3ABB636}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE5A5BD2-FF52-44E4-BFCB-DBB186668EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE5A5BD2-FF52-44E4-BFCB-DBB186668EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE5A5BD2-FF52-44E4-BFCB-DBB186668EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE5A5BD2-FF52-44E4-BFCB-DBB186668EC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B1C62B9-348A-43B2-859D-C94219D190A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B1C62B9-348A-43B2-859D-C94219D190A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B1C62B9-348A-43B2-859D-C94219D190A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B1C62B9-348A-43B2-859D-C94219D190A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA7CDA00-F88C-4639-8D95-CCD5A3ABB636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA7CDA00-F88C-4639-8D95-CCD5A3ABB636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA7CDA00-F88C-4639-8D95-CCD5A3ABB636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA7CDA00-F88C-4639-8D95-CCD5A3ABB636}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1DC3283-1C95-464E-9033-CFBF40CEF0D3}
+	EndGlobalSection
+EndGlobal

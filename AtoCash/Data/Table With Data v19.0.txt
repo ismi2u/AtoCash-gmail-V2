@@ -1,0 +1,992 @@
+
+USE [master]
+GO
+
+ALTER DATABASE AtoCashDB
+SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+GO
+
+DROP DATABASE AtoCashDB
+GO
+
+																				  
+CREATE DATABASE [AtoCashDB]
+													 
+ GO
+
+USE [AtoCashDB]
+GO
+	
+CREATE TABLE [dbo].[ApprovalGroups](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ApprovalGroupCode] [nvarchar](20) NOT NULL,
+	[ApprovalGroupDesc] [nvarchar](150) NOT NULL)
+ 
+GO
+	
+CREATE TABLE [dbo].[ApprovalLevels](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Level] [int] NOT NULL,
+	[LevelDesc] [nvarchar](150) NULL)
+	  
+GO
+CREATE TABLE [dbo].[ApprovalRoleMaps](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ApprovalGroupId] [int] NOT NULL,
+	[RoleId] [int] NOT NULL,
+	[ApprovalLevelId] [int] NOT NULL)
+GO
+
+CREATE TABLE [dbo].[ApprovalStatusTypes](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Status] [nvarchar](25) NOT NULL,
+	[StatusDesc] [nvarchar](100) NULL)
+ 
+GO
+
+
+
+
+
+CREATE TABLE [dbo].[AspNetRoleClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[RoleId] [nvarchar](450) NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL)
+
+GO
+CREATE TABLE [dbo].[AspNetRoles](
+	[Id] [nvarchar](450) NOT NULL PRIMARY KEY,
+	[Name] [nvarchar](256) NULL,
+	[NormalizedName] [nvarchar](256) NULL,
+	[ConcurrencyStamp] [nvarchar](max) NULL)
+GO
+
+CREATE TABLE [dbo].[AspNetUserClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[UserId] [nvarchar](450) NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL)
+GO
+	
+CREATE TABLE [dbo].[AspNetUserLogins](
+	[LoginProvider] [nvarchar](450) NOT NULL,
+	[ProviderKey] [nvarchar](450) NOT NULL,
+	[ProviderDisplayName] [nvarchar](max) NULL,
+	[UserId] [nvarchar](450) NOT NULL	
+	PRIMARY KEY ([LoginProvider] , [ProviderKey]))
+GO
+CREATE TABLE [dbo].[AspNetUserRoles](
+	[UserId] [nvarchar](450) NOT NULL,
+	[RoleId] [nvarchar](450) NOT NULL
+	PRIMARY KEY ([UserId], [RoleId]))
+GO
+CREATE TABLE [dbo].[AspNetUsers](
+	[Id] [nvarchar](450) NOT NULL PRIMARY KEY,
+	[EmployeeId] [int] NOT NULL,
+	[UserName] [nvarchar](256) NULL,
+	[NormalizedUserName] [nvarchar](256) NULL,
+	[Email] [nvarchar](256) NULL,
+	[NormalizedEmail] [nvarchar](256) NULL,
+	[EmailConfirmed] [bit] NOT NULL,
+	[PasswordHash] [nvarchar](max) NULL,
+	[SecurityStamp] [nvarchar](max) NULL,
+	[ConcurrencyStamp] [nvarchar](max) NULL,
+	[PhoneNumber] [nvarchar](max) NULL,
+	[PhoneNumberConfirmed] [bit] NOT NULL,
+	[TwoFactorEnabled] [bit] NOT NULL,
+	[LockoutEnd] [datetimeoffset](7) NULL,
+	[LockoutEnabled] [bit] NOT NULL,
+	[AccessFailedCount] [int] NOT NULL)
+GO
+CREATE TABLE [dbo].[AspNetUserTokens](
+	[UserId] [nvarchar](450) NOT NULL,
+	[LoginProvider] [nvarchar](450) NOT NULL,
+	[Name] [nvarchar](450) NOT NULL,
+	[Value] [nvarchar](max) NULL
+		PRIMARY KEY ([UserId], [LoginProvider], [Name]))
+GO
+CREATE TABLE [dbo].[ClaimApprovalStatusTrackers](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmployeeId] [int] NOT NULL,
+	[PettyCashRequestId] [int] NULL,
+	[DepartmentId] [int] NULL,
+	[ProjectId] [int] NULL,
+	[RoleId] [int] NOT NULL,
+	[ApprovalLevelId] [int] NOT NULL,
+	[ReqDate] [datetime2](7) NOT NULL,
+	[FinalApprovedDate] [datetime2](7) NULL,
+	[ApprovalStatusTypeId] [int] NOT NULL,
+	[Comments] [nvarchar](250) NOT NULL)
+GO
+CREATE TABLE [dbo].[CostCenters](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[CostCenterCode] [nvarchar](20) NOT NULL,
+	[CostCenterDesc] [nvarchar](150) NOT NULL,
+	[StatusTypeId] [int] NOT NULL)
+GO
+
+
+
+CREATE TABLE [dbo].[CurrencyTypes](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[CurrencyCode] [nvarchar](3) NOT NULL,
+	[CurrencyName] [nvarchar](100) NOT NULL,
+	[Country] [nvarchar](100) NOT NULL,
+	[StatusTypeId] [int] NOT NULL)
+GO
+
+
+CREATE TABLE [dbo].[Departments](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[DeptCode] [nvarchar](20) NOT NULL,
+	[DeptName] [nvarchar](30) NOT NULL,
+	[CostCenterId] [int] NOT NULL,
+	[StatusTypeId] [int] NOT NULL)
+GO
+CREATE TABLE [dbo].[DisbursementsAndClaimsMasters](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmployeeId] [int] NOT NULL,
+	[PettyCashRequestId] [int] NULL,
+	[ExpenseReimburseReqId] [int] NULL,
+	[RequestTypeId] [int] NOT NULL,
+	[DepartmentId] [int] NULL,
+	[ProjectId] [int] NULL,
+	[SubProjectId] [int] NULL,
+	[WorkTaskId] [int] NULL,
+	[RecordDate] [datetime2](7) NOT NULL,
+	[CurrencyTypeId] [int] NOT NULL,
+	[Amount] [float] NOT NULL,
+	[CostCenterId] [int] NOT NULL,
+	[ApprovalStatusId] [int] NOT NULL)
+GO
+CREATE TABLE [dbo].[EmpCurrentPettyCashBalances](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmployeeId] [int] NOT NULL,
+	[CurBalance] [float] NOT NULL,
+	[UpdatedOn] [datetime2](7) NOT NULL)
+GO
+CREATE TABLE [dbo].[Employees](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[FirstName] [nvarchar](200) NOT NULL,
+	[MiddleName] [nvarchar](100) NULL,
+	[LastName] [nvarchar](100) NOT NULL,
+	[EmpCode] [nvarchar](30) NOT NULL,
+	[BankAccount] [nvarchar](30) NOT NULL,
+	[BankCardNo] [nvarchar](50) NULL,
+	[NationalID] [nvarchar](max) NULL,
+	[PassportNo] [nvarchar](20) NULL,
+	[TaxNumber] [nvarchar](20) NULL,
+	[Nationality] [nvarchar](50) NULL,
+	[DOB] [datetime2](7) NOT NULL,
+	[DOJ] [datetime2](7) NOT NULL,
+	[Gender] [nvarchar](max) NOT NULL,
+	[Email] [nvarchar](max) NOT NULL,
+	[MobileNumber] [nvarchar](20) NULL,
+	[EmploymentTypeId] [int] NOT NULL,
+	[DepartmentId] [int] NOT NULL,
+	[RoleId] [int] NOT NULL,
+	[ApprovalGroupId] [int] NOT NULL,
+	[CurrencyTypeId] [int] NOT NULL,
+	[StatusTypeId] [int] NOT NULL)
+GO
+
+CREATE TABLE [dbo].[EmploymentTypes](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmpJobTypeCode] [nvarchar](20) NOT NULL,
+	[EmpJobTypeDesc] [nvarchar](150) NOT NULL)
+GO
+CREATE TABLE [dbo].[ExpenseReimburseRequests](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ExpenseReportTitle] [nvarchar](250) NOT NULL,
+	[EmployeeId] [int] NOT NULL,
+	[CurrencyTypeId] [int] NOT NULL,
+	[TotalClaimAmount] [float] NOT NULL,
+	[ExpReimReqDate] [datetime2](7) NOT NULL,
+	[DepartmentId] [int] NULL,
+	[ProjectId] [int] NULL,
+	[SubProjectId] [int] NULL,
+	[WorkTaskId] [int] NULL,
+	[ApprovalStatusTypeId] [int] NOT NULL,
+	[ApprovedDate] [datetime2](7) NULL)
+
+CREATE TABLE [dbo].[ExpenseReimburseStatusTrackers](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmployeeId] [int] NOT NULL,
+	[ExpenseReimburseRequestId] [int] NOT NULL,
+	[CurrencyTypeId] [int] NOT NULL,
+	[TotalClaimAmount] [float] NOT NULL,
+	[ExpReimReqDate] [datetime2](7) NOT NULL,
+	[DepartmentId] [int] NULL,
+	[ProjectId] [int] NULL,
+	[SubProjectId] [int] NULL,
+	[WorkTaskId] [int] NULL,
+	[JobRoleId] [int] NOT NULL,
+	[ApprovalLevelId] [int] NOT NULL,
+	[ApprovalStatusTypeId] [int] NOT NULL,
+	[ApprovedDate] [datetime2](7) NULL,
+	[Comments] [nvarchar](250) NOT NULL,)
+
+
+
+CREATE TABLE [dbo].[ExpenseSubClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ExpenseReimburseRequestId] [int] NOT NULL,
+	[ExpenseTypeId] [int] NOT NULL,
+	[ExpenseReimbClaimAmount] [float] NOT NULL,
+	[DocumentIDs] [nvarchar](max) NULL,
+	[InvoiceNo] [nvarchar](50) NOT NULL,
+	[Tax] [real] NOT NULL,
+	[TaxAmount] [float] NOT NULL,
+	[InvoiceDate] [datetime2](7) NOT NULL,
+	[Vendor] [nvarchar](50) NOT NULL,
+	[Location] [nvarchar](20) NOT NULL,
+	[Description] [nvarchar](250) NOT NULL)
+
+GO
+CREATE TABLE [dbo].[ExpenseTypes](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ExpenseTypeName] [nvarchar](50) NOT NULL,
+	[ExpenseTypeDesc] [nvarchar](150) NOT NULL,
+	[StatusTypeId] [int] NOT NULL)
+GO
+
+CREATE TABLE [dbo].[FileDocuments](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[UniqueFileName] [nvarchar](max) NOT NULL,
+	[ActualFileName] [nvarchar](max) NOT NULL)
+
+
+GO
+
+
+CREATE TABLE [dbo].[JobRoles](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[RoleCode] [nvarchar](20) NOT NULL,
+	[RoleName] [nvarchar](50) NOT NULL,
+	[MaxPettyCashAllowed] [float] NOT NULL)
+GO
+CREATE TABLE [dbo].[PettyCashRequests](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmployeeId] [int] NOT NULL,
+	[PettyClaimAmount] [float] NOT NULL,
+	[PettyClaimRequestDesc] [nvarchar](150) NOT NULL,
+	[CashReqDate] [datetime2](7) NOT NULL,
+	[CurrencyTypeId] [int] NOT NULL,
+	[DepartmentId] [int] NULL,
+	[ProjectId] [int] NULL,
+	[SubProjectId] [int] NULL,
+	[WorkTaskId] [int] NULL,
+	[ApprovalStatusTypeId] [int] NOT NULL,
+	[ApprovedDate] [datetime2](7) NULL)
+GO
+CREATE TABLE [dbo].[ProjectManagements](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ProjectId] [int] NOT NULL,
+	[EmployeeId] [int] NOT NULL)
+GO
+CREATE TABLE [dbo].[Projects](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ProjectName] [nvarchar](25) NOT NULL,
+	[CostCenterId] [int] NOT NULL,
+	[ProjectManagerId] [int] NOT NULL,
+	[ProjectDesc] [nvarchar](200) NOT NULL,
+	[StatusTypeId] [int] NOT NULL)
+GO
+
+
+CREATE TABLE [dbo].[RequestTypes](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[RequestName] [nvarchar](50) NOT NULL,
+	[RequestTypeDesc] [nvarchar](150) NOT NULL)
+GO
+
+CREATE TABLE [dbo].[StatusTypes](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Status] [nvarchar](25) NOT NULL)
+ 
+GO
+
+CREATE TABLE [dbo].[SubProjects](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ProjectId] [int] NOT NULL,
+	[SubProjectName] [nvarchar](25) NOT NULL,
+	[SubProjectDesc] [nvarchar](200) NOT NULL)
+GO
+CREATE TABLE [dbo].[TravelApprovalRequests](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmployeeId] [int] NOT NULL,
+	[TravelStartDate] [datetime2](7) NOT NULL,
+	[TravelEndDate] [datetime2](7) NOT NULL,
+	[TravelPurpose] [nvarchar](150) NOT NULL,
+	[ReqRaisedDate] [datetime2](7) NOT NULL,
+	[DepartmentId] [int] NULL,
+	[ProjectId] [int] NULL,
+	[SubProjectId] [int] NULL,
+	[WorkTaskId] [int] NULL,
+	[ApprovalStatusTypeId] [int] NOT NULL,
+	[ApprovedDate] [datetime2](7) NULL)
+GO
+CREATE TABLE [dbo].[TravelApprovalStatusTrackers](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmployeeId] [int] NOT NULL,
+	[TravelApprovalRequestId] [int] NOT NULL,
+	[TravelStartDate] [datetime2](7) NOT NULL,
+	[TravelEndDate] [datetime2](7) NOT NULL,
+	[DepartmentId] [int] NULL,
+	[ProjectId] [int] NULL,
+	[RoleId] [int] NOT NULL,
+	[ApprovalLevelId] [int] NOT NULL,
+	[ReqDate] [datetime2](7) NOT NULL,
+	[FinalApprovedDate] [datetime2](7) NULL,
+	[ApprovalStatusTypeId] [int] NOT NULL,
+	[Comments] [nvarchar](250) NULL)
+GO
+CREATE TABLE [dbo].[WorkTasks](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[SubProjectId] [int] NOT NULL,
+	[TaskName] [nvarchar](25) NOT NULL,
+	[TaskDesc] [nvarchar](200) NOT NULL)
+GO
+ALTER TABLE [dbo].[ApprovalRoleMaps]  WITH CHECK ADD  CONSTRAINT [FK_ApprovalRoleMaps_ApprovalGroups_ApprovalGroupId] FOREIGN KEY([ApprovalGroupId])
+REFERENCES [dbo].[ApprovalGroups] ([Id])
+GO
+ALTER TABLE [dbo].[ApprovalRoleMaps] CHECK CONSTRAINT [FK_ApprovalRoleMaps_ApprovalGroups_ApprovalGroupId]
+GO
+ALTER TABLE [dbo].[ApprovalRoleMaps]  WITH CHECK ADD  CONSTRAINT [FK_ApprovalRoleMaps_ApprovalLevels_ApprovalLevelId] FOREIGN KEY([ApprovalLevelId])
+REFERENCES [dbo].[ApprovalLevels] ([Id])
+
+GO
+ALTER TABLE [dbo].[ApprovalRoleMaps] CHECK CONSTRAINT [FK_ApprovalRoleMaps_ApprovalLevels_ApprovalLevelId]
+GO
+ALTER TABLE [dbo].[ApprovalRoleMaps]  WITH CHECK ADD  CONSTRAINT [FK_ApprovalRoleMaps_JobRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[JobRoles] ([Id])
+
+GO
+ALTER TABLE [dbo].[ApprovalRoleMaps] CHECK CONSTRAINT [FK_ApprovalRoleMaps_JobRoles_RoleId]
+GO
+ALTER TABLE [dbo].[AspNetRoleClaims]  WITH CHECK ADD  CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[AspNetRoles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetRoleClaims] CHECK CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId]
+GO
+ALTER TABLE [dbo].[AspNetUserClaims]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserClaims] CHECK CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserLogins]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserLogins] CHECK CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[AspNetRoles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId]
+GO
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserTokens]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserTokens] CHECK CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ClaimApprovalStatusTrackers_ApprovalLevels_ApprovalLevelId] FOREIGN KEY([ApprovalLevelId])
+REFERENCES [dbo].[ApprovalLevels] ([Id])
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers] CHECK CONSTRAINT [FK_ClaimApprovalStatusTrackers_ApprovalLevels_ApprovalLevelId]
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ClaimApprovalStatusTrackers_ApprovalStatusTypes_ApprovalStatusTypeId] FOREIGN KEY([ApprovalStatusTypeId])
+REFERENCES [dbo].[ApprovalStatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers] CHECK CONSTRAINT [FK_ClaimApprovalStatusTrackers_ApprovalStatusTypes_ApprovalStatusTypeId]
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ClaimApprovalStatusTrackers_Departments_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([Id])
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers] CHECK CONSTRAINT [FK_ClaimApprovalStatusTrackers_Departments_DepartmentId]
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ClaimApprovalStatusTrackers_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers] CHECK CONSTRAINT [FK_ClaimApprovalStatusTrackers_Employees_EmployeeId]
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ClaimApprovalStatusTrackers_JobRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[JobRoles] ([Id])
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers] CHECK CONSTRAINT [FK_ClaimApprovalStatusTrackers_JobRoles_RoleId]
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ClaimApprovalStatusTrackers_PettyCashRequests_PettyCashRequestId] FOREIGN KEY([PettyCashRequestId])
+REFERENCES [dbo].[PettyCashRequests] ([Id])
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers] CHECK CONSTRAINT [FK_ClaimApprovalStatusTrackers_PettyCashRequests_PettyCashRequestId]
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ClaimApprovalStatusTrackers_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[ClaimApprovalStatusTrackers] CHECK CONSTRAINT [FK_ClaimApprovalStatusTrackers_Projects_ProjectId]
+GO
+
+ALTER TABLE [dbo].[CostCenters]  WITH CHECK ADD  CONSTRAINT [FK_CostCenters_StatusTypes_StatusTypeId] FOREIGN KEY([StatusTypeId])
+REFERENCES [dbo].[StatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[CostCenters] CHECK CONSTRAINT [FK_CostCenters_StatusTypes_StatusTypeId]
+GO
+ALTER TABLE [dbo].[CurrencyTypes]  WITH CHECK ADD  CONSTRAINT [FK_CurrencyTypes_StatusTypes_StatusTypeId] FOREIGN KEY([StatusTypeId])
+REFERENCES [dbo].[StatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[CurrencyTypes] CHECK CONSTRAINT [FK_CurrencyTypes_StatusTypes_StatusTypeId]
+GO
+
+
+
+ALTER TABLE [dbo].[Departments]  WITH CHECK ADD  CONSTRAINT [FK_Departments_CostCenters_CostCenterId] FOREIGN KEY([CostCenterId])
+REFERENCES [dbo].[CostCenters] ([Id])
+GO
+ALTER TABLE [dbo].[Departments] CHECK CONSTRAINT [FK_Departments_CostCenters_CostCenterId]
+GO
+
+
+ALTER TABLE [dbo].[Departments]  WITH CHECK ADD  CONSTRAINT [FK_Departments_StatusTypes_StatusTypeId] FOREIGN KEY([StatusTypeId])
+REFERENCES [dbo].[StatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[Departments] CHECK CONSTRAINT [FK_Departments_StatusTypes_StatusTypeId]
+GO
+
+
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_ApprovalStatusTypes_ApprovalStatusId] FOREIGN KEY([ApprovalStatusId])
+REFERENCES [dbo].[ApprovalStatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_ApprovalStatusTypes_ApprovalStatusId]
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_CostCenters_CostCenterId] FOREIGN KEY([CostCenterId])
+REFERENCES [dbo].[CostCenters] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_CostCenters_CostCenterId]
+GO
+
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_CurrencyTypes_CurrencyTypeId] FOREIGN KEY([CurrencyTypeId])
+REFERENCES [dbo].[CurrencyTypes] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_CurrencyTypes_CurrencyTypeId]
+GO
+
+
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_Departments_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_Departments_DepartmentId]
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_Employees_EmployeeId]
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_ExpenseReimburseRequests_ExpenseReimburseReqId] FOREIGN KEY([ExpenseReimburseReqId])
+REFERENCES [dbo].[ExpenseReimburseRequests] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_ExpenseReimburseRequests_ExpenseReimburseReqId]
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_PettyCashRequests_PettyCashRequestId] FOREIGN KEY([PettyCashRequestId])
+REFERENCES [dbo].[PettyCashRequests] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_PettyCashRequests_PettyCashRequestId]
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_Projects_ProjectId]
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_RequestTypes_RequestTypeId] FOREIGN KEY([RequestTypeId])
+REFERENCES [dbo].[RequestTypes] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_RequestTypes_RequestTypeId]
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_SubProjects_SubProjectId] FOREIGN KEY([SubProjectId])
+REFERENCES [dbo].[SubProjects] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_SubProjects_SubProjectId]
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters]  WITH CHECK ADD  CONSTRAINT [FK_DisbursementsAndClaimsMasters_WorkTasks_WorkTaskId] FOREIGN KEY([WorkTaskId])
+REFERENCES [dbo].[WorkTasks] ([Id])
+GO
+ALTER TABLE [dbo].[DisbursementsAndClaimsMasters] CHECK CONSTRAINT [FK_DisbursementsAndClaimsMasters_WorkTasks_WorkTaskId]
+GO
+
+ALTER TABLE [dbo].[EmpCurrentPettyCashBalances]  WITH CHECK ADD  CONSTRAINT [FK_EmpCurrentPettyCashBalances_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+GO
+ALTER TABLE [dbo].[EmpCurrentPettyCashBalances] CHECK CONSTRAINT [FK_EmpCurrentPettyCashBalances_Employees_EmployeeId]
+GO
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_ApprovalGroups_ApprovalGroupId] FOREIGN KEY([ApprovalGroupId])
+REFERENCES [dbo].[ApprovalGroups] ([Id])
+GO
+ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_ApprovalGroups_ApprovalGroupId]
+GO
+
+
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_CurrencyTypes_CurrencyTypeId] FOREIGN KEY([CurrencyTypeId])
+REFERENCES [dbo].[CurrencyTypes] ([Id])
+GO
+ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_CurrencyTypes_CurrencyTypeId]
+GO
+
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_Departments_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([Id])
+
+GO
+ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_Departments_DepartmentId]
+GO
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_EmploymentTypes_EmploymentTypeId] FOREIGN KEY([EmploymentTypeId])
+REFERENCES [dbo].[EmploymentTypes] ([Id])
+
+GO
+
+
+ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_EmploymentTypes_EmploymentTypeId]
+GO
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_JobRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[JobRoles] ([Id])
+
+GO
+ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_JobRoles_RoleId]
+GO
+
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_StatusTypes_StatusTypeId] FOREIGN KEY([StatusTypeId])
+REFERENCES [dbo].[StatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_StatusTypes_StatusTypeId]
+GO
+
+ALTER TABLE [dbo].[ExpenseReimburseRequests]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseRequests_ApprovalStatusTypes_ApprovalStatusTypeId] FOREIGN KEY([ApprovalStatusTypeId])
+REFERENCES [dbo].[ApprovalStatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests] CHECK CONSTRAINT [FK_ExpenseReimburseRequests_ApprovalStatusTypes_ApprovalStatusTypeId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseRequests_CurrencyTypes_CurrencyTypeId] FOREIGN KEY([CurrencyTypeId])
+REFERENCES [dbo].[CurrencyTypes] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests] CHECK CONSTRAINT [FK_ExpenseReimburseRequests_CurrencyTypes_CurrencyTypeId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseRequests_Departments_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests] CHECK CONSTRAINT [FK_ExpenseReimburseRequests_Departments_DepartmentId]
+GO
+
+ALTER TABLE [dbo].[ExpenseReimburseRequests]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseRequests_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests] CHECK CONSTRAINT [FK_ExpenseReimburseRequests_Employees_EmployeeId]
+GO
+
+ALTER TABLE [dbo].[ExpenseReimburseRequests]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseRequests_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests] CHECK CONSTRAINT [FK_ExpenseReimburseRequests_Projects_ProjectId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseRequests_SubProjects_SubProjectId] FOREIGN KEY([SubProjectId])
+REFERENCES [dbo].[SubProjects] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests] CHECK CONSTRAINT [FK_ExpenseReimburseRequests_SubProjects_SubProjectId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseRequests_WorkTasks_WorkTaskId] FOREIGN KEY([WorkTaskId])
+REFERENCES [dbo].[WorkTasks] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseRequests] CHECK CONSTRAINT [FK_ExpenseReimburseRequests_WorkTasks_WorkTaskId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_ApprovalLevels_ApprovalLevelId] FOREIGN KEY([ApprovalLevelId])
+REFERENCES [dbo].[ApprovalLevels] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_ApprovalLevels_ApprovalLevelId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_ApprovalStatusTypes_ApprovalStatusTypeId] FOREIGN KEY([ApprovalStatusTypeId])
+REFERENCES [dbo].[ApprovalStatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_ApprovalStatusTypes_ApprovalStatusTypeId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_CurrencyTypes_CurrencyTypeId] FOREIGN KEY([CurrencyTypeId])
+REFERENCES [dbo].[CurrencyTypes] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_CurrencyTypes_CurrencyTypeId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_Departments_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_Departments_DepartmentId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_Employees_EmployeeId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_ExpenseReimburseRequests_ExpenseReimburseRequestId] FOREIGN KEY([ExpenseReimburseRequestId])
+REFERENCES [dbo].[ExpenseReimburseRequests] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_ExpenseReimburseRequests_ExpenseReimburseRequestId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_JobRoles_JobRoleId] FOREIGN KEY([JobRoleId])
+REFERENCES [dbo].[JobRoles] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_JobRoles_JobRoleId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_Projects_ProjectId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_SubProjects_SubProjectId] FOREIGN KEY([SubProjectId])
+REFERENCES [dbo].[SubProjects] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_SubProjects_SubProjectId]
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseReimburseStatusTrackers_WorkTasks_WorkTaskId] FOREIGN KEY([WorkTaskId])
+REFERENCES [dbo].[WorkTasks] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseReimburseStatusTrackers] CHECK CONSTRAINT [FK_ExpenseReimburseStatusTrackers_WorkTasks_WorkTaskId]
+GO
+ALTER TABLE [dbo].[ExpenseSubClaims]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseSubClaims_ExpenseReimburseRequests_ExpenseReimburseRequestId] FOREIGN KEY([ExpenseReimburseRequestId])
+REFERENCES [dbo].[ExpenseReimburseRequests] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseSubClaims] CHECK CONSTRAINT [FK_ExpenseSubClaims_ExpenseReimburseRequests_ExpenseReimburseRequestId]
+GO
+ALTER TABLE [dbo].[ExpenseSubClaims]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseSubClaims_ExpenseTypes_ExpenseTypeId] FOREIGN KEY([ExpenseTypeId])
+REFERENCES [dbo].[ExpenseTypes] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseSubClaims] CHECK CONSTRAINT [FK_ExpenseSubClaims_ExpenseTypes_ExpenseTypeId]
+GO
+ALTER TABLE [dbo].[ExpenseTypes]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseTypes_StatusTypes_StatusTypeId] FOREIGN KEY([StatusTypeId])
+REFERENCES [dbo].[StatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[ExpenseTypes] CHECK CONSTRAINT [FK_ExpenseTypes_StatusTypes_StatusTypeId]
+GO
+
+ALTER TABLE [dbo].[PettyCashRequests]  WITH CHECK ADD  CONSTRAINT [FK_PettyCashRequests_ApprovalStatusTypes_ApprovalStatusTypeId] FOREIGN KEY([ApprovalStatusTypeId])
+REFERENCES [dbo].[ApprovalStatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[PettyCashRequests] CHECK CONSTRAINT [FK_PettyCashRequests_ApprovalStatusTypes_ApprovalStatusTypeId]
+GO
+ALTER TABLE [dbo].[PettyCashRequests]  WITH CHECK ADD  CONSTRAINT [FK_PettyCashRequests_CurrencyTypes_CurrencyTypeId] FOREIGN KEY([CurrencyTypeId])
+REFERENCES [dbo].[CurrencyTypes] ([Id])
+GO
+ALTER TABLE [dbo].[PettyCashRequests] CHECK CONSTRAINT [FK_PettyCashRequests_CurrencyTypes_CurrencyTypeId]
+GO
+ALTER TABLE [dbo].[PettyCashRequests]  WITH CHECK ADD  CONSTRAINT [FK_PettyCashRequests_Departments_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([Id])
+GO
+ALTER TABLE [dbo].[PettyCashRequests] CHECK CONSTRAINT [FK_PettyCashRequests_Departments_DepartmentId]
+GO
+ALTER TABLE [dbo].[PettyCashRequests]  WITH CHECK ADD  CONSTRAINT [FK_PettyCashRequests_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+
+GO
+ALTER TABLE [dbo].[PettyCashRequests] CHECK CONSTRAINT [FK_PettyCashRequests_Employees_EmployeeId]
+GO
+ALTER TABLE [dbo].[PettyCashRequests]  WITH CHECK ADD  CONSTRAINT [FK_PettyCashRequests_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[PettyCashRequests] CHECK CONSTRAINT [FK_PettyCashRequests_Projects_ProjectId]
+GO
+ALTER TABLE [dbo].[PettyCashRequests]  WITH CHECK ADD  CONSTRAINT [FK_PettyCashRequests_SubProjects_SubProjectId] FOREIGN KEY([SubProjectId])
+REFERENCES [dbo].[SubProjects] ([Id])
+GO
+ALTER TABLE [dbo].[PettyCashRequests] CHECK CONSTRAINT [FK_PettyCashRequests_SubProjects_SubProjectId]
+GO
+ALTER TABLE [dbo].[PettyCashRequests]  WITH CHECK ADD  CONSTRAINT [FK_PettyCashRequests_WorkTasks_WorkTaskId] FOREIGN KEY([WorkTaskId])
+REFERENCES [dbo].[WorkTasks] ([Id])
+GO
+ALTER TABLE [dbo].[PettyCashRequests] CHECK CONSTRAINT [FK_PettyCashRequests_WorkTasks_WorkTaskId]
+GO
+ALTER TABLE [dbo].[ProjectManagements]  WITH CHECK ADD  CONSTRAINT [FK_ProjectManagements_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+GO
+ALTER TABLE [dbo].[ProjectManagements] CHECK CONSTRAINT [FK_ProjectManagements_Employees_EmployeeId]
+GO
+ALTER TABLE [dbo].[ProjectManagements]  WITH CHECK ADD  CONSTRAINT [FK_ProjectManagements_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[ProjectManagements] CHECK CONSTRAINT [FK_ProjectManagements_Projects_ProjectId]
+GO
+ALTER TABLE [dbo].[Projects]  WITH CHECK ADD  CONSTRAINT [FK_Projects_CostCenters_CostCenterId] FOREIGN KEY([CostCenterId])
+REFERENCES [dbo].[CostCenters] ([Id])
+GO
+ALTER TABLE [dbo].[Projects] CHECK CONSTRAINT [FK_Projects_CostCenters_CostCenterId]
+GO
+ALTER TABLE [dbo].[Projects]  WITH CHECK ADD  CONSTRAINT [FK_Projects_Employees_ProjectManagerId] FOREIGN KEY([ProjectManagerId])
+REFERENCES [dbo].[Employees] ([Id])
+GO
+ALTER TABLE [dbo].[Projects] CHECK CONSTRAINT [FK_Projects_Employees_ProjectManagerId]
+GO
+ALTER TABLE [dbo].[Projects]  WITH CHECK ADD  CONSTRAINT [FK_Projects_StatusTypes_StatusTypeId] FOREIGN KEY([StatusTypeId])
+REFERENCES [dbo].[StatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[Projects] CHECK CONSTRAINT [FK_Projects_StatusTypes_StatusTypeId]
+GO
+ALTER TABLE [dbo].[SubProjects]  WITH CHECK ADD  CONSTRAINT [FK_SubProjects_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[SubProjects] CHECK CONSTRAINT [FK_SubProjects_Projects_ProjectId]
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalRequests_ApprovalStatusTypes_ApprovalStatusTypeId] FOREIGN KEY([ApprovalStatusTypeId])
+REFERENCES [dbo].[ApprovalStatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests] CHECK CONSTRAINT [FK_TravelApprovalRequests_ApprovalStatusTypes_ApprovalStatusTypeId]
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalRequests_Departments_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests] CHECK CONSTRAINT [FK_TravelApprovalRequests_Departments_DepartmentId]
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalRequests_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests] CHECK CONSTRAINT [FK_TravelApprovalRequests_Employees_EmployeeId]
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalRequests_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests] CHECK CONSTRAINT [FK_TravelApprovalRequests_Projects_ProjectId]
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalRequests_SubProjects_SubProjectId] FOREIGN KEY([SubProjectId])
+REFERENCES [dbo].[SubProjects] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests] CHECK CONSTRAINT [FK_TravelApprovalRequests_SubProjects_SubProjectId]
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalRequests_WorkTasks_WorkTaskId] FOREIGN KEY([WorkTaskId])
+REFERENCES [dbo].[WorkTasks] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalRequests] CHECK CONSTRAINT [FK_TravelApprovalRequests_WorkTasks_WorkTaskId]
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalStatusTrackers_ApprovalLevels_ApprovalLevelId] FOREIGN KEY([ApprovalLevelId])
+REFERENCES [dbo].[ApprovalLevels] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers] CHECK CONSTRAINT [FK_TravelApprovalStatusTrackers_ApprovalLevels_ApprovalLevelId]
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalStatusTrackers_ApprovalStatusTypes_ApprovalStatusTypeId] FOREIGN KEY([ApprovalStatusTypeId])
+REFERENCES [dbo].[ApprovalStatusTypes] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers] CHECK CONSTRAINT [FK_TravelApprovalStatusTrackers_ApprovalStatusTypes_ApprovalStatusTypeId]
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalStatusTrackers_Departments_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers] CHECK CONSTRAINT [FK_TravelApprovalStatusTrackers_Departments_DepartmentId]
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalStatusTrackers_Employees_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers] CHECK CONSTRAINT [FK_TravelApprovalStatusTrackers_Employees_EmployeeId]
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalStatusTrackers_JobRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[JobRoles] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers] CHECK CONSTRAINT [FK_TravelApprovalStatusTrackers_JobRoles_RoleId]
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalStatusTrackers_Projects_ProjectId] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers] CHECK CONSTRAINT [FK_TravelApprovalStatusTrackers_Projects_ProjectId]
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers]  WITH CHECK ADD  CONSTRAINT [FK_TravelApprovalStatusTrackers_TravelApprovalRequests_TravelApprovalRequestId] FOREIGN KEY([TravelApprovalRequestId])
+REFERENCES [dbo].[TravelApprovalRequests] ([Id])
+GO
+ALTER TABLE [dbo].[TravelApprovalStatusTrackers] CHECK CONSTRAINT [FK_TravelApprovalStatusTrackers_TravelApprovalRequests_TravelApprovalRequestId]
+GO
+ALTER TABLE [dbo].[WorkTasks]  WITH CHECK ADD  CONSTRAINT [FK_WorkTasks_SubProjects_SubProjectId] FOREIGN KEY([SubProjectId])
+REFERENCES [dbo].[SubProjects] ([Id])
+GO
+ALTER TABLE [dbo].[WorkTasks] CHECK CONSTRAINT [FK_WorkTasks_SubProjects_SubProjectId]
+GO
+
+
+/* /////////////////////////////////////////////// */
+
+/* ATOMINOS USER* password is "!Atominos123!" 	*/
+/* 	{											*/
+/*  "email": "atominos@gmail.com",				*/
+ /* "password": "!Atominos123!"					*/
+/*	}											*/
+/* /////////////////////////////////////////////// */
+
+GO
+SET IDENTITY_INSERT [dbo].[StatusTypes] ON 
+INSERT [dbo].[StatusTypes] ([Id], [Status]) VALUES (1, N'Active')
+INSERT [dbo].[StatusTypes] ([Id], [Status]) VALUES (2, N'Inactive')
+SET IDENTITY_INSERT [dbo].[StatusTypes] OFF
+GO
+
+
+GO
+SET IDENTITY_INSERT [dbo].[CurrencyTypes] ON 
+INSERT [dbo].[CurrencyTypes] ([Id], [CurrencyCode], [CurrencyName], [Country], [StatusTypeId]  ) VALUES (1, N'INR', N'Indian Currency', N'India', 1)
+INSERT [dbo].[CurrencyTypes] ([Id], [CurrencyCode], [CurrencyName], [Country], [StatusTypeId]  ) VALUES (2, N'SAR', N'Saudi Rial', N'Saudi Arabia', 1)
+INSERT [dbo].[CurrencyTypes] ([Id], [CurrencyCode], [CurrencyName], [Country], [StatusTypeId]  ) VALUES (3, N'USD', N'Dollar', N'USA', 1)
+SET IDENTITY_INSERT [dbo].[CurrencyTypes] OFF
+GO
+
+
+
+GO
+SET IDENTITY_INSERT [dbo].[RequestTypes] ON 
+
+INSERT [dbo].[RequestTypes] ([Id], [RequestName], [RequestTypeDesc]) VALUES (1, N'Cash Advance Request', N'Petty Cash Advance Request')
+INSERT [dbo].[RequestTypes] ([Id], [RequestName], [RequestTypeDesc]) VALUES (2, N'Expense Reimbursement', N'Expense Remimbursement Claim Request')
+SET IDENTITY_INSERT [dbo].[RequestTypes] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[ApprovalGroups] ON 
+
+INSERT [dbo].[ApprovalGroups] ([Id], [ApprovalGroupCode], [ApprovalGroupDesc]) VALUES (1, N'APPGRP-01', N'APPROVER GROUP 1')
+INSERT [dbo].[ApprovalGroups] ([Id], [ApprovalGroupCode], [ApprovalGroupDesc]) VALUES (2, N'APPGRP-02', N'APPROVER GROUP 2')
+INSERT [dbo].[ApprovalGroups] ([Id], [ApprovalGroupCode], [ApprovalGroupDesc]) VALUES (3, N'APPGRP-03', N'APPROVER GROUP 3')
+SET IDENTITY_INSERT [dbo].[ApprovalGroups] OFF
+GO
+SET IDENTITY_INSERT [dbo].[CostCenters] ON 
+
+INSERT [dbo].[CostCenters] ([Id], [CostCenterCode], [CostCenterDesc], [StatusTypeId]) VALUES (1, N'CC1001', N'COST CENTRE FOR EXP', 1)
+INSERT [dbo].[CostCenters] ([Id], [CostCenterCode], [CostCenterDesc], [StatusTypeId]) VALUES (2, N'CC1002', N'COST EXPENSE TRACKING', 1)
+INSERT [dbo].[CostCenters] ([Id], [CostCenterCode], [CostCenterDesc], [StatusTypeId]) VALUES (3, N'NW1002', N'OVERSEAS COST TRACKING', 1)
+SET IDENTITY_INSERT [dbo].[CostCenters] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Departments] ON 
+
+INSERT [dbo].[Departments] ([Id], [DeptCode], [DeptName], [CostCenterId], [StatusTypeId]) VALUES (1, N'MFGDEPT-01', N'MANUFACTURING', 1, 1)
+INSERT [dbo].[Departments] ([Id], [DeptCode], [DeptName], [CostCenterId], [StatusTypeId]) VALUES (2, N'MFGDEPT-02', N'MANUFACT UNIT 2', 2, 1)
+INSERT [dbo].[Departments] ([Id], [DeptCode], [DeptName], [CostCenterId], [StatusTypeId]) VALUES (3, N'FINDEPT-01', N'CHENNAI FINANCE DEPT', 3, 1)
+INSERT [dbo].[Departments] ([Id], [DeptCode], [DeptName], [CostCenterId], [StatusTypeId]) VALUES (4, N'FINDEPT-02', N'DUBAI FINANCE DEPT', 3, 1)
+SET IDENTITY_INSERT [dbo].[Departments] OFF
+GO
+SET IDENTITY_INSERT [dbo].[EmploymentTypes] ON 
+
+INSERT [dbo].[EmploymentTypes] ([Id], [EmpJobTypeCode], [EmpJobTypeDesc]) VALUES (1, N'FT-EMP', N'FULLTIME EMPLOYEE')
+INSERT [dbo].[EmploymentTypes] ([Id], [EmpJobTypeCode], [EmpJobTypeDesc]) VALUES (2, N'PT-EMP', N'PARTTIME EMPLOYEE')
+INSERT [dbo].[EmploymentTypes] ([Id], [EmpJobTypeCode], [EmpJobTypeDesc]) VALUES (3, N'CONTR', N'CONTRACTED EMPLOYEE')
+INSERT [dbo].[EmploymentTypes] ([Id], [EmpJobTypeCode], [EmpJobTypeDesc]) VALUES (4, N'DEPUTEMP', N'DEPUTED EMPLOYEE')
+SET IDENTITY_INSERT [dbo].[EmploymentTypes] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[ExpenseTypes] ON 
+
+INSERT [dbo].[ExpenseTypes] ([Id], [ExpenseTypeName], [ExpenseTypeDesc], [StatusTypeId]) VALUES (1, N'Hotel Expense', N'All Hotel Expense', 1)
+INSERT [dbo].[ExpenseTypes] ([Id], [ExpenseTypeName], [ExpenseTypeDesc], [StatusTypeId]) VALUES (2, N'Food Expense', N'All Food Expense', 1)
+SET IDENTITY_INSERT [dbo].[ExpenseTypes] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[JobRoles] ON 
+
+INSERT [dbo].[JobRoles] ([Id], [RoleCode], [RoleName], [MaxPettyCashAllowed]) VALUES (1, N'BASEEMP', N'EMPLOYEE', 10000)
+INSERT [dbo].[JobRoles] ([Id], [RoleCode], [RoleName], [MaxPettyCashAllowed]) VALUES (2, N'SUPEREMP', N'SUPERVISOR', 15000)
+INSERT [dbo].[JobRoles] ([Id], [RoleCode], [RoleName], [MaxPettyCashAllowed]) VALUES (3, N'EMPLMGR', N'MANAGER', 20000)
+INSERT [dbo].[JobRoles] ([Id], [RoleCode], [RoleName], [MaxPettyCashAllowed]) VALUES (4, N'FINMGR', N'FINANCE MANAGER', 50000)
+SET IDENTITY_INSERT [dbo].[JobRoles] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Employees] ON 
+
+INSERT [dbo].[Employees] ([Id], [FirstName], [MiddleName], [LastName], [EmpCode], [BankAccount], [BankCardNo], [NationalID], [PassportNo], [TaxNumber], [Nationality], [DOB], [DOJ], [Gender], [Email], [MobileNumber], [EmploymentTypeId], [DepartmentId], [RoleId], [ApprovalGroupId], [CurrencyTypeId], [StatusTypeId]) VALUES (1, N'EMPFNAME', N'EMPMNAME', N'EMPLNAME', N'CEMP001', N'1111111111', N'1111111111111111', N'8080808', N'808080', N'09800800', N'Indian', CAST(N'2021-03-24T04:13:08.1230000' AS DateTime2), CAST(N'2021-03-19T04:13:08.0560000' AS DateTime2), N'male', N'user@mailinator.com', N'8297333325', 1, 1, 1, 1, 1, 1)
+INSERT [dbo].[Employees] ([Id], [FirstName], [MiddleName], [LastName], [EmpCode], [BankAccount], [BankCardNo], [NationalID], [PassportNo], [TaxNumber], [Nationality], [DOB], [DOJ], [Gender], [Email], [MobileNumber], [EmploymentTypeId], [DepartmentId], [RoleId], [ApprovalGroupId], [CurrencyTypeId], [StatusTypeId]) VALUES (2, N'Supervisor', N'Super', N'SLNAME', N'8080', N'3333333333', N'3333333333333333', N'80808080', N'80808080', N'808080', N'Indian', CAST(N'2021-03-17T04:43:09.2680000' AS DateTime2), CAST(N'2021-03-23T04:43:09.2170000' AS DateTime2), N'male', N'super@mailinator.com', N'8297333327', 1, 1, 2, 1, 1, 1)
+INSERT [dbo].[Employees] ([Id], [FirstName], [MiddleName], [LastName], [EmpCode], [BankAccount], [BankCardNo], [NationalID], [PassportNo], [TaxNumber], [Nationality], [DOB], [DOJ], [Gender], [Email], [MobileNumber], [EmploymentTypeId], [DepartmentId], [RoleId], [ApprovalGroupId], [CurrencyTypeId], [StatusTypeId]) VALUES (3, N'Mamanger', N'Mgr', N'MgrLNAME', N'MgrCODE', N'2222222222', N'2222222222222222', N'89080980980', N'809809809', N'98098098', N'Indian', CAST(N'2021-03-16T04:40:14.2760000' AS DateTime2), CAST(N'2021-03-16T04:40:14.1460000' AS DateTime2), N'male', N'manager@mailinator.com', N'8297333326', 1, 1, 3, 1, 1, 1)
+INSERT [dbo].[Employees] ([Id], [FirstName], [MiddleName], [LastName], [EmpCode], [BankAccount], [BankCardNo], [NationalID], [PassportNo], [TaxNumber], [Nationality], [DOB], [DOJ], [Gender], [Email], [MobileNumber], [EmploymentTypeId], [DepartmentId], [RoleId], [ApprovalGroupId], [CurrencyTypeId], [StatusTypeId]) VALUES (4, N'FinMGR', N'Fin', N'Fin', N'FIN001', N'4444444444', N'4444444444444444', N'808089999080', N'80999808080', N'899908080', N'Indian', CAST(N'2021-03-17T04:43:09.2680000' AS DateTime2), CAST(N'2021-03-23T04:43:09.2170000' AS DateTime2), N'male', N'finance@mailinator.com', N'8297333328', 1, 1, 4, 1, 1, 1)
+SET IDENTITY_INSERT [dbo].[Employees] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ApprovalLevels] ON 
+
+INSERT [dbo].[ApprovalLevels] ([Id], [Level], [LevelDesc]) VALUES (1, N'1', N'LEVEL 1')
+INSERT [dbo].[ApprovalLevels] ([Id], [Level], [LevelDesc]) VALUES (2, N'2', N'LEVEL 2')
+INSERT [dbo].[ApprovalLevels] ([Id], [Level], [LevelDesc]) VALUES (3, N'3', N'LEVEL 3')
+INSERT [dbo].[ApprovalLevels] ([Id], [Level], [LevelDesc]) VALUES (4, N'4', N'LEVEL 4')
+SET IDENTITY_INSERT [dbo].[ApprovalLevels] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ApprovalRoleMaps] ON 
+
+INSERT [dbo].[ApprovalRoleMaps] ([Id], [ApprovalGroupId], [RoleId], [ApprovalLevelId]) VALUES (1, 1, 1, 1)
+INSERT [dbo].[ApprovalRoleMaps] ([Id], [ApprovalGroupId], [RoleId], [ApprovalLevelId]) VALUES (2, 1, 2, 2)
+INSERT [dbo].[ApprovalRoleMaps] ([Id], [ApprovalGroupId], [RoleId], [ApprovalLevelId]) VALUES (3, 1, 3, 3)
+INSERT [dbo].[ApprovalRoleMaps] ([Id], [ApprovalGroupId], [RoleId], [ApprovalLevelId]) VALUES (4, 1, 4, 4)
+
+SET IDENTITY_INSERT [dbo].[ApprovalRoleMaps] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ApprovalStatusTypes] ON 
+
+INSERT [dbo].[ApprovalStatusTypes] ([Id], [Status], [StatusDesc]) VALUES (1, N'Initiating', N'Request Initiated')
+INSERT [dbo].[ApprovalStatusTypes] ([Id], [Status], [StatusDesc]) VALUES (2, N'Pending', N'Awaiting Approval')
+INSERT [dbo].[ApprovalStatusTypes] ([Id], [Status], [StatusDesc]) VALUES (3, N'In Review', N'Request is in Process')
+INSERT [dbo].[ApprovalStatusTypes] ([Id], [Status], [StatusDesc]) VALUES (4, N'Approved', N'Request Approved')
+INSERT [dbo].[ApprovalStatusTypes] ([Id], [Status], [StatusDesc]) VALUES (5, N'Rejected', N'Request is Rejected')
+SET IDENTITY_INSERT [dbo].[ApprovalStatusTypes] OFF
+GO
+
+
+
+
+
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'2abf2af3-dc89-4f3f-adaa-6c136358e9b0', N'Admin', N'ADMIN', N'a582bbb7-3421-4de7-a375-801b9ab0227d')
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'3ccf2af3-dc89-4f3f-adaa-6c136358e8c0', N'Manager', N'MANAGER', N'f582bbb7-3421-4de7-a375-801b9ab0227d')
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'4fff2af3-dc89-4f3f-adaa-6c136358e8c0', N'User', N'USER', N'4fffbbb7-3421-4de7-a375-801b9ab0227d')
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'444e2534-ca50-4ff7-b828-5ef149f9cce0', N'Finmgr', N'FINMGR', N'33b8e662-bad1-4f02-98c2-71b081bbb1d988')
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'cccf7f3c-3385-49dc-8496-84d52f04d450', N'AtominosAdmin', N'ATOMINOSADMIN', N'33b8e662-bad1-4f02-98c2-71b081b1d988')
+GO
+INSERT [dbo].[AspNetUsers] ([Id], [EmployeeId], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES (N'4a99e46e-bc9c-4fe3-b0f1-587ffe8c3056', 0, N'Atominos', N'ATOMINOS', N'atominos@gmail.com', N'ATOMINOS@GMAIL.COM', 0, N'AQAAAAEAACcQAAAAEJdYd9vz/YWvlfCw3e2CKwm4DfoO92iH5GZbrpWuOpwLJ5TAMfTHO7HuhnZm4nUMxg==', N'HFUUAXSW4CTNS6NCUKWXFP3OCBBIL7WV', N'dc2ed528-11a0-432d-8995-af264d379692', NULL, 0, 0, NULL, 1, 0)
+
+INSERT [dbo].[AspNetUsers] ([Id], [EmployeeId], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES (N'bc49d1b8-3700-4024-8531-043bde8eadd6', 1, N'EmpUser', N'EMPUSER', N'user@mailinator.com', N'USER@MAILINATOR.COM', 0, N'AQAAAAEAACcQAAAAEBJp5OB4y2sCGWDIneMbknMrNCAfhOZi0tBZ6izZrOeCZALvOtEAMlpW7SOlPlt9gw==', N'LL3CKKCFK2IOSAM7CHD56BLGBWTAXYQP', N'864d89a7-cc58-4bc7-8e9a-74144a0aafd3', NULL, 0, 0, NULL, 1, 0)
+
+
+
+INSERT [dbo].[AspNetUsers] ([Id], [EmployeeId], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES (N'577b9d47-6473-4079-bd0d-6e873242b3fc', 2, N'EmpSuper', N'EMPSUPER', N'super@mailinator.com', N'SUPER@MAILINATOR.COM', 0, N'AQAAAAEAACcQAAAAEJtfuHJHUDYO87OrkLBnbfFS9F2sDxXuMr0mwYgcE8DhT/yyK27P+O8FlpJNRWD4kQ==', N'IDROK4LU4BF5K2OAMZUMSTYXHFEHM4MK', N'dc7e9ba3-057c-4256-9723-f76856d635fa', NULL, 0, 0, NULL, 1, 0)
+
+INSERT [dbo].[AspNetUsers] ([Id], [EmployeeId], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES (N'5d06942d-58bc-4ac8-b48f-d21eb33afd2b', 3, N'EmpMgr', N'EMPMGR', N'manager@mailinator.com', N'MANAGER@MAILINATOR.COM', 0, N'AQAAAAEAACcQAAAAEJnBtkgAmLKX68vKdlPD/+Ysygev9+Z14ll6IbLaMWsbyqOJjpEiO61t+7IDMTSwAQ==', N'5ZHEQFJ6VXJ43PZDBIV2LMC5MDVZMYN7', N'b5190657-8f76-4d3f-86ac-196586d6d79e', NULL, 0, 0, NULL, 1, 0)
+
+INSERT [dbo].[AspNetUsers] ([Id], [EmployeeId], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES (N'832e2534-ca50-4ff7-b828-5ef149f9cce0', 4, N'EmpFinMgr', N'EMPFINMGR', N'finance@mailinator.com', N'FINANCE@MAILINATOR.COM', 0, N'AQAAAAEAACcQAAAAEJtfuHJHUDYO87OrkLBnbfFS9F2sDxXuMr0mwYgcE8DhT/yyK27P+O8FlpJNRWD4kQ==', N'IDROK4LU4BF5K2OAMZUMSTYXHFEHM4MK', N'dc7e9ba3-057c-4256-9723-f76856d635fa', NULL, 0, 0, NULL, 1, 0)
+GO
+
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'4a99e46e-bc9c-4fe3-b0f1-587ffe8c3056', N'cccf7f3c-3385-49dc-8496-84d52f04d450')
+
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'5d06942d-58bc-4ac8-b48f-d21eb33afd2b', N'3ccf2af3-dc89-4f3f-adaa-6c136358e8c0')
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'5d06942d-58bc-4ac8-b48f-d21eb33afd2b', N'4fff2af3-dc89-4f3f-adaa-6c136358e8c0')
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'bc49d1b8-3700-4024-8531-043bde8eadd6', N'4fff2af3-dc89-4f3f-adaa-6c136358e8c0')
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'577b9d47-6473-4079-bd0d-6e873242b3fc', N'3ccf2af3-dc89-4f3f-adaa-6c136358e8c0')
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'577b9d47-6473-4079-bd0d-6e873242b3fc', N'4fff2af3-dc89-4f3f-adaa-6c136358e8c0')
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'832e2534-ca50-4ff7-b828-5ef149f9cce0', N'4fff2af3-dc89-4f3f-adaa-6c136358e8c0')
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'832e2534-ca50-4ff7-b828-5ef149f9cce0', N'3ccf2af3-dc89-4f3f-adaa-6c136358e8c0')
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'832e2534-ca50-4ff7-b828-5ef149f9cce0', N'444e2534-ca50-4ff7-b828-5ef149f9cce0')
+
+GO
+SET IDENTITY_INSERT [dbo].[EmpCurrentPettyCashBalances] ON 
+
+INSERT [dbo].[EmpCurrentPettyCashBalances] ([Id], [EmployeeId], [CurBalance], [UpdatedOn]) VALUES (1, 1, 10000, CAST(N'0001-01-01T00:00:00.0000000' AS DateTime2))
+SET IDENTITY_INSERT [dbo].[EmpCurrentPettyCashBalances] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[Projects] ON 
+INSERT [dbo].[Projects] ([Id], [ProjectName], [CostCenterId], [ProjectManagerId], [ProjectDesc], [StatusTypeId]) VALUES (1, N'PROJ-01', 1, 4, 'PROJ Description', 1)
+INSERT [dbo].[Projects] ([Id], [ProjectName], [CostCenterId], [ProjectManagerId], [ProjectDesc], [StatusTypeId]) VALUES (2, N'PROJ-02', 1, 3, 'Second PROJ Description', 1)
+SET IDENTITY_INSERT [dbo].[Projects] OFF
+GO
+
+
+SET IDENTITY_INSERT [dbo].[ProjectManagements] ON 
+INSERT [dbo].[ProjectManagements] ([Id], [ProjectId], [EmployeeId]) VALUES (1, 1, 1)
+INSERT [dbo].[ProjectManagements] ([Id], [ProjectId], [EmployeeId]) VALUES (2, 2, 1)
+SET IDENTITY_INSERT [dbo].[ProjectManagements] OFF
+GO
+
+//////////////////////////////////
+
+//Create user
+INSERT [dbo].[AspNetUsers] ([Id], [EmployeeId], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES (N'4a99e46e-bc9c-4fe3-b0f1-587ffe8c3056', 0, N'Atominos', N'ATOMINOS', N'atominos@gmail.com', N'ATOMINOS@GMAIL.COM', 0, N'AQAAAAEAACcQAAAAEJdYd9vz/YWvlfCw3e2CKwm4DfoO92iH5GZbrpWuOpwLJ5TAMfTHO7HuhnZm4nUMxg==', N'HFUUAXSW4CTNS6NCUKWXFP3OCBBIL7WV', N'dc2ed528-11a0-432d-8995-af264d379692', NULL, 0, 0, NULL, 1, 0)
+
+//create role
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'cccf7f3c-3385-49dc-8496-84d52f04d450', N'AtominosAdmin', N'ATOMINOSADMIN', N'33b8e662-bad1-4f02-98c2-71b081b1d988')
+
+//Assign Role
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'4a99e46e-bc9c-4fe3-b0f1-587ffe8c3056', N'cccf7f3c-3385-49dc-8496-84d52f04d450')

@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  postgresdata:
+    image: postgres
+    container_name: dbserver
+    environment:
+      - POSTGRES_PASSWORD=Pa55word2019!123
+    ports:
+      - "54322:5432"
+    volumes:
+      - atocashdatavol:/var/opt/postgres/data
+    networks:
+      mynetwork:
+      
+  atocash:
+    image: ${DOCKER_REGISTRY-}ismi2u/atocash
+    build:
+      context: .
+      dockerfile: AtoCash/Dockerfile
+    command: tail -f /dev/null
+    container_name: appserver
+    tty: true
+    ports:
+      - "8080:80"
+    networks:
+      mynetwork:
+    depends_on:
+     - postgresdata
+
+volumes:
+    atocashdatavol:
+    
+networks:
+    mynetwork:
+        driver: bridge

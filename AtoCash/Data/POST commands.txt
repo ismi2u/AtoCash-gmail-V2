@@ -1,0 +1,44 @@
+Master Admin
+=============
+REGISTER
+{
+  "username": "Atominos",
+  "email": "atominos@gmail.com",
+  "password": "!Atominos123!"
+}
+
+/=============================================
+
+ATOMions User ID = Atominos
+d7c75c42-5908-4a3d-881c-936085d41de7
+
+RoleID = AtominosAdmin
+cb6275b1-3886-4d46-bf94-85130c11b6c7
+
+/=============================================
+
+LOGIN
+
+{
+  "email": "atominos@gmail.com",
+  "password": "!Atominos123!"
+}
+
+
+JWT Token
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQXRvbWlub3MiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhdG9taW5vc0BnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBdG9taW5vc0FkbWluIiwiZXhwIjoxNjEyNzM0OTU1LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSJ9.U1NhSOQr-yam6V97M1jSrZaAydjpk4ekdJycxzAvugY
+
+
+Another User Admin
+
+{
+  "username": "Irfan",
+  "email": "admin@gmail.com",
+  "password": "!Atominos123!"
+}
+
+Admin Irfan ID
+636dfa57-d6ba-4dd7-b38b-b99bf835132b
+
+RoleID
+56421fb8-bb71-4109-be2f-90e88c71ab72
