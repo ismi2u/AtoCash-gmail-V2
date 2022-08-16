@@ -52,6 +52,10 @@ namespace AtoCash.Data
 
         public DbSet<ProjectManagement> ProjectManagements { get; set; }
 
+        public DbSet<GeneralLedger> GeneralLedgers { get; set; }
+
+        public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
+
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
 
         public DbSet<ApprovalLevel> ApprovalLevels { get; set; }
