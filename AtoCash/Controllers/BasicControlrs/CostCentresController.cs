@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class CostCentersController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -99,7 +99,7 @@ namespace AtoCash.Controllers
         // PUT: api/CostCenters/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutCostCenter(int id, CostCenterDTO costCenterDTO)
         {
             if (id != costCenterDTO.Id)
@@ -136,7 +136,7 @@ namespace AtoCash.Controllers
         // POST: api/CostCenters
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<CostCenter>> PostCostCenter(CostCenterDTO costCenterDTO)
         {
             var ccentre = _context.CostCenters.Where(c => c.CostCenterCode == costCenterDTO.CostCenterCode).FirstOrDefault();
@@ -157,7 +157,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/CostCenters/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteCostCenter(int id)
         {
             var dept = _context.Departments.Where(d => d.CostCenterId == id).FirstOrDefault();

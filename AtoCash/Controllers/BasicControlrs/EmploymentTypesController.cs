@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class EmploymentTypesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -85,7 +85,7 @@ namespace AtoCash.Controllers
         // PUT: api/EmploymentTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutEmploymentType(int id, EmploymentTypeDTO employmentType)
         {
             if (id != employmentType.Id)
@@ -123,7 +123,7 @@ namespace AtoCash.Controllers
         // POST: api/EmploymentTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<EmploymentType>> PostEmploymentType(EmploymentType employmentType)
         {
 
@@ -141,7 +141,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/EmploymentTypes/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteEmploymentType(int id)
         {
             var employmentType = await _context.EmploymentTypes.FindAsync(id);

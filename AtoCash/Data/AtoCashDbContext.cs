@@ -44,6 +44,8 @@ namespace AtoCash.Data
         public DbSet<ExpenseReimburseStatusTracker> ExpenseReimburseStatusTrackers { get; set; }
 
         public DbSet<ExpenseSubClaim> ExpenseSubClaims { get; set; }
+
+        public DbSet<BusinessArea> BusinessAreas { get; set; }
         public DbSet<Project> Projects { get; set; }
 
         public DbSet<SubProject> SubProjects { get; set; }

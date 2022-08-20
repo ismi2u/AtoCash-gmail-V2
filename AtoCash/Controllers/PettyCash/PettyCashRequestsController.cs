@@ -16,7 +16,7 @@ namespace AtoCash.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
 
     public class PettyCashRequestsController : ControllerBase
     {
@@ -854,6 +854,209 @@ namespace AtoCash.Controllers
             disbursementsAndClaimsMaster.CurrencyTypeId = pettyCashRequestDto.CurrencyTypeId;
             disbursementsAndClaimsMaster.ClaimAmount = empReqAmount;
             disbursementsAndClaimsMaster.AmountToCredit = isSelfApprovedRequest ? empReqAmount : 0 ;
+            disbursementsAndClaimsMaster.IsSettledAmountCredited = false;
+            disbursementsAndClaimsMaster.CostCenterId = _context.Departments.Find(_context.Employees.Find(reqEmpid).DepartmentId).CostCenterId;
+            disbursementsAndClaimsMaster.ApprovalStatusId = isSelfApprovedRequest ? (int)EApprovalStatus.Approved : (int)EApprovalStatus.Pending;
+
+            _context.DisbursementsAndClaimsMasters.Add(disbursementsAndClaimsMaster);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            #endregion
+
+        }
+
+        private async Task BusinessAreaCashRequest(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
+        {
+            //### 1. If Employee Eligible for Cash Claim enter a record and reduce the available amount for next claim
+            #region
+
+            int reqEmpid = pettyCashRequestDto.EmployeeId;
+            Employee reqEmp = _context.Employees.Find(reqEmpid);
+            int reqApprGroupId = reqEmp.BusinessAreaApprovalGroupId;
+            int reqRoleId = reqEmp.RoleId;
+            int maxApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).ToList().Select(x => x.ApprovalLevel).Max(a => a.Level);
+            int reqApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId && a.RoleId == reqRoleId).Select(x => x.ApprovalLevel).FirstOrDefault().Level;
+            bool isSelfApprovedRequest = false;
+
+            Double empReqAmount = pettyCashRequestDto.PettyClaimAmount;
+
+
+
+
+            var curPettyCashBal = _context.EmpCurrentPettyCashBalances.Where(x => x.EmployeeId == reqEmpid).FirstOrDefault();
+            if (_context.JobRoles.Find(_context.Employees.Find(pettyCashRequestDto.EmployeeId).RoleId).MaxPettyCashAllowed >= empCurAvailBal - empReqAmount)
+            {
+                curPettyCashBal.CurBalance = empCurAvailBal - empReqAmount;
+            }
+
+            curPettyCashBal.EmployeeId = reqEmpid;
+            curPettyCashBal.UpdatedOn = DateTime.Now;
+            _context.Update(curPettyCashBal);
+            await _context.SaveChangesAsync();
+            #endregion
+
+            //##### 2. Adding entry to PettyCashRequest table for record
+            #region
+            var pcrq = new PettyCashRequest()
+            {
+                EmployeeId = reqEmpid,
+                PettyClaimAmount = empReqAmount,
+                CashReqDate = DateTime.Now,
+                PettyClaimRequestDesc = pettyCashRequestDto.PettyClaimRequestDesc,
+                ProjectId = pettyCashRequestDto.ProjectId,
+                SubProjectId = pettyCashRequestDto.SubProjectId,
+                WorkTaskId = pettyCashRequestDto.WorkTaskId,
+                DepartmentId = _context.Employees.Find(reqEmpid).DepartmentId,
+                CurrencyTypeId = pettyCashRequestDto.CurrencyTypeId,
+                ApprovalStatusTypeId = (int)EApprovalStatus.Pending,
+                Comments = "Cash Advance Request in Process!"
+
+            };
+            _context.PettyCashRequests.Add(pcrq);
+
+
+            await _context.SaveChangesAsync();
+
+            //get the saved record Id
+            pettyCashRequestDto.Id = pcrq.Id;
+
+            #endregion
+
+            //##### STEP 3. ClaimsApprovalTracker to be updated for all the allowed Approvers
+
+
+            ///////////////////////////// Check if self Approved Request /////////////////////////////
+
+            //if highest approver is requesting Petty cash request himself
+            if (maxApprLevel == reqApprLevel)
+            {
+                isSelfApprovedRequest = true;
+            }
+            //////////////////////////////////////////////////////////////////////////////////////////
+
+
+            var getEmpClaimApproversAllLevels = _context.ApprovalRoleMaps
+                                .Include(a => a.ApprovalLevel)
+                                .Where(a => a.ApprovalGroupId == reqApprGroupId)
+                                .OrderBy(o => o.ApprovalLevel.Level).ToList();
+            bool isFirstApprover = true;
+
+            if (isSelfApprovedRequest)
+            {
+
+                ClaimApprovalStatusTracker claimAppStatusTrack = new()
+                {
+                    EmployeeId = pettyCashRequestDto.EmployeeId,
+                    PettyCashRequestId = pettyCashRequestDto.Id,
+                    DepartmentId = _context.Employees.Find(pettyCashRequestDto.EmployeeId).DepartmentId,
+                    ProjectId = null,
+                    SubProjectId = null,
+                    WorkTaskId = null,
+                    RoleId = _context.Employees.Find(pettyCashRequestDto.EmployeeId).RoleId,
+                    ApprovalGroupId = reqApprGroupId,
+                    ApprovalLevelId = reqApprLevel,
+                    ReqDate = DateTime.Now,
+                    FinalApprovedDate = DateTime.Now,
+                    ApprovalStatusTypeId = (int)EApprovalStatus.Approved,
+                    Comments = "Self Approved Request!"
+                    //1-Initiating, 2-Pending, 3-InReview, 4-Approved, 5-Rejected
+                };
+                _context.ClaimApprovalStatusTrackers.Add(claimAppStatusTrack);
+                pcrq.ApprovalStatusTypeId = (int)EApprovalStatus.Approved;
+                pcrq.Comments = "Approved";
+                _context.PettyCashRequests.Update(pcrq);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                foreach (ApprovalRoleMap ApprMap in getEmpClaimApproversAllLevels)
+                {
+
+                    int role_id = ApprMap.RoleId;
+                    var approver = _context.Employees.Where(e => e.RoleId == role_id && e.ApprovalGroupId == reqApprGroupId).FirstOrDefault();
+                    if (approver == null)
+                    {
+                        continue;
+                    }
+                    int approverLevelid = _context.ApprovalRoleMaps.Where(x => x.RoleId == approver.RoleId && x.ApprovalGroupId == reqApprGroupId).FirstOrDefault().ApprovalLevelId;
+                    int approverLevel = _context.ApprovalLevels.Find(approverLevelid).Level;
+
+                    if (reqApprLevel >= approverLevel)
+                    {
+                        continue;
+                    }
+
+
+
+                    ClaimApprovalStatusTracker claimAppStatusTrack = new()
+                    {
+                        EmployeeId = pettyCashRequestDto.EmployeeId,
+                        PettyCashRequestId = pettyCashRequestDto.Id,
+                        DepartmentId = reqEmp.DepartmentId, //fix this
+                        ProjManagerId = null,
+                        ProjectId = null,
+                        SubProjectId = null,
+                        WorkTaskId = null,
+                        RoleId = approver.RoleId,
+                        ApprovalGroupId = reqApprGroupId,
+                        ApprovalLevelId = ApprMap.ApprovalLevelId,
+                        ReqDate = DateTime.Now,
+                        FinalApprovedDate = null,
+                        ApprovalStatusTypeId = isFirstApprover ? (int)EApprovalStatus.Pending : (int)EApprovalStatus.Initiating,
+                        Comments = "Awaiting Approver Action"
+                        //1-Initiating, 2-Pending, 3-InReview, 4-Approved, 5-Rejected
+                    };
+
+
+                    _context.ClaimApprovalStatusTrackers.Add(claimAppStatusTrack);
+
+                    await _context.SaveChangesAsync();
+
+
+
+                    if (isFirstApprover)
+                    {
+                        //##### 4. Send email to the Approver
+                        //####################################
+                        var approverMailAddress = approver.Email;
+                        string subject = "Pettycash Request Approval " + pettyCashRequestDto.Id.ToString();
+                        Employee emp = await _context.Employees.FindAsync(pettyCashRequestDto.EmployeeId);
+                        var pettycashreq = _context.PettyCashRequests.Find(pettyCashRequestDto.Id);
+                        string content = "Petty Cash Approval sought by " + emp.GetFullName() + "@<br/>Cash Request for the amount of " + pettycashreq.PettyClaimAmount + "@<br/>towards " + pettycashreq.PettyClaimRequestDesc;
+                        var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+
+                        await _emailSender.SendEmailAsync(messagemail);
+                    }
+
+                    //first approver will be added as Pending, other approvers will be with In Approval Queue
+                    isFirstApprover = false;
+
+                }
+
+            }
+
+            //##### STEP 5. Adding a SINGLE entry in DisbursementsAndClaimsMaster table for records
+            #region
+            DisbursementsAndClaimsMaster disbursementsAndClaimsMaster = new();
+
+            disbursementsAndClaimsMaster.EmployeeId = reqEmpid;
+            disbursementsAndClaimsMaster.PettyCashRequestId = pcrq.Id;
+            disbursementsAndClaimsMaster.ExpenseReimburseReqId = null;
+            disbursementsAndClaimsMaster.RequestTypeId = (int)ERequestType.CashAdvance;
+            disbursementsAndClaimsMaster.DepartmentId = _context.Employees.Find(reqEmpid).DepartmentId;
+            disbursementsAndClaimsMaster.ProjectId = null;
+            disbursementsAndClaimsMaster.SubProjectId = null;
+            disbursementsAndClaimsMaster.WorkTaskId = null;
+            disbursementsAndClaimsMaster.RecordDate = DateTime.Now;
+            disbursementsAndClaimsMaster.CurrencyTypeId = pettyCashRequestDto.CurrencyTypeId;
+            disbursementsAndClaimsMaster.ClaimAmount = empReqAmount;
+            disbursementsAndClaimsMaster.AmountToCredit = isSelfApprovedRequest ? empReqAmount : 0;
             disbursementsAndClaimsMaster.IsSettledAmountCredited = false;
             disbursementsAndClaimsMaster.CostCenterId = _context.Departments.Find(_context.Employees.Find(reqEmpid).DepartmentId).CostCenterId;
             disbursementsAndClaimsMaster.ApprovalStatusId = isSelfApprovedRequest ? (int)EApprovalStatus.Approved : (int)EApprovalStatus.Pending;

@@ -170,6 +170,36 @@ namespace AtoCash.Migrations
                     b.ToTable("ApprovalStatusTypes");
                 });
 
+            modelBuilder.Entity("AtoCash.Models.BusinessArea", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("BusinessAreaCode")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("BusinessAreaName")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("CostCenterId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StatusTypeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CostCenterId");
+
+                    b.HasIndex("StatusTypeId");
+
+                    b.ToTable("BusinessAreas");
+                });
+
             modelBuilder.Entity("AtoCash.Models.ClaimApprovalStatusTracker", b =>
                 {
                     b.Property<int>("Id")
@@ -433,6 +463,9 @@ namespace AtoCash.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<double>("CashOnHand")
+                        .HasColumnType("double precision");
+
                     b.Property<double>("CurBalance")
                         .HasColumnType("double precision");
 
@@ -465,6 +498,12 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("BankCardNo")
                         .HasColumnType("varchar(50)");
+
+                    b.Property<int>("BusinessAreaApprovalGroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BusinessAreaId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("CurrencyTypeId")
                         .HasColumnType("integer");
@@ -529,6 +568,10 @@ namespace AtoCash.Migrations
 
                     b.HasIndex("ApprovalGroupId");
 
+                    b.HasIndex("BusinessAreaApprovalGroupId");
+
+                    b.HasIndex("BusinessAreaId");
+
                     b.HasIndex("CurrencyTypeId");
 
                     b.HasIndex("DepartmentId");
@@ -562,6 +605,31 @@ namespace AtoCash.Migrations
                     b.ToTable("EmploymentTypes");
                 });
 
+            modelBuilder.Entity("AtoCash.Models.ExpenseCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("ExpenseCategoryDesc")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("ExpenseCategoryName")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("StatusTypeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusTypeId");
+
+                    b.ToTable("ExpenseCategories");
+                });
+
             modelBuilder.Entity("AtoCash.Models.ExpenseReimburseRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -574,6 +642,9 @@ namespace AtoCash.Migrations
 
                     b.Property<DateTime?>("ApprovedDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("BusinessAreaId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Comments")
                         .IsRequired()
@@ -613,6 +684,8 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApprovalStatusTypeId");
+
+                    b.HasIndex("BusinessAreaId");
 
                     b.HasIndex("CostCenterId");
 
@@ -721,6 +794,9 @@ namespace AtoCash.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("BusinessAreaId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("CostCenterId")
                         .HasColumnType("integer");
 
@@ -778,6 +854,8 @@ namespace AtoCash.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BusinessAreaId");
+
                     b.HasIndex("CostCenterId");
 
                     b.HasIndex("DepartmentId");
@@ -804,6 +882,9 @@ namespace AtoCash.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("ExpenseCategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("ExpenseTypeDesc")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
@@ -812,10 +893,17 @@ namespace AtoCash.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int>("GeneralLedgerId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("StatusTypeId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExpenseCategoryId");
+
+                    b.HasIndex("GeneralLedgerId");
 
                     b.HasIndex("StatusTypeId");
 
@@ -840,6 +928,31 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FileDocuments");
+                });
+
+            modelBuilder.Entity("AtoCash.Models.GeneralLedger", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("GeneralLedgerAccountName")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("GeneralLedgerAccountNo")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("StatusTypeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusTypeId");
+
+                    b.ToTable("GeneralLedgers");
                 });
 
             modelBuilder.Entity("AtoCash.Models.JobRole", b =>
@@ -877,6 +990,9 @@ namespace AtoCash.Migrations
 
                     b.Property<DateTime?>("ApprovedDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("BusinessAreaId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CashReqDate")
                         .HasColumnType("timestamp without time zone");
@@ -916,6 +1032,8 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApprovalStatusTypeId");
+
+                    b.HasIndex("BusinessAreaId");
 
                     b.HasIndex("CostCenterId");
 
@@ -1381,6 +1499,25 @@ namespace AtoCash.Migrations
                     b.Navigation("JobRole");
                 });
 
+            modelBuilder.Entity("AtoCash.Models.BusinessArea", b =>
+                {
+                    b.HasOne("AtoCash.Models.CostCenter", "CostCenter")
+                        .WithMany()
+                        .HasForeignKey("CostCenterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AtoCash.Models.StatusType", "StatusType")
+                        .WithMany()
+                        .HasForeignKey("StatusTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CostCenter");
+
+                    b.Navigation("StatusType");
+                });
+
             modelBuilder.Entity("AtoCash.Models.ClaimApprovalStatusTracker", b =>
                 {
                     b.HasOne("AtoCash.Models.ApprovalLevel", "ApprovalLevel")
@@ -1591,6 +1728,18 @@ namespace AtoCash.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AtoCash.Models.ApprovalGroup", "BusinessAreaApprovalGroup")
+                        .WithMany()
+                        .HasForeignKey("BusinessAreaApprovalGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AtoCash.Models.BusinessArea", "BusinessArea")
+                        .WithMany()
+                        .HasForeignKey("BusinessAreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AtoCash.Models.CurrencyType", "CurrencyType")
                         .WithMany()
                         .HasForeignKey("CurrencyTypeId")
@@ -1623,6 +1772,10 @@ namespace AtoCash.Migrations
 
                     b.Navigation("ApprovalGroup");
 
+                    b.Navigation("BusinessArea");
+
+                    b.Navigation("BusinessAreaApprovalGroup");
+
                     b.Navigation("CurrencyType");
 
                     b.Navigation("Department");
@@ -1634,6 +1787,17 @@ namespace AtoCash.Migrations
                     b.Navigation("StatusType");
                 });
 
+            modelBuilder.Entity("AtoCash.Models.ExpenseCategory", b =>
+                {
+                    b.HasOne("AtoCash.Models.StatusType", "StatusType")
+                        .WithMany()
+                        .HasForeignKey("StatusTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StatusType");
+                });
+
             modelBuilder.Entity("AtoCash.Models.ExpenseReimburseRequest", b =>
                 {
                     b.HasOne("AtoCash.Models.ApprovalStatusType", "ApprovalStatusType")
@@ -1641,6 +1805,10 @@ namespace AtoCash.Migrations
                         .HasForeignKey("ApprovalStatusTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AtoCash.Models.BusinessArea", "BusinessArea")
+                        .WithMany()
+                        .HasForeignKey("BusinessAreaId");
 
                     b.HasOne("AtoCash.Models.CostCenter", "CostCenter")
                         .WithMany()
@@ -1675,6 +1843,8 @@ namespace AtoCash.Migrations
                         .HasForeignKey("WorkTaskId");
 
                     b.Navigation("ApprovalStatusType");
+
+                    b.Navigation("BusinessArea");
 
                     b.Navigation("CostCenter");
 
@@ -1774,6 +1944,10 @@ namespace AtoCash.Migrations
 
             modelBuilder.Entity("AtoCash.Models.ExpenseSubClaim", b =>
                 {
+                    b.HasOne("AtoCash.Models.BusinessArea", "BusinessArea")
+                        .WithMany()
+                        .HasForeignKey("BusinessAreaId");
+
                     b.HasOne("AtoCash.Models.CostCenter", "CostCenter")
                         .WithMany()
                         .HasForeignKey("CostCenterId")
@@ -1814,6 +1988,8 @@ namespace AtoCash.Migrations
                         .WithMany()
                         .HasForeignKey("WorkTaskId");
 
+                    b.Navigation("BusinessArea");
+
                     b.Navigation("CostCenter");
 
                     b.Navigation("Department");
@@ -1833,6 +2009,33 @@ namespace AtoCash.Migrations
 
             modelBuilder.Entity("AtoCash.Models.ExpenseType", b =>
                 {
+                    b.HasOne("AtoCash.Models.ExpenseCategory", "ExpenseCategory")
+                        .WithMany()
+                        .HasForeignKey("ExpenseCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AtoCash.Models.GeneralLedger", "GeneralLedger")
+                        .WithMany()
+                        .HasForeignKey("GeneralLedgerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AtoCash.Models.StatusType", "StatusType")
+                        .WithMany()
+                        .HasForeignKey("StatusTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpenseCategory");
+
+                    b.Navigation("GeneralLedger");
+
+                    b.Navigation("StatusType");
+                });
+
+            modelBuilder.Entity("AtoCash.Models.GeneralLedger", b =>
+                {
                     b.HasOne("AtoCash.Models.StatusType", "StatusType")
                         .WithMany()
                         .HasForeignKey("StatusTypeId")
@@ -1849,6 +2052,10 @@ namespace AtoCash.Migrations
                         .HasForeignKey("ApprovalStatusTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AtoCash.Models.BusinessArea", "BusinessArea")
+                        .WithMany()
+                        .HasForeignKey("BusinessAreaId");
 
                     b.HasOne("AtoCash.Models.CostCenter", "CostCenter")
                         .WithMany()
@@ -1883,6 +2090,8 @@ namespace AtoCash.Migrations
                         .HasForeignKey("WorkTaskId");
 
                     b.Navigation("ApprovalStatusType");
+
+                    b.Navigation("BusinessArea");
 
                     b.Navigation("CostCenter");
 

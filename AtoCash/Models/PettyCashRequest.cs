@@ -35,6 +35,10 @@ namespace AtoCash.Models
         public virtual CurrencyType CurrencyType { get; set; }
         public int CurrencyTypeId { get; set; }
 
+        [ForeignKey("BusinessAreaId")]
+        public virtual BusinessArea BusinessArea { get; set; }
+        public int? BusinessAreaId { get; set; }
+
 
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }

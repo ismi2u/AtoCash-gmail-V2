@@ -68,7 +68,7 @@ namespace AtoCash.Authentication
         // GET: api/<AccountController>
         [HttpPost]
         [ActionName("Register")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             //check if employee-id is already registered

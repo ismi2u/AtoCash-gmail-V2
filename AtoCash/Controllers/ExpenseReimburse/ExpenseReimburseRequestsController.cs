@@ -21,7 +21,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseReimburseRequestsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -61,6 +61,10 @@ namespace AtoCash.Controllers
 
                     DepartmentId = expenseReimbRequest.DepartmentId,
                     DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null,
+
+                    BusinessAreaId = expenseReimbRequest.BusinessAreaId,
+                    StoreName = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null,
+
 
                     ProjectId = expenseReimbRequest.ProjectId,
                     ProjectName = expenseReimbRequest.ProjectId != null ? _context.Projects.Find(expenseReimbRequest.ProjectId).ProjectName : null,
@@ -114,6 +118,9 @@ namespace AtoCash.Controllers
 
                 DepartmentId = expenseReimbRequest.DepartmentId,
                 DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null,
+
+                BusinessAreaId = expenseReimbRequest.BusinessAreaId,
+                StoreName = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null,
 
                 ProjectId = expenseReimbRequest.ProjectId,
                 ProjectName = expenseReimbRequest.ProjectId != null ? _context.Projects.Find(expenseReimbRequest.ProjectId).ProjectName : null,
@@ -181,6 +188,10 @@ namespace AtoCash.Controllers
 
                     expenseReimburseRequestDTO.DepartmentId = expenseReimbRequest.DepartmentId;
                     expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null;
+
+                    expenseReimburseRequestDTO.BusinessAreaId = expenseReimbRequest.BusinessAreaId;
+                    expenseReimburseRequestDTO.StoreName = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
+
 
                     expenseReimburseRequestDTO.ProjectId = expenseReimbRequest.ProjectId;
                     expenseReimburseRequestDTO.ProjectName = expenseReimbRequest.ProjectId != null ? _context.Projects.Find(expenseReimbRequest.ProjectId).ProjectName : null;
@@ -458,6 +469,11 @@ namespace AtoCash.Controllers
                 //Goes to Option 1 (Project)
                 await Task.Run(() => ProjectBasedExpReimRequest(expenseReimburseRequestDto));
             }
+            else if (expenseReimburseRequestDto.BusinessAreaId != null)
+            {
+                //Goes to Option 2 (Department)
+                await Task.Run(() => BusinessAreaBasedExpReimRequest(expenseReimburseRequestDto));
+            }
             else
             {
                 //Goes to Option 2 (Department)
@@ -470,7 +486,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ExpenseReimburseRequests/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteExpenseReimburseRequest(int id)
         {
             var expenseReimburseRequest = await _context.ExpenseReimburseRequests.FindAsync(id);
@@ -747,7 +763,255 @@ namespace AtoCash.Controllers
 
         }
 
+        private async Task<IActionResult> BusinessAreaBasedExpReimRequest(ExpenseReimburseRequestDTO expenseReimburseRequestDto)
+        {
 
+            #region
+            int reqEmpid = expenseReimburseRequestDto.EmployeeId;
+            Employee reqEmp = _context.Employees.Find(reqEmpid);
+            int reqApprGroupId = reqEmp.BusinessAreaApprovalGroupId;// here the approval group shoulbe be based on Business Area
+            int reqRoleId = reqEmp.RoleId;
+            int costCenterId = _context.Departments.Find(reqEmp.DepartmentId).CostCenterId;
+
+            var approRolMapsList = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).ToList();
+            int maxApprLevel = approRolMapsList.Select(x => x.ApprovalLevel).Max(a => a.Level);
+            int reqApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId && a.RoleId == reqRoleId).Select(x => x.ApprovalLevel).FirstOrDefault().Level;
+
+
+            bool isSelfApprovedRequest = false;
+            ////
+
+            ExpenseReimburseRequest expenseReimburseRequest = new();
+            double dblTotalClaimAmount = 0;
+
+            expenseReimburseRequest.ExpenseReportTitle = expenseReimburseRequestDto.ExpenseReportTitle;
+            expenseReimburseRequest.EmployeeId = expenseReimburseRequestDto.EmployeeId;
+            expenseReimburseRequest.CurrencyTypeId = expenseReimburseRequestDto.CurrencyTypeId;
+            expenseReimburseRequest.TotalClaimAmount = dblTotalClaimAmount; //Currently Zero but added as per the request
+            expenseReimburseRequest.ExpReimReqDate = DateTime.Now;
+            expenseReimburseRequest.DepartmentId = reqEmp.DepartmentId;
+            expenseReimburseRequest.CostCenterId = costCenterId;
+            expenseReimburseRequest.ProjectId = null;
+            expenseReimburseRequest.SubProjectId = null;
+            expenseReimburseRequest.WorkTaskId = null;
+            expenseReimburseRequest.ApprovalStatusTypeId = (int)EApprovalStatus.Pending;
+            //expenseReimburseRequest.ApprovedDate = expenseReimburseRequestDto.ApprovedDate;
+            expenseReimburseRequest.Comments = "Expense Reimburse Request in Process!";
+
+            _context.ExpenseReimburseRequests.Add(expenseReimburseRequest); //  <= this generated the Id
+            await _context.SaveChangesAsync();
+
+            //
+            foreach (ExpenseSubClaimDTO expenseSubClaimDto in expenseReimburseRequestDto.ExpenseSubClaims)
+            {
+                ExpenseSubClaim expenseSubClaim = new();
+
+                //get expensereimburserequestId from the saved record and then use here for sub-claims
+                expenseSubClaim.ExpenseReimburseRequestId = expenseReimburseRequest.Id;
+                expenseSubClaim.ExpenseTypeId = expenseSubClaimDto.ExpenseTypeId;
+                expenseSubClaim.EmployeeId = reqEmpid;
+                expenseSubClaim.ExpenseReimbClaimAmount = expenseSubClaimDto.ExpenseReimbClaimAmount;
+                expenseSubClaim.DocumentIDs = expenseSubClaimDto.DocumentIDs;
+                expenseSubClaim.InvoiceNo = expenseSubClaimDto.InvoiceNo;
+                expenseSubClaim.InvoiceDate = expenseSubClaimDto.InvoiceDate;
+                expenseSubClaim.Tax = expenseSubClaimDto.Tax;
+                expenseSubClaim.TaxAmount = expenseSubClaimDto.TaxAmount;
+                expenseSubClaim.Vendor = expenseSubClaimDto.Vendor;
+                expenseSubClaim.Location = expenseSubClaimDto.Location;
+                expenseSubClaim.DepartmentId = reqEmp.DepartmentId;
+                expenseSubClaim.ProjectId = null;
+                expenseSubClaim.SubProjectId = null;
+                expenseSubClaim.WorkTaskId = null;
+                expenseSubClaim.CostCenterId = costCenterId;
+                expenseSubClaim.Description = expenseSubClaimDto.Description;
+
+                _context.ExpenseSubClaims.Add(expenseSubClaim);
+                await _context.SaveChangesAsync();
+                dblTotalClaimAmount = dblTotalClaimAmount + expenseSubClaimDto.TaxAmount + expenseSubClaimDto.ExpenseReimbClaimAmount;
+
+            }
+
+            ExpenseReimburseRequest exp = _context.ExpenseReimburseRequests.Find(expenseReimburseRequest.Id);
+
+            exp.TotalClaimAmount = dblTotalClaimAmount;
+            _context.ExpenseReimburseRequests.Update(exp);
+            await _context.SaveChangesAsync();
+
+
+
+
+            ///////////////////////////// Check if self Approved Request /////////////////////////////
+
+            //if highest approver is requesting Petty cash request himself
+            if (maxApprLevel == reqApprLevel)
+            {
+                isSelfApprovedRequest = true;
+            }
+            //////////////////////////////////////////////////////////////////////////////////////////
+            //var test = _context.ApprovalRoleMaps.Include(a => a.ApprovalLevel).ToList().OrderBy(o => o.ApprovalLevel.Level);
+            int reqApprovGroupId = _context.Employees.Find(reqEmpid).ApprovalGroupId;
+            var getEmpClaimApproversAllLevels = _context.ApprovalRoleMaps.Include(a => a.ApprovalLevel).Where(a => a.ApprovalGroupId == reqApprovGroupId).OrderBy(o => o.ApprovalLevel.Level).ToList();
+
+            var ReqEmpRoleId = _context.Employees.Where(e => e.Id == reqEmpid).FirstOrDefault().RoleId;
+            var ReqEmpHisOwnApprLevel = _context.ApprovalRoleMaps.Where(a => a.RoleId == ReqEmpRoleId);
+            bool isFirstApprover = true;
+
+            if (isSelfApprovedRequest)
+            {
+                ExpenseReimburseStatusTracker expenseReimburseStatusTracker = new()
+                {
+                    EmployeeId = expenseReimburseRequestDto.EmployeeId,
+                    ExpenseReimburseRequestId = expenseReimburseRequest.Id,
+                    CurrencyTypeId = expenseReimburseRequestDto.CurrencyTypeId,
+                    TotalClaimAmount = dblTotalClaimAmount,
+                    ExpReimReqDate = DateTime.Now,
+                    DepartmentId = reqEmp.DepartmentId,
+                    ProjectId = null, //Approver Project Id
+                    JobRoleId = reqEmp.RoleId,
+                    ApprovalGroupId = reqApprGroupId,
+                    ApprovalLevelId = reqApprLevel,
+                    ApprovedDate = null,
+                    ApprovalStatusTypeId = (int)EApprovalStatus.Approved, //1-Pending, 2-Approved, 3-Rejected
+                    Comments = "Self Approved Request"
+                };
+                _context.ExpenseReimburseStatusTrackers.Add(expenseReimburseStatusTracker);
+                expenseReimburseRequest.ApprovalStatusTypeId = (int)EApprovalStatus.Approved;
+                expenseReimburseRequest.Comments = "Approved";
+                _context.ExpenseReimburseRequests.Update(expenseReimburseRequest);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                foreach (ApprovalRoleMap ApprMap in getEmpClaimApproversAllLevels)
+                {
+                    int role_id = ApprMap.RoleId;
+                    var approver = _context.Employees.Where(e => e.RoleId == role_id && e.ApprovalGroupId == reqApprGroupId).FirstOrDefault();
+                    if (approver == null)
+                    {
+                        continue;
+                    }
+                    int approverLevelid = _context.ApprovalRoleMaps.Where(x => x.RoleId == approver.RoleId && x.ApprovalGroupId == reqApprGroupId).FirstOrDefault().ApprovalLevelId;
+                    int approverLevel = _context.ApprovalLevels.Find(approverLevelid).Level;
+
+                    if (reqApprLevel >= approverLevel)
+                    {
+                        continue;
+                    }
+
+
+                    ExpenseReimburseStatusTracker expenseReimburseStatusTracker = new()
+                    {
+                        EmployeeId = expenseReimburseRequestDto.EmployeeId,
+                        ExpenseReimburseRequestId = expenseReimburseRequest.Id,
+                        CurrencyTypeId = expenseReimburseRequestDto.CurrencyTypeId,
+                        TotalClaimAmount = dblTotalClaimAmount,
+                        ExpReimReqDate = DateTime.Now,
+                        DepartmentId = reqEmp.DepartmentId,
+                        ProjectId = null, //Approver Project Id
+                        JobRoleId = approver.RoleId,
+                        ApprovalGroupId = reqApprGroupId,
+                        ApprovalLevelId = ApprMap.ApprovalLevelId,
+                        ApprovedDate = null,
+                        ApprovalStatusTypeId = isFirstApprover ? (int)EApprovalStatus.Pending : (int)EApprovalStatus.Initiating,
+                        Comments = "Awaiting Approver Action"
+                    };
+                    _context.ExpenseReimburseStatusTrackers.Add(expenseReimburseStatusTracker);
+                    await _context.SaveChangesAsync();
+
+                    //##### 5. Send email to the Approver
+                    //####################################
+
+                    if (isFirstApprover)
+                    {
+                        var approverMailAddress = approver.Email;
+                        string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
+                        Employee emp = _context.Employees.Find(expenseReimburseRequestDto.EmployeeId);
+                        string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expenseReimburseRequest.TotalClaimAmount + "<br/>towards " + expenseReimburseRequest.ExpenseReportTitle;
+                        var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+
+                        await _emailSender.SendEmailAsync(messagemail);
+                    }
+                    isFirstApprover = false;
+
+                    //repeat for each approver
+                }
+
+            }
+
+            //##### 5. Adding a entry in DisbursementsAndClaimsMaster table for records
+            #region
+
+            DisbursementsAndClaimsMaster disbursementsAndClaimsMaster = new();
+            disbursementsAndClaimsMaster.EmployeeId = expenseReimburseRequestDto.EmployeeId;
+            disbursementsAndClaimsMaster.ExpenseReimburseReqId = expenseReimburseRequest.Id;
+            disbursementsAndClaimsMaster.RequestTypeId = (int)ERequestType.ExpenseReim;
+            disbursementsAndClaimsMaster.DepartmentId = reqEmp.DepartmentId;
+            disbursementsAndClaimsMaster.ProjectId = expenseReimburseRequestDto.ProjectId;
+            disbursementsAndClaimsMaster.SubProjectId = expenseReimburseRequestDto.SubProjectId;
+            disbursementsAndClaimsMaster.WorkTaskId = expenseReimburseRequestDto.WorkTaskId;
+            disbursementsAndClaimsMaster.RecordDate = DateTime.Now;
+            disbursementsAndClaimsMaster.CurrencyTypeId = expenseReimburseRequestDto.CurrencyTypeId;
+            disbursementsAndClaimsMaster.ClaimAmount = dblTotalClaimAmount;
+            disbursementsAndClaimsMaster.CostCenterId = _context.Departments.Find(_context.Employees.Find(expenseReimburseRequestDto.EmployeeId).DepartmentId).CostCenterId;
+            disbursementsAndClaimsMaster.ApprovalStatusId = (int)EApprovalStatus.Pending; //1-Initiating; 2-Pending; 3-InReview; 4-Approved; 5-Rejected
+            disbursementsAndClaimsMaster.IsSettledAmountCredited = false;
+            //save at the end of the code. not here!
+            #endregion
+
+
+            /// #############################
+            //   Crediting back to the wallet (for self approvedRequest Only)
+            /// #############################
+            /// 
+            if (isSelfApprovedRequest)
+            {
+                double expenseReimAmt = expenseReimburseRequest.TotalClaimAmount;
+                double RoleLimitAmt = _context.JobRoles.Find(reqEmp.RoleId).MaxPettyCashAllowed;
+                EmpCurrentPettyCashBalance empCurrentPettyCashBalance = _context.EmpCurrentPettyCashBalances.Where(e => e.EmployeeId == reqEmp.Id).FirstOrDefault();
+                double empCurPettyBal = empCurrentPettyCashBalance.CurBalance;
+
+                //logic goes here
+
+                if (expenseReimAmt + empCurPettyBal >= RoleLimitAmt) // claiming amount is greater than replishable amount
+                {
+                    disbursementsAndClaimsMaster.AmountToWallet = RoleLimitAmt - empCurPettyBal;
+                    disbursementsAndClaimsMaster.AmountToCredit = expenseReimAmt - (RoleLimitAmt - empCurPettyBal);
+
+                }
+                else
+                {
+                    //fully credit to Wallet - Zero amount to bank amount
+                    disbursementsAndClaimsMaster.AmountToWallet = expenseReimAmt;
+                    disbursementsAndClaimsMaster.AmountToCredit = 0;
+                }
+
+                disbursementsAndClaimsMaster.IsSettledAmountCredited = false;
+                disbursementsAndClaimsMaster.ApprovalStatusId = (int)EApprovalStatus.Approved;
+                _context.Update(disbursementsAndClaimsMaster);
+
+
+                //////Final Approveer hence update the EmpCurrentPettyCashBalance table for the employee to reflect the credit
+                ////empCurrentPettyCashBalance.CurBalance = empCurPettyBal + disbursementsAndClaimsMaster.AmountToWallet ?? 0;
+                ////empCurrentPettyCashBalance.UpdatedOn = DateTime.Now;
+                ////_context.EmpCurrentPettyCashBalances.Update(empCurrentPettyCashBalance);
+
+                await _context.DisbursementsAndClaimsMasters.AddAsync(disbursementsAndClaimsMaster);
+                await _context.SaveChangesAsync();
+                return Ok(new RespStatus { Status = "Success", Message = "Self approved Expense Claim Submitted Successfully!" });
+            }
+            ///
+
+            await _context.DisbursementsAndClaimsMasters.AddAsync(disbursementsAndClaimsMaster);
+            await _context.SaveChangesAsync();
+
+            return Ok(new RespStatus { Status = "Success", Message = "Expense Claim Submitted Successfully!" });
+
+
+        }
+        #endregion
+
+
+        //
         private async Task<IActionResult> ProjectBasedExpReimRequest(ExpenseReimburseRequestDTO expenseReimburseRequestDto)
         {
 
@@ -971,8 +1235,7 @@ namespace AtoCash.Controllers
 
             return Ok(new RespStatus { Status = "Success", Message = "Expense Claim Submitted Successfully!" });
         }
-        #endregion
 
-        //
     }
+    #endregion
 }

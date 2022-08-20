@@ -15,7 +15,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
     public class EmployeesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -166,7 +166,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/Employees/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutEmployee(int id, EmployeeDTO employeeDto)
         {
             if (id != employeeDto.Id)
@@ -268,7 +268,7 @@ namespace AtoCash.Controllers
 
         // POST: api/Employees
         [HttpPost]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<Employee>> PostEmployee(EmployeeDTO employeeDto)
         {
 
@@ -339,7 +339,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);

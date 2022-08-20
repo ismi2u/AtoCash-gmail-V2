@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class JobRolesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -70,7 +70,7 @@ namespace AtoCash.Controllers
         // PUT: api/Roles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutRole(int id, JobRoleDTO role)
         {
             if (id != role.Id)
@@ -100,7 +100,7 @@ namespace AtoCash.Controllers
         // POST: api/Roles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<JobRole>> PostRole(JobRole role)
         {
             var jRole = _context.JobRoles.Where(c => c.RoleCode == role.RoleCode).FirstOrDefault();
@@ -116,7 +116,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/Roles/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteRole(int id)
         {
             var role = await _context.JobRoles.FindAsync(id);

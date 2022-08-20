@@ -14,7 +14,7 @@ namespace AtoCash.Controllers.BasicControlrs
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class CurrencyTypesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -100,7 +100,7 @@ namespace AtoCash.Controllers.BasicControlrs
         // PUT: api/CurrencyTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutCurrencyType(int id, CurrencyTypeDTO currencyTypeDTO)
         {
             if (id != currencyTypeDTO.Id)
@@ -132,7 +132,7 @@ namespace AtoCash.Controllers.BasicControlrs
         // POST: api/CurrencyTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<CurrencyType>> PostCurrencyType(CurrencyTypeDTO currencyTypeDto)
         {
 
@@ -162,7 +162,7 @@ namespace AtoCash.Controllers.BasicControlrs
 
         // DELETE: api/CurrencyTypes/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteCurrencyType(int id)
         {
             bool blnUsedInEmployees = _context.Employees.Where(e => e.CurrencyTypeId == id).Any();

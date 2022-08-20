@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class RequestsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -71,7 +71,7 @@ namespace AtoCash.Controllers
         // PUT: api/Requests/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutRequestType(int id, RequestType requestType)
         {
             if (id != requestType.Id)
@@ -100,7 +100,7 @@ namespace AtoCash.Controllers
         // POST: api/Requests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<RequestType>> PostRequestType(RequestType requestType)
         {
             var ReqType = _context.RequestTypes.Where(r => r.RequestName == requestType.RequestName).FirstOrDefault();
@@ -117,7 +117,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/Requests/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteRequestType(int id)
         {
             var requestType = await _context.RequestTypes.FindAsync(id);

@@ -90,7 +90,21 @@ namespace AtoCash.Models
         public int ApprovalGroupId { get; set; }
 
 
-       
+        [Required]
+        [ForeignKey("BusinessAreaApprovalGroupId")]
+        public virtual ApprovalGroup BusinessAreaApprovalGroup { get; set; }
+        public int BusinessAreaApprovalGroupId { get; set; }
+
+
+
+        [Required]
+        [ForeignKey("BusinessAreaId")]
+        public virtual BusinessArea BusinessArea { get; set; }
+        public int BusinessAreaId { get; set; }
+
+
+
+
         [Required]
         [ForeignKey("CurrencyTypeId")]
         public virtual CurrencyType CurrencyType { get; set; }
@@ -183,6 +197,13 @@ namespace AtoCash.Models
         public int ApprovalGroupId { get; set; }
         public string ApprovalGroup { get; set; }
 
+
+        public int BusinessAreaApprovalGroupId { get; set; }
+        public string BusinessAreaApprovalGroup { get; set; }
+
+        public int BusinessAreaId { get; set; }
+        public string BusinessAreaName { get; set; }
+
         public int CurrencyTypeId { get; set; }
         public int StatusTypeId { get; set; }
         public string StatusType { get; set; }
@@ -223,6 +244,8 @@ namespace AtoCash.Models
         public int? DepartmentId { get; set; }
         public int? JobRoleId { get; set; }
         public int? ApprovalGroupId { get; set; }
+        public int? BusinessAreaApprovalGroupId { get; set; }
+        public int BusinessAreaId { get; set; }
         public int? StatusTypeId { get; set; }
     }
 }

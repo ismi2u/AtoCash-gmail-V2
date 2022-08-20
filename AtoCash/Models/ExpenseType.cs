@@ -23,6 +23,17 @@ namespace AtoCash.Models
         public string ExpenseTypeDesc { get; set; }
 
         [Required]
+        [ForeignKey("ExpenseCategoryId")]
+        public virtual ExpenseCategory ExpenseCategory { get; set; }
+        public int ExpenseCategoryId { get; set; }
+
+        [Required]
+        [ForeignKey("GeneralLedgerId")]
+        public virtual GeneralLedger GeneralLedger { get; set; }
+        public int GeneralLedgerId { get; set; }
+
+
+        [Required]
         [ForeignKey("StatusTypeId")]
         public virtual StatusType StatusType { get; set; }
         public int StatusTypeId { get; set; }
@@ -36,6 +47,16 @@ namespace AtoCash.Models
         public int Id { get; set; }
         public string ExpenseTypeName { get; set; }
         public string ExpenseTypeDesc { get; set; }
+
+        public int ExpenseCategoryId { get; set; }
+        public string ExpenseCategoryName { get; set; }
+        public string ExpenseCategoryDesc { get; set; }
+
+        public int GeneralLedgerId { get; set; }
+        public string GeneralLedgerAccountNo { get; set; }
+        public string GeneralLedgerAccountName { get; set; }
+
+
         public string StatusType { get; set; }
         public int StatusTypeId { get; set; }
 

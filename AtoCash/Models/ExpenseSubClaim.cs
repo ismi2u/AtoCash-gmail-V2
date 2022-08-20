@@ -63,6 +63,12 @@ namespace AtoCash.Models
         [Column(TypeName = "varchar(250)")]
         public string Description { get; set; }
 
+
+
+        [ForeignKey("BusinessAreaId")]
+        public virtual BusinessArea BusinessArea { get; set; }
+        public int? BusinessAreaId { get; set; }
+
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
         public int? DepartmentId { get; set; }
