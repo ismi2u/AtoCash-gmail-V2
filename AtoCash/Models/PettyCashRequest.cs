@@ -90,6 +90,8 @@ namespace AtoCash.Models
 
         public DateTime CashReqDate { get; set; }
 
+        public string BusinessArea { get; set; }
+        public string BusinessAreaId { get; set; }
         public string Department { get; set; }
         public int? DepartmentId { get; set; }
         public string Project { get; set; }

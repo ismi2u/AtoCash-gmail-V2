@@ -471,12 +471,12 @@ namespace AtoCash.Controllers
             }
             else if (expenseReimburseRequestDto.BusinessAreaId != null)
             {
-                //Goes to Option 2 (Department)
+                //Goes to Option 2 (BusinessArea)
                 await Task.Run(() => BusinessAreaBasedExpReimRequest(expenseReimburseRequestDto));
             }
             else
             {
-                //Goes to Option 2 (Department)
+                //Goes to Option 3 (Department)
                 await Task.Run(() => DepartmentBasedExpReimRequest(expenseReimburseRequestDto));
             }
 

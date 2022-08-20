@@ -475,6 +475,11 @@ namespace AtoCash.Controllers
                 //Goes to Option 1 (Project)
                 await Task.Run(() => ProjectCashRequest(pettyCashRequestDto, empCurAvailBal));
             }
+            else if (pettyCashRequestDto.BusinessAreaId != null)
+            {
+                //Goes to Option 1 (Project)
+                await Task.Run(() => BusinessAreaCashRequest(pettyCashRequestDto, empCurAvailBal));
+            }
             else
             {
                 //Goes to Option 2 (Department)
