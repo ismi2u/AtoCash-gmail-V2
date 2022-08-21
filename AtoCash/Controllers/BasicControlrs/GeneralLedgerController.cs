@@ -15,24 +15,24 @@ namespace AtoCash.Controllers
     [Route("api/[controller]/[Action]")]
     [ApiController]
    // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
-    public class GeneralLedgersController : ControllerBase
+    public class GeneralLedgerController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
 
-        public GeneralLedgersController(AtoCashDbContext context)
+        public GeneralLedgerController(AtoCashDbContext context)
         {
             _context = context;
         }
 
 
         [HttpGet]
-        [ActionName("GeneralLedgersForDropdown")]
-        public async Task<ActionResult<IEnumerable<GeneralLedgerVM>>> GetGeneralLedgersForDropdown()
+        [ActionName("GeneralLedgerForDropdown")]
+        public async Task<ActionResult<IEnumerable<GeneralLedgerVM>>> GetGeneralLedgerForDropdown()
         {
             List<GeneralLedgerVM> ListGeneralLedgerVM = new();
 
-            var generalLedgers = await _context.GeneralLedgers.Where(c => c.StatusTypeId == (int)EStatusType.Active).ToListAsync();
-            foreach (GeneralLedger generalLedger in generalLedgers)
+            var GeneralLedger = await _context.GeneralLedger.Where(c => c.StatusTypeId == (int)EStatusType.Active).ToListAsync();
+            foreach (GeneralLedger generalLedger in GeneralLedger)
             {
                 GeneralLedgerVM generalLedgerVM = new()
                 {
@@ -46,15 +46,15 @@ namespace AtoCash.Controllers
             return ListGeneralLedgerVM;
 
         }
-        // GET: api/GeneralLedgers
+        // GET: api/GeneralLedger
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GeneralLedgerDTO>>> GetGeneralLedgers()
+        public async Task<ActionResult<IEnumerable<GeneralLedgerDTO>>> GetGeneralLedger()
         {
             List<GeneralLedgerDTO> ListGeneralLedgerDTO = new();
 
-            var generalLedgers = await _context.GeneralLedgers.ToListAsync();
+            var GeneralLedger = await _context.GeneralLedger.ToListAsync();
 
-            foreach (GeneralLedger generalLedger in generalLedgers)
+            foreach (GeneralLedger generalLedger in GeneralLedger)
             {
                 GeneralLedgerDTO generalLedgerDTO = new()
                 {
@@ -71,11 +71,11 @@ namespace AtoCash.Controllers
             return Ok(ListGeneralLedgerDTO);
         }
 
-        // GET: api/GeneralLedgers/5
+        // GET: api/GeneralLedger/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GeneralLedgerDTO>> GetGeneralLedger(int id)
         {
-            var generalLedger = await _context.GeneralLedgers.FindAsync(id);
+            var generalLedger = await _context.GeneralLedger.FindAsync(id);
 
             if (generalLedger == null)
             {
@@ -94,7 +94,7 @@ namespace AtoCash.Controllers
             return generalLedgerDTO;
         }
 
-        // PUT: api/GeneralLedgers/5
+        // PUT: api/GeneralLedger/5
         [HttpPut("{id}")]
        // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutGeneralLedger(int id, GeneralLedgerDTO generalLedgerDTO)
@@ -104,12 +104,12 @@ namespace AtoCash.Controllers
                 return Conflict(new RespStatus { Status = "Failure", Message = "Id is invalid" });
             }
 
-            var genLedger = await _context.GeneralLedgers.FindAsync(id);
+            var genLedger = await _context.GeneralLedger.FindAsync(id);
 
             genLedger.GeneralLedgerAccountNo = generalLedgerDTO.GeneralLedgerAccountNo;
             genLedger.GeneralLedgerAccountName = generalLedgerDTO.GeneralLedgerAccountName;
             genLedger.StatusTypeId = generalLedgerDTO.StatusTypeId;
-            _context.GeneralLedgers.Update(genLedger);
+            _context.GeneralLedger.Update(genLedger);
 
             //_context.Entry(generalLedger).State = EntityState.Modified;
 
@@ -125,13 +125,13 @@ namespace AtoCash.Controllers
             return Ok(new RespStatus { Status = "Success", Message = "Expsense Category Details Updated!" });
         }
 
-        // POST: api/GeneralLedgers
+        // POST: api/GeneralLedger
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
        // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<GeneralLedger>> PostGeneralLedger(GeneralLedgerDTO generalLedgerDTO)
         {
-            var gLedger = _context.GeneralLedgers.Where(e => e.GeneralLedgerAccountNo == generalLedgerDTO.GeneralLedgerAccountNo).FirstOrDefault();
+            var gLedger = _context.GeneralLedger.Where(e => e.GeneralLedgerAccountNo == generalLedgerDTO.GeneralLedgerAccountNo).FirstOrDefault();
             if (gLedger != null)
             {
                 return Conflict(new RespStatus { Status = "Failure", Message = "General Ledger Account No Already Exists" });
@@ -141,19 +141,19 @@ namespace AtoCash.Controllers
             generalLedger.GeneralLedgerAccountNo = generalLedgerDTO.GeneralLedgerAccountNo;
             generalLedger.GeneralLedgerAccountName = generalLedgerDTO.GeneralLedgerAccountName;
             generalLedger.StatusTypeId = generalLedgerDTO.StatusTypeId;
-            _context.GeneralLedgers.Add(generalLedger);
+            _context.GeneralLedger.Add(generalLedger);
             await _context.SaveChangesAsync();
 
             return Ok(new RespStatus { Status = "Success", Message = "General Ledger Account No Created!" });
         }
 
-        // DELETE: api/GeneralLedgers/5
+        // DELETE: api/GeneralLedger/5
         [HttpDelete("{id}")]
        // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteGeneralLedger(int id)
         {
 
-            var generalLedger = await _context.GeneralLedgers.FindAsync(id);
+            var generalLedger = await _context.GeneralLedger.FindAsync(id);
             if (generalLedger == null)
             {
                 return Conflict(new RespStatus { Status = "Failure", Message = "General Ledger Account No Invalid!" });
@@ -167,7 +167,7 @@ namespace AtoCash.Controllers
             */    return Conflict(new RespStatus { Status = "Failure", Message = "General Ledger Account No in use for Expense Reimburse!" });
             /*}*/
 
-            _context.GeneralLedgers.Remove(generalLedger);
+            _context.GeneralLedger.Remove(generalLedger);
             await _context.SaveChangesAsync();
 
             return Ok(new RespStatus { Status = "Success", Message = "General Ledger Account No Deleted!" });

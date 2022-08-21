@@ -56,8 +56,8 @@ namespace AtoCash.Models
 
         public int Id { get; set; }
 
+        public string BusinessAreaCode { get; set; }
         public string BusinessAreaName { get; set; }
-        public string BusinessAreaDesc { get; set; }
 
     }
 }

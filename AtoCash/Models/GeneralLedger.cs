@@ -27,6 +27,7 @@ namespace AtoCash.Models
         public virtual StatusType StatusType { get; set; }
         public int StatusTypeId { get; set; }
 
+
     }
 
 
