@@ -32,14 +32,14 @@ namespace AtoCash.Models
         public int StatusTypeId { get; set; }
     }
 
-    public class StoreDTO
+    public class BusinessAreaDTO
     {
 
         public int Id { get; set; }
 
-        public string StoreCode { get; set; }
+        public string BusinessAreaCode { get; set; }
 
-        public string StoreName { get; set; }
+        public string BusinessAreaName { get; set; }
 
         public int CostCenterId { get; set; }
 
@@ -51,13 +51,13 @@ namespace AtoCash.Models
 
     }
 
-    public class StoreVM
+    public class BusinessAreaVM
     {
 
         public int Id { get; set; }
 
-        public string StoreName { get; set; }
-        public string StoreDesc { get; set; }
+        public string BusinessAreaName { get; set; }
+        public string BusinessAreaDesc { get; set; }
 
     }
 }

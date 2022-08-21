@@ -61,10 +61,13 @@ INSERT INTO public."ApprovalGroups" ("Id", "ApprovalGroupCode", "ApprovalGroupDe
 INSERT INTO public."ApprovalGroups" ("Id", "ApprovalGroupCode", "ApprovalGroupDesc") VALUES (7, 'AD GRP', 'Abo Dawood Group');
 
 
+-- for every Employee insert, EmpCurrentPettyCashBalances should be inserted in sync --
 INSERT INTO public."Employees" ("Id", "FirstName", "MiddleName", "LastName", "EmpCode", "BankAccount", "BankCardNo", "NationalID", "PassportNo", "TaxNumber", "Nationality", "DOB", "DOJ", "Gender", "Email", "MobileNumber", "EmploymentTypeId", "DepartmentId","BusinessAreaId", "RoleId", "ApprovalGroupId", "BusinessAreaApprovalGroupId", "CurrencyTypeId", "StatusTypeId") VALUES (1, 'Irfan', 'H', 'Rashid', 'EMP001', '12324565676543', '3234567543214356', '343543566', NULL, NULL, 'Indian', '2021-05-18 06:05:59.004', '2021-05-24 06:05:59.014', 'male', 'irfan3@gmail.com', '+917538888476', 1, 1, 1, 1, 1, 1, 2, 1);
 
+INSERT INTO public."EmpCurrentPettyCashBalances"("Id", "EmployeeId", "CurBalance", "CashOnHand", "UpdatedOn") VALUES (1, 1, 100000, 0, '2022-08-20');
 
-INSERT INTO public."AspNetUsers" ("Id", "EmployeeId", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'Irfan@gmail.com', 'IRFAN@GMAIL.COM', 'irfan@gmail.com', 'IRFAN@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
+
+INSERT INTO public."AspNetUsers" ("Id", "EmployeeId", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'Irfan3@gmail.com', 'IRFAN3@GMAIL.COM', 'irfan3@gmail.com', 'IRFAN3@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
 
 
 INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abf2af3-dc89-4f3f-adaa-6c136358e9b0', 'Admin', 'ADMIN', 'a51632b1-5957-4d1b-8025-75143dff446a');
