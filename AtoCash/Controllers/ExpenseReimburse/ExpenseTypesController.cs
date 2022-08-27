@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+    // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseTypesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -37,7 +37,7 @@ namespace AtoCash.Controllers
                 ExpenseTypeVM expenseTypeVM = new()
                 {
                     Id = expenseType.Id,
-                    ExpenseTypeName = expenseType.ExpenseTypeName + ":" +  expenseType.ExpenseTypeDesc,
+                    ExpenseTypeName = expenseType.ExpenseTypeName + ":" + expenseType.ExpenseTypeDesc,
                 };
 
                 ListExpenseTypeVM.Add(expenseTypeVM);
@@ -61,6 +61,8 @@ namespace AtoCash.Controllers
                     Id = expenseType.Id,
                     ExpenseTypeName = expenseType.ExpenseTypeName,
                     ExpenseTypeDesc = expenseType.ExpenseTypeDesc,
+                    ExpenseCategoryId = expenseType.ExpenseCategoryId,
+                    GeneralLedgerId = expenseType.GeneralLedgerId,
                     StatusTypeId = expenseType.StatusTypeId,
                     StatusType = _context.StatusTypes.Find(expenseType.StatusTypeId).Status
                 };
@@ -87,6 +89,8 @@ namespace AtoCash.Controllers
                 Id = expenseType.Id,
                 ExpenseTypeName = expenseType.ExpenseTypeName,
                 ExpenseTypeDesc = expenseType.ExpenseTypeDesc,
+                ExpenseCategoryId = expenseType.ExpenseCategoryId,
+                GeneralLedgerId = expenseType.GeneralLedgerId,
                 StatusTypeId = expenseType.StatusTypeId,
                 StatusType = _context.StatusTypes.Find(expenseType.StatusTypeId).Status
             };
@@ -96,7 +100,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/ExpenseTypes/5
         [HttpPut("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+        // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutExpenseType(int id, ExpenseTypeDTO expenseTypeDTO)
         {
             if (id != expenseTypeDTO.Id)
@@ -108,6 +112,8 @@ namespace AtoCash.Controllers
 
             expType.ExpenseTypeName = expenseTypeDTO.ExpenseTypeName;
             expType.ExpenseTypeDesc = expenseTypeDTO.ExpenseTypeDesc;
+            expType.ExpenseCategoryId = expenseTypeDTO.ExpenseCategoryId;
+            expType.GeneralLedgerId = expenseTypeDTO.GeneralLedgerId;
             expType.StatusTypeId = expenseTypeDTO.StatusTypeId;
             _context.ExpenseTypes.Update(expType);
 
@@ -128,7 +134,7 @@ namespace AtoCash.Controllers
         // POST: api/ExpenseTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+        // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<ExpenseType>> PostExpenseType(ExpenseTypeDTO expenseTypeDTO)
         {
             var eType = _context.ExpenseTypes.Where(e => e.ExpenseTypeName == expenseTypeDTO.ExpenseTypeName).FirstOrDefault();
@@ -140,6 +146,8 @@ namespace AtoCash.Controllers
             ExpenseType expenseType = new();
             expenseType.ExpenseTypeName = expenseTypeDTO.ExpenseTypeName;
             expenseType.ExpenseTypeDesc = expenseTypeDTO.ExpenseTypeDesc;
+            expenseType.ExpenseCategoryId = expenseTypeDTO.ExpenseCategoryId;
+            expenseType.GeneralLedgerId = expenseTypeDTO.GeneralLedgerId;
             expenseType.StatusTypeId = expenseTypeDTO.StatusTypeId;
             _context.ExpenseTypes.Add(expenseType);
             await _context.SaveChangesAsync();
@@ -149,7 +157,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ExpenseTypes/5
         [HttpDelete("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+        // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteExpenseType(int id)
         {
 
@@ -172,10 +180,10 @@ namespace AtoCash.Controllers
             return Ok(new RespStatus { Status = "Success", Message = "Expense-Type Deleted!" });
         }
 
-       
 
 
-  
+
+
         ///
 
 
