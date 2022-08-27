@@ -106,7 +106,7 @@ namespace AtoCash.Controllers
 
             var genLedger = await _context.GeneralLedger.FindAsync(id);
 
-            genLedger.GeneralLedgerAccountNo = generalLedgerDTO.GeneralLedgerAccountNo;
+            //genLedger.GeneralLedgerAccountNo = generalLedgerDTO.GeneralLedgerAccountNo;
             genLedger.GeneralLedgerAccountName = generalLedgerDTO.GeneralLedgerAccountName;
             genLedger.StatusTypeId = generalLedgerDTO.StatusTypeId;
             _context.GeneralLedger.Update(genLedger);

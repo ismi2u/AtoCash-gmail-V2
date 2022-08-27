@@ -952,7 +952,7 @@ namespace AtoCash.Migrations
 
                     b.HasIndex("StatusTypeId");
 
-                    b.ToTable("GeneralLedgers");
+                    b.ToTable("GeneralLedger");
                 });
 
             modelBuilder.Entity("AtoCash.Models.JobRole", b =>

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AtoCash.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -364,7 +364,7 @@ namespace AtoCash.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GeneralLedgers",
+                name: "GeneralLedger",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -375,9 +375,9 @@ namespace AtoCash.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GeneralLedgers", x => x.Id);
+                    table.PrimaryKey("PK_GeneralLedger", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GeneralLedgers_StatusTypes_StatusTypeId",
+                        name: "FK_GeneralLedger_StatusTypes_StatusTypeId",
                         column: x => x.StatusTypeId,
                         principalTable: "StatusTypes",
                         principalColumn: "Id",
@@ -462,9 +462,9 @@ namespace AtoCash.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ExpenseTypes_GeneralLedgers_GeneralLedgerId",
+                        name: "FK_ExpenseTypes_GeneralLedger_GeneralLedgerId",
                         column: x => x.GeneralLedgerId,
-                        principalTable: "GeneralLedgers",
+                        principalTable: "GeneralLedger",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1759,8 +1759,8 @@ namespace AtoCash.Migrations
                 column: "StatusTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GeneralLedgers_StatusTypeId",
-                table: "GeneralLedgers",
+                name: "IX_GeneralLedger_StatusTypeId",
+                table: "GeneralLedger",
                 column: "StatusTypeId");
 
             migrationBuilder.CreateIndex(
@@ -2001,7 +2001,7 @@ namespace AtoCash.Migrations
                 name: "ExpenseCategories");
 
             migrationBuilder.DropTable(
-                name: "GeneralLedgers");
+                name: "GeneralLedger");
 
             migrationBuilder.DropTable(
                 name: "ApprovalStatusTypes");

@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtoCash.Migrations
 {
     [DbContext(typeof(AtoCashDbContext))]
-    [Migration("20220820190417_initial")]
-    partial class initial
+    [Migration("20220822060911_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -954,7 +954,7 @@ namespace AtoCash.Migrations
 
                     b.HasIndex("StatusTypeId");
 
-                    b.ToTable("GeneralLedgers");
+                    b.ToTable("GeneralLedger");
                 });
 
             modelBuilder.Entity("AtoCash.Models.JobRole", b =>
