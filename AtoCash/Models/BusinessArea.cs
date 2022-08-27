@@ -20,11 +20,7 @@ namespace AtoCash.Models
         [Column(TypeName = "varchar(150)")]
         public string BusinessAreaName { get; set; }
 
-        [Required]
-        [ForeignKey("BusinessAreaManagerId")]
-        public virtual Employee BusinessAreaManager { get; set; }
-        public int BusinessAreaManagerId { get; set; }
-
+   
         [Required]
         [ForeignKey("CostCenterId")]
         public virtual CostCenter CostCenter { get; set; }
@@ -46,7 +42,6 @@ namespace AtoCash.Models
 
         public string BusinessAreaName { get; set; }
 
-        public int BusinessAreaManagerId { get; set; }
 
         public int CostCenterId { get; set; }
 

@@ -11,21 +11,22 @@ INSERT INTO public."CurrencyTypes" ("Id", "CurrencyCode", "CurrencyName", "Count
 
 
 
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (1, 'RP001', 'RPA Developer', 10000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (3, 'RP003', 'RPA Department Manager', 100000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (4, 'RP004', 'Finance Manager', 200000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (2, 'RP002', 'RPA Team Lead', 50000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (5, 'BASEEMP', 'ATOMINOS EMPLOYEE', 10000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (6, 'AT-MANAGER', 'Atominos Manager', 30000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (7, 'BaseEmp', 'Base Employee', 10000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (8, 'SupEmp', 'Supervisor', 20000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (9, 'Manager', 'Manager', 30000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (10, 'FinMgr', 'Finance Manager', 40000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (11, 'FA001', 'Fakeer  Primary', 10000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (12, 'FA002', 'Fakeer Supervisor', 20000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (13, 'FA003', 'Fakeer Finance', 4000000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (14, 'AD-EMP', 'Abo Dawood Employee', 10000);
-INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "MaxPettyCashAllowed") VALUES (15, 'AD-MAN', 'Abo Dawood Manager', 30000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (1, 'RP001', 'RPA Developer', false, 10000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (3, 'RP003', 'RPA Department Manager', false,100000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (4, 'RP004', 'Finance Manager', false, 200000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (2, 'RP002', 'RPA Team Lead',  false,50000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (5, 'BASEEMP', 'ATOMINOS EMPLOYEE',  false,10000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (6, 'AT-MANAGER', 'Atominos Manager', false, 30000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (7, 'BaseEmp', 'Base Employee',  false,10000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (8, 'SupEmp', 'Supervisor',  false,20000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (9, 'Manager', 'Manager',  false,30000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (10, 'FinMgr', 'Finance Manager', false, 40000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (11, 'FA001', 'Fakeer  Primary',  false,10000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (12, 'FA002', 'Fakeer Supervisor',  false,20000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (13, 'FA003', 'Fakeer Finance', false, 4000000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (14, 'AD-EMP', 'Abo Dawood Employee', false, 10000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (15, 'AD-MAN', 'Abo Dawood Manager', false, 30000);
+INSERT INTO public."JobRoles" ("Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed") VALUES (16, 'STOREMgr001', 'Chennai Dawood Manager', false, 30000);
 
 
 INSERT INTO public."CostCenters" ("Id", "CostCenterCode", "CostCenterDesc", "StatusTypeId") VALUES (1, 'AT001', 'Atominos RPA', 1);
@@ -37,8 +38,6 @@ INSERT INTO public."CostCenters" ("Id", "CostCenterCode", "CostCenterDesc", "Sta
 INSERT INTO public."CostCenters" ("Id", "CostCenterCode", "CostCenterDesc", "StatusTypeId") VALUES (6, 'HR-CC', 'Human Resource CC', 1);
 INSERT INTO public."CostCenters" ("Id", "CostCenterCode", "CostCenterDesc", "StatusTypeId") VALUES (8, 'AD CC', 'Abo Dawood Cost Center', 1);
 
-INSERT INTO public."BusinessAreas" ("Id", "BusinessAreaCode", "BusinessAreaName", "CostCenterId", "StatusTypeId") VALUES (1, 'STORE001', 'Chennai Store', 7, 1);
-INSERT INTO public."BusinessAreas" ("Id", "BusinessAreaCode", "BusinessAreaName", "CostCenterId", "StatusTypeId") VALUES (2, 'STORE002', 'Mumbai Store', 5, 1);
 
 
 
@@ -61,11 +60,17 @@ INSERT INTO public."ApprovalGroups" ("Id", "ApprovalGroupCode", "ApprovalGroupDe
 INSERT INTO public."ApprovalGroups" ("Id", "ApprovalGroupCode", "ApprovalGroupDesc") VALUES (7, 'AD GRP', 'Abo Dawood Group');
 
 
+INSERT INTO public."BusinessAreas" ("Id", "BusinessAreaCode", "BusinessAreaName", "CostCenterId", "StatusTypeId") VALUES (1, 'STORE001', 'Chennai Store', 7, 1);
+
 -- for every Employee insert, EmpCurrentPettyCashBalances should be inserted in sync --
-INSERT INTO public."Employees" ("Id", "FirstName", "MiddleName", "LastName", "EmpCode", "BankAccount", "BankCardNo", "NationalID", "PassportNo", "TaxNumber", "Nationality", "DOB", "DOJ", "Gender", "Email", "MobileNumber", "EmploymentTypeId", "DepartmentId","BusinessAreaId", "RoleId", "ApprovalGroupId", "BusinessAreaApprovalGroupId", "CurrencyTypeId", "StatusTypeId") VALUES (1, 'Irfan', 'H', 'Rashid', 'EMP001', '12324565676543', '3234567543214356', '343543566', NULL, NULL, 'Indian', '2021-05-18 06:05:59.004', '2021-05-24 06:05:59.014', 'male', 'irfan3@gmail.com', '+917538888476', 1, 1, 1, 1, 1, 1, 2, 1);
+INSERT INTO public."Employees" ("Id", "FirstName", "MiddleName", "LastName", "EmpCode", "BankAccount", "BankCardNo", "NationalID", "PassportNo", "TaxNumber", "Nationality", "DOB", "DOJ", "Gender", "Email", "MobileNumber", "EmploymentTypeId", "DepartmentId","BusinessAreaId", "RoleId", "ApprovalGroupId", "BusinessAreaApprovalGroupId", "BusinessAreaRoleId", "CurrencyTypeId", "StatusTypeId") VALUES (1, 'Irfan', 'H', 'Rashid', 'EMP001', '12324565676543', '3234567543214356', '343543566', NULL, NULL, 'Indian', '2021-05-18 06:05:59.004', '2021-05-24 06:05:59.014', 'male', 'irfan3@gmail.com', '+917538888476', 1, 1, 1, 1, 1, 1, 16, 2, 1);
 
 INSERT INTO public."EmpCurrentPettyCashBalances"("Id", "EmployeeId", "CurBalance", "CashOnHand", "UpdatedOn") VALUES (1, 1, 100000, 0, '2022-08-20');
 
+
+
+
+--
 
 INSERT INTO public."AspNetUsers" ("Id", "EmployeeId", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'Irfan3@gmail.com', 'IRFAN3@GMAIL.COM', 'irfan3@gmail.com', 'IRFAN3@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
 
@@ -74,3 +79,10 @@ INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencySt
 
 
 INSERT INTO public."AspNetUserRoles" ("UserId", "RoleId") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', '2abf2af3-dc89-4f3f-adaa-6c136358e9b0');
+
+---
+
+INSERT INTO public."ApprovalLevels"("Id", "Level", "LevelDesc")	VALUES (1, 1, 'LEVEL 1');
+INSERT INTO public."ApprovalLevels"("Id", "Level", "LevelDesc")	VALUES (2, 2, 'LEVEL 2');
+INSERT INTO public."ApprovalLevels"("Id", "Level", "LevelDesc")	VALUES (3, 3, 'LEVEL 3');
+INSERT INTO public."ApprovalLevels"("Id", "Level", "LevelDesc")	VALUES (4, 4, 'LEVEL 4');

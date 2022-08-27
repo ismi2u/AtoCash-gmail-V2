@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AtoCash.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -126,6 +126,7 @@ namespace AtoCash.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RoleCode = table.Column<string>(type: "varchar(20)", nullable: false),
                     RoleName = table.Column<string>(type: "varchar(50)", nullable: false),
+                    IsStoreRole = table.Column<bool>(type: "boolean", nullable: false),
                     MaxPettyCashAllowed = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
@@ -501,6 +502,7 @@ namespace AtoCash.Migrations
                     RoleId = table.Column<int>(type: "integer", nullable: false),
                     ApprovalGroupId = table.Column<int>(type: "integer", nullable: false),
                     BusinessAreaApprovalGroupId = table.Column<int>(type: "integer", nullable: false),
+                    BusinessAreaRoleId = table.Column<int>(type: "integer", nullable: false),
                     BusinessAreaId = table.Column<int>(type: "integer", nullable: false),
                     CurrencyTypeId = table.Column<int>(type: "integer", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
@@ -542,6 +544,12 @@ namespace AtoCash.Migrations
                         name: "FK_Employees_EmploymentTypes_EmploymentTypeId",
                         column: x => x.EmploymentTypeId,
                         principalTable: "EmploymentTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_JobRoles_BusinessAreaRoleId",
+                        column: x => x.BusinessAreaRoleId,
+                        principalTable: "JobRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1567,6 +1575,11 @@ namespace AtoCash.Migrations
                 name: "IX_Employees_BusinessAreaId",
                 table: "Employees",
                 column: "BusinessAreaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_BusinessAreaRoleId",
+                table: "Employees",
+                column: "BusinessAreaRoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_CurrencyTypeId",

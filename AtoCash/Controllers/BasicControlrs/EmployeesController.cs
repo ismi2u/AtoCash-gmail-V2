@@ -114,6 +114,8 @@ namespace AtoCash.Controllers
                 employeeDTO.RoleId = employee.RoleId;
                 employeeDTO.CurrencyTypeId = employee.CurrencyTypeId;
                 employeeDTO.ApprovalGroupId = employee.ApprovalGroupId;
+                employeeDTO.BusinessAreaApprovalGroupId = employee.BusinessAreaApprovalGroupId;
+                employeeDTO.BusinessAreaRoleId = employee.BusinessAreaRoleId;
                 employeeDTO.StatusTypeId = employee.StatusTypeId;
 
 
@@ -158,6 +160,8 @@ namespace AtoCash.Controllers
             employeeDTO.RoleId = employee.RoleId;
             employeeDTO.CurrencyTypeId = employee.CurrencyTypeId;
             employeeDTO.ApprovalGroupId = employee.ApprovalGroupId;
+            employeeDTO.BusinessAreaApprovalGroupId = employee.BusinessAreaApprovalGroupId;
+            employeeDTO.BusinessAreaRoleId = employee.BusinessAreaRoleId;
             employeeDTO.StatusTypeId = employee.StatusTypeId;
 
 
@@ -224,6 +228,8 @@ namespace AtoCash.Controllers
             employee.DepartmentId = employeeDto.DepartmentId;
             employee.CurrencyTypeId = employeeDto.CurrencyTypeId;
             employee.ApprovalGroupId = employeeDto.ApprovalGroupId;
+            employee.BusinessAreaApprovalGroupId = employeeDto.BusinessAreaApprovalGroupId;
+            employee.BusinessAreaRoleId = employeeDto.BusinessAreaRoleId;
             employee.StatusTypeId = employeeDto.StatusTypeId;
 
             if (employee.RoleId != employeeDto.RoleId)
@@ -303,6 +309,8 @@ namespace AtoCash.Controllers
                 DepartmentId = employeeDto.DepartmentId,
                 RoleId = employeeDto.RoleId,
                 ApprovalGroupId = employeeDto.ApprovalGroupId,
+                BusinessAreaApprovalGroupId = employeeDto.BusinessAreaApprovalGroupId,
+                BusinessAreaRoleId = employeeDto.BusinessAreaRoleId,
                 CurrencyTypeId = employeeDto.CurrencyTypeId,
                 StatusTypeId = employeeDto.StatusTypeId
             };

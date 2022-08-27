@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtoCash.Migrations
 {
     [DbContext(typeof(AtoCashDbContext))]
-    [Migration("20220822060911_Initial")]
-    partial class Initial
+    [Migration("20220827074938_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -507,6 +507,9 @@ namespace AtoCash.Migrations
                     b.Property<int>("BusinessAreaId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("BusinessAreaRoleId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("CurrencyTypeId")
                         .HasColumnType("integer");
 
@@ -573,6 +576,8 @@ namespace AtoCash.Migrations
                     b.HasIndex("BusinessAreaApprovalGroupId");
 
                     b.HasIndex("BusinessAreaId");
+
+                    b.HasIndex("BusinessAreaRoleId");
 
                     b.HasIndex("CurrencyTypeId");
 
@@ -963,6 +968,9 @@ namespace AtoCash.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("IsStoreRole")
+                        .HasColumnType("boolean");
 
                     b.Property<double>("MaxPettyCashAllowed")
                         .HasColumnType("double precision");
@@ -1742,6 +1750,12 @@ namespace AtoCash.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AtoCash.Models.JobRole", "BusinessAreaRole")
+                        .WithMany()
+                        .HasForeignKey("BusinessAreaRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AtoCash.Models.CurrencyType", "CurrencyType")
                         .WithMany()
                         .HasForeignKey("CurrencyTypeId")
@@ -1777,6 +1791,8 @@ namespace AtoCash.Migrations
                     b.Navigation("BusinessArea");
 
                     b.Navigation("BusinessAreaApprovalGroup");
+
+                    b.Navigation("BusinessAreaRole");
 
                     b.Navigation("CurrencyType");
 

@@ -81,6 +81,7 @@ namespace AtoCash.Controllers
             var jRole = await _context.JobRoles.FindAsync(id);
             jRole.RoleName = role.RoleName;
             jRole.MaxPettyCashAllowed = role.MaxPettyCashAllowed;
+            jRole.IsStoreRole = role.IsStoreRole;
             _context.JobRoles.Update(jRole);
 
             //_context.Entry(role).State = EntityState.Modified;

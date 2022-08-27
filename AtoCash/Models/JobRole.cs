@@ -20,6 +20,9 @@ namespace AtoCash.Models
         public string RoleName { get; set; }
 
         [Required]
+        public bool IsStoreRole { get; set; }
+
+        [Required]
         public Double MaxPettyCashAllowed { get; set; }
 
     }
@@ -32,6 +35,8 @@ namespace AtoCash.Models
         public string RoleCode { get; set; }
 
         public string RoleName { get; set; }
+
+        public bool IsStoreRole { get; set; }
         public Double MaxPettyCashAllowed { get; set; }
 
     }
