@@ -25,12 +25,34 @@ namespace AtoCash.Controllers
         }
 
         [HttpGet]
-        [ActionName("JobRolesForDropdown")]
-        public async Task<ActionResult<IEnumerable<JobRoleVM>>> GetJobRolesForDropDown()
+        [ActionName("JobRolesForDeptDropdown")]
+        public async Task<ActionResult<IEnumerable<JobRoleVM>>> JobRolesForDeptDropdown()
         {
             List<JobRoleVM> ListJobRoleVM = new();
 
-            var jobRoles = await _context.JobRoles.ToListAsync();
+            var jobRoles = await _context.JobRoles.Where(j => j.IsStoreRole == false).ToListAsync();
+            foreach (JobRole jobRole in jobRoles)
+            {
+                JobRoleVM jobRoleVM = new()
+                {
+                    Id = jobRole.Id,
+                    RoleCode = jobRole.RoleCode + ":" + jobRole.RoleName
+                };
+
+                ListJobRoleVM.Add(jobRoleVM);
+            }
+
+            return ListJobRoleVM;
+
+        }
+
+        [HttpGet]
+        [ActionName("JobRolesForStoreDropdown")]
+        public async Task<ActionResult<IEnumerable<JobRoleVM>>> JobRolesForStoreDropdown()
+        {
+            List<JobRoleVM> ListJobRoleVM = new();
+
+            var jobRoles = await _context.JobRoles.Where(j=> j.IsStoreRole==true).ToListAsync();
             foreach (JobRole jobRole in jobRoles)
             {
                 JobRoleVM jobRoleVM = new()
