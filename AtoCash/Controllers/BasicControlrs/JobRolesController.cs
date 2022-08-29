@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+    // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class JobRolesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -25,12 +25,13 @@ namespace AtoCash.Controllers
         }
 
         [HttpGet]
-        [ActionName("JobRolesForDeptDropdown")]
+        [ActionName("JobRolesQuery")]
         public async Task<ActionResult<IEnumerable<JobRoleVM>>> JobRolesForDeptDropdown()
         {
             List<JobRoleVM> ListJobRoleVM = new();
 
-            var jobRoles = await _context.JobRoles.Where(j => j.IsStoreRole == false).ToListAsync();
+            //var jobRoles = await _context.JobRoles.Where(j => j.IsStoreRole == false).ToListAsync();
+            var jobRoles = await _context.JobRoles.ToListAsync();
             foreach (JobRole jobRole in jobRoles)
             {
                 JobRoleVM jobRoleVM = new()
@@ -46,13 +47,15 @@ namespace AtoCash.Controllers
 
         }
 
-        [HttpGet]
-        [ActionName("JobRolesForStoreDropdown")]
-        public async Task<ActionResult<IEnumerable<JobRoleVM>>> JobRolesForStoreDropdown()
+
+        [HttpGet("{isStoreRole}")]
+        [ActionName("JobRolesQuery")]
+        public async Task<ActionResult<IEnumerable<JobRoleVM>>> JobRolesForDeptDropdown(bool isStoreRole)
         {
             List<JobRoleVM> ListJobRoleVM = new();
 
-            var jobRoles = await _context.JobRoles.Where(j=> j.IsStoreRole==true).ToListAsync();
+            var jobRoles = await _context.JobRoles.Where(j => j.IsStoreRole == isStoreRole).ToListAsync();
+            
             foreach (JobRole jobRole in jobRoles)
             {
                 JobRoleVM jobRoleVM = new()
@@ -67,6 +70,7 @@ namespace AtoCash.Controllers
             return ListJobRoleVM;
 
         }
+
 
         // GET: api/Roles
         [HttpGet]

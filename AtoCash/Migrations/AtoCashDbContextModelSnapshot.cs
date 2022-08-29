@@ -104,6 +104,38 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApprovalGroups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ApprovalGroupCode = "DEPT-APPRL-GROUP-001",
+                            ApprovalGroupDesc = "DEPT-APPRL-GROUP-001"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ApprovalGroupCode = "DEPT-APPRL-GROUP-002",
+                            ApprovalGroupDesc = "DEPT-APPRL-GROUP-002"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ApprovalGroupCode = "DEPT-APPRL-GROUP-003",
+                            ApprovalGroupDesc = "DEPT-APPRL-GROUP-003"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ApprovalGroupCode = "STOR-APPRL-GROUP-001",
+                            ApprovalGroupDesc = "STOR-APPRL-GROUP-001"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ApprovalGroupCode = "STOR-APPRL-GROUP-002",
+                            ApprovalGroupDesc = "STOR-APPRL-GROUP-002"
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.ApprovalLevel", b =>
@@ -122,6 +154,32 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApprovalLevels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Level = 1,
+                            LevelDesc = "Level 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Level = 2,
+                            LevelDesc = "Level 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Level = 3,
+                            LevelDesc = "Level 3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Level = 4,
+                            LevelDesc = "Level 4"
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.ApprovalRoleMap", b =>
@@ -198,6 +256,16 @@ namespace AtoCash.Migrations
                     b.HasIndex("StatusTypeId");
 
                     b.ToTable("BusinessAreas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BusinessAreaCode = "COIMBATORE-STOR",
+                            BusinessAreaName = "CBE-STORE-GROUP-001",
+                            CostCenterId = 3,
+                            StatusTypeId = 1
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.ClaimApprovalStatusTracker", b =>
@@ -298,6 +366,36 @@ namespace AtoCash.Migrations
                     b.HasIndex("StatusTypeId");
 
                     b.ToTable("CostCenters");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CostCenterCode = "CC-DEPT-001",
+                            CostCenterDesc = "MFG DEPT COST Centre 001",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CostCenterCode = "CC-DEPT-002",
+                            CostCenterDesc = "MFG DEPT COST Centre 002",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CostCenterCode = "CC-STOR-001",
+                            CostCenterDesc = "STOR COST Centre 001",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CostCenterCode = "CC-STOR-002",
+                            CostCenterDesc = "STOR COST Centre 002",
+                            StatusTypeId = 1
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.CurrencyType", b =>
@@ -327,6 +425,40 @@ namespace AtoCash.Migrations
                     b.HasIndex("StatusTypeId");
 
                     b.ToTable("CurrencyTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Country = "Saudi",
+                            CurrencyCode = "SAR",
+                            CurrencyName = "Saudi Riyal",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Country = "Emirian",
+                            CurrencyCode = "AED",
+                            CurrencyName = "UAE",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Country = "Indian",
+                            CurrencyCode = "INR",
+                            CurrencyName = "Indian Rupees",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Country = "Canadian",
+                            CurrencyCode = "CAD",
+                            CurrencyName = "Canadian Dollar",
+                            StatusTypeId = 1
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.Department", b =>
@@ -357,6 +489,40 @@ namespace AtoCash.Migrations
                     b.HasIndex("StatusTypeId");
 
                     b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CostCenterId = 1,
+                            DeptCode = "MAIN MFG DEPT",
+                            DeptName = "MAIN MFG DEPT ",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CostCenterId = 2,
+                            DeptCode = "CBE MFG DEPT",
+                            DeptName = "COIMBATORE MFG DEPT",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CostCenterId = 3,
+                            DeptCode = "CBE STORE",
+                            DeptName = "COIMBATORE STORE",
+                            StatusTypeId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CostCenterId = 4,
+                            DeptCode = "CHENNAI STORE",
+                            DeptName = "CHENNAI STORE",
+                            StatusTypeId = 1
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.DisbursementsAndClaimsMaster", b =>
@@ -480,6 +646,16 @@ namespace AtoCash.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("EmpCurrentPettyCashBalances");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CashOnHand = 0.0,
+                            CurBalance = 100000.0,
+                            EmployeeId = 1,
+                            UpdatedOn = new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.Employee", b =>
@@ -588,6 +764,36 @@ namespace AtoCash.Migrations
                     b.HasIndex("StatusTypeId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ApprovalGroupId = 1,
+                            BankAccount = "SBIN0012345",
+                            BankCardNo = "SBC001234",
+                            BusinessAreaApprovalGroupId = 4,
+                            BusinessAreaId = 1,
+                            BusinessAreaRoleId = 6,
+                            CurrencyTypeId = 2,
+                            DOB = new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOJ = new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentId = 1,
+                            Email = "irfan3@gmail.com",
+                            EmpCode = "EMP001",
+                            EmploymentTypeId = 1,
+                            FirstName = "Irfan",
+                            Gender = "Male",
+                            LastName = "Rashid",
+                            MiddleName = "H",
+                            MobileNumber = "1234533325",
+                            NationalID = "AADH001243",
+                            Nationality = "Indian",
+                            PassportNo = "MDB12345",
+                            RoleId = 1,
+                            StatusTypeId = 1,
+                            TaxNumber = "TIN12345"
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.EmploymentType", b =>
@@ -608,6 +814,20 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EmploymentTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EmpJobTypeCode = "FT01",
+                            EmpJobTypeDesc = "Full Time Emp"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EmpJobTypeCode = "PT01",
+                            EmpJobTypeDesc = "Part Time Emp"
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.ExpenseCategory", b =>
@@ -984,6 +1204,120 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("JobRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsStoreRole = false,
+                            MaxPettyCashAllowed = 10000.0,
+                            RoleCode = "DEPT-EMP001",
+                            RoleName = "DEPT BASE EMPLOYEE"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsStoreRole = false,
+                            MaxPettyCashAllowed = 20000.0,
+                            RoleCode = "DEPT-EMP002",
+                            RoleName = "DEPT SUPERVISOR EMPLOYEE"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsStoreRole = false,
+                            MaxPettyCashAllowed = 50000.0,
+                            RoleCode = "DEPTMGR",
+                            RoleName = "DEPARTMENT MANAGER"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsStoreRole = false,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "DEPT-FINMGR",
+                            RoleName = "DEPARTMENT FINANCE MANAGER"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsStoreRole = false,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "DEPT-FIN HEAD",
+                            RoleName = "DEPARTMENT FINANCE HEAD"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "COIM STORE-MGR001",
+                            RoleName = "COIMBTR STORE MANAGER"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "CHEN STORE-MGR001",
+                            RoleName = "CHENNAI STORE MANAGER"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "MUMB STORE-MGR001",
+                            RoleName = "MUMBAI STORE MANAGER"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "TRUP STORE-MGR001",
+                            RoleName = "TIRUPUR STORE MANAGER"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "MADU STORE-MGR001",
+                            RoleName = "MADURAI STORE MANAGER"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "OOTY STORE-MGR001",
+                            RoleName = "OOTY STORE MANAGER"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "STOR-AREA-MGR-001",
+                            RoleName = "AREA-001  MANAGER"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "STOR-AREA-MGR-002",
+                            RoleName = "AREA-002 MANAGER"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            IsStoreRole = true,
+                            MaxPettyCashAllowed = 100000.0,
+                            RoleCode = "STOR OPS-MGR",
+                            RoleName = "STORE OPS MANAGER"
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.PettyCashRequest", b =>
@@ -1151,6 +1485,18 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StatusTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Status = "Active"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = "Inactive"
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.SubProject", b =>

@@ -159,13 +159,13 @@ namespace AtoCash.Controllers
                 return Conflict(new RespStatus { Status = "Failure", Message = "General Ledger Account No Invalid!" });
             }
 
-            /* Commented as of now, till we create a Column in Expense Sub Claim Table */ 
-            /*var expReimburse = _context.ExpenseSubClaims.Where(d => d.GeneralLedgerId == id).FirstOrDefault();
+         
+            var expTypes = _context.ExpenseTypes.Where(d => d.GeneralLedgerId == id).FirstOrDefault();
 
-            if (expReimburse != null)
+            if (expTypes != null)
             {
-            */    return Conflict(new RespStatus { Status = "Failure", Message = "General Ledger Account No in use for Expense Reimburse!" });
-            /*}*/
+               return Conflict(new RespStatus { Status = "Failure", Message = "General Ledger Account No in use for Expense Type!" });
+            }
 
             _context.GeneralLedger.Remove(generalLedger);
             await _context.SaveChangesAsync();

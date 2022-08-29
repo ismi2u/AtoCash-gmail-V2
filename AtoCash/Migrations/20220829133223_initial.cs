@@ -1369,6 +1369,116 @@ namespace AtoCash.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "ApprovalGroups",
+                columns: new[] { "Id", "ApprovalGroupCode", "ApprovalGroupDesc" },
+                values: new object[,]
+                {
+                    { 1, "DEPT-APPRL-GROUP-001", "DEPT-APPRL-GROUP-001" },
+                    { 2, "DEPT-APPRL-GROUP-002", "DEPT-APPRL-GROUP-002" },
+                    { 3, "DEPT-APPRL-GROUP-003", "DEPT-APPRL-GROUP-003" },
+                    { 4, "STOR-APPRL-GROUP-001", "STOR-APPRL-GROUP-001" },
+                    { 5, "STOR-APPRL-GROUP-002", "STOR-APPRL-GROUP-002" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ApprovalLevels",
+                columns: new[] { "Id", "Level", "LevelDesc" },
+                values: new object[,]
+                {
+                    { 3, 3, "Level 3" },
+                    { 4, 4, "Level 4" },
+                    { 1, 1, "Level 1" },
+                    { 2, 2, "Level 2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EmploymentTypes",
+                columns: new[] { "Id", "EmpJobTypeCode", "EmpJobTypeDesc" },
+                values: new object[,]
+                {
+                    { 1, "FT01", "Full Time Emp" },
+                    { 2, "PT01", "Part Time Emp" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "JobRoles",
+                columns: new[] { "Id", "IsStoreRole", "MaxPettyCashAllowed", "RoleCode", "RoleName" },
+                values: new object[,]
+                {
+                    { 9, true, 100000.0, "TRUP STORE-MGR001", "TIRUPUR STORE MANAGER" },
+                    { 14, true, 100000.0, "STOR OPS-MGR", "STORE OPS MANAGER" },
+                    { 13, true, 100000.0, "STOR-AREA-MGR-002", "AREA-002 MANAGER" },
+                    { 12, true, 100000.0, "STOR-AREA-MGR-001", "AREA-001  MANAGER" },
+                    { 11, true, 100000.0, "OOTY STORE-MGR001", "OOTY STORE MANAGER" },
+                    { 10, true, 100000.0, "MADU STORE-MGR001", "MADURAI STORE MANAGER" },
+                    { 8, true, 100000.0, "MUMB STORE-MGR001", "MUMBAI STORE MANAGER" },
+                    { 3, false, 50000.0, "DEPTMGR", "DEPARTMENT MANAGER" },
+                    { 6, true, 100000.0, "COIM STORE-MGR001", "COIMBTR STORE MANAGER" },
+                    { 5, false, 100000.0, "DEPT-FIN HEAD", "DEPARTMENT FINANCE HEAD" },
+                    { 4, false, 100000.0, "DEPT-FINMGR", "DEPARTMENT FINANCE MANAGER" },
+                    { 2, false, 20000.0, "DEPT-EMP002", "DEPT SUPERVISOR EMPLOYEE" },
+                    { 1, false, 10000.0, "DEPT-EMP001", "DEPT BASE EMPLOYEE" },
+                    { 7, true, 100000.0, "CHEN STORE-MGR001", "CHENNAI STORE MANAGER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "StatusTypes",
+                columns: new[] { "Id", "Status" },
+                values: new object[,]
+                {
+                    { 1, "Active" },
+                    { 2, "Inactive" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CostCenters",
+                columns: new[] { "Id", "CostCenterCode", "CostCenterDesc", "StatusTypeId" },
+                values: new object[,]
+                {
+                    { 1, "CC-DEPT-001", "MFG DEPT COST Centre 001", 1 },
+                    { 2, "CC-DEPT-002", "MFG DEPT COST Centre 002", 1 },
+                    { 3, "CC-STOR-001", "STOR COST Centre 001", 1 },
+                    { 4, "CC-STOR-002", "STOR COST Centre 002", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CurrencyTypes",
+                columns: new[] { "Id", "Country", "CurrencyCode", "CurrencyName", "StatusTypeId" },
+                values: new object[,]
+                {
+                    { 1, "Saudi", "SAR", "Saudi Riyal", 1 },
+                    { 2, "Emirian", "AED", "UAE", 1 },
+                    { 3, "Indian", "INR", "Indian Rupees", 1 },
+                    { 4, "Canadian", "CAD", "Canadian Dollar", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "BusinessAreas",
+                columns: new[] { "Id", "BusinessAreaCode", "BusinessAreaName", "CostCenterId", "StatusTypeId" },
+                values: new object[] { 1, "COIMBATORE-STOR", "CBE-STORE-GROUP-001", 3, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Departments",
+                columns: new[] { "Id", "CostCenterId", "DeptCode", "DeptName", "StatusTypeId" },
+                values: new object[,]
+                {
+                    { 1, 1, "MAIN MFG DEPT", "MAIN MFG DEPT ", 1 },
+                    { 2, 2, "CBE MFG DEPT", "COIMBATORE MFG DEPT", 1 },
+                    { 3, 3, "CBE STORE", "COIMBATORE STORE", 1 },
+                    { 4, 4, "CHENNAI STORE", "CHENNAI STORE", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "Id", "ApprovalGroupId", "BankAccount", "BankCardNo", "BusinessAreaApprovalGroupId", "BusinessAreaId", "BusinessAreaRoleId", "CurrencyTypeId", "DOB", "DOJ", "DepartmentId", "Email", "EmpCode", "EmploymentTypeId", "FirstName", "Gender", "LastName", "MiddleName", "MobileNumber", "NationalID", "Nationality", "PassportNo", "RoleId", "StatusTypeId", "TaxNumber" },
+                values: new object[] { 1, 1, "SBIN0012345", "SBC001234", 4, 1, 6, 2, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "irfan3@gmail.com", "EMP001", 1, "Irfan", "Male", "Rashid", "H", "1234533325", "AADH001243", "Indian", "MDB12345", 1, 1, "TIN12345" });
+
+            migrationBuilder.InsertData(
+                table: "EmpCurrentPettyCashBalances",
+                columns: new[] { "Id", "CashOnHand", "CurBalance", "EmployeeId", "UpdatedOn" },
+                values: new object[] { 1, 0.0, 100000.0, 1, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ApprovalRoleMaps_ApprovalGroupId",
                 table: "ApprovalRoleMaps",
