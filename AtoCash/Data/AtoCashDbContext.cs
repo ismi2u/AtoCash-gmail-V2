@@ -29,14 +29,14 @@ namespace AtoCash.Data
 
 
             builder.Entity<EmploymentType>().HasData(
-               new EmploymentType { Id = 1,  EmpJobTypeCode= "FT01", EmpJobTypeDesc= "Full Time Emp" },
+               new EmploymentType { Id = 1, EmpJobTypeCode = "FT01", EmpJobTypeDesc = "Full Time Emp" },
                 new EmploymentType { Id = 2, EmpJobTypeCode = "PT01", EmpJobTypeDesc = "Part Time Emp" }
                );
 
 
 
             builder.Entity<CurrencyType>().HasData(
-             new CurrencyType { Id = 1,  CurrencyCode = "SAR",  CurrencyName = "Saudi Riyal", Country="Saudi", StatusTypeId=1 },
+             new CurrencyType { Id = 1, CurrencyCode = "SAR", CurrencyName = "Saudi Riyal", Country = "Saudi", StatusTypeId = 1 },
               new CurrencyType { Id = 2, CurrencyCode = "AED", CurrencyName = "UAE", Country = "Emirian", StatusTypeId = 1 },
               new CurrencyType { Id = 3, CurrencyCode = "INR", CurrencyName = "Indian Rupees", Country = "Indian", StatusTypeId = 1 },
               new CurrencyType { Id = 4, CurrencyCode = "CAD", CurrencyName = "Canadian Dollar", Country = "Canadian", StatusTypeId = 1 }
@@ -71,7 +71,7 @@ namespace AtoCash.Data
 
 
             builder.Entity<CostCenter>().HasData(
-           new CostCenter { Id = 1, CostCenterCode = "CC-DEPT-001", CostCenterDesc = "MFG DEPT COST Centre 001", StatusTypeId =1 },
+           new CostCenter { Id = 1, CostCenterCode = "CC-DEPT-001", CostCenterDesc = "MFG DEPT COST Centre 001", StatusTypeId = 1 },
            new CostCenter { Id = 2, CostCenterCode = "CC-DEPT-002", CostCenterDesc = "MFG DEPT COST Centre 002", StatusTypeId = 1 },
            new CostCenter { Id = 3, CostCenterCode = "CC-STOR-001", CostCenterDesc = "STOR COST Centre 001", StatusTypeId = 1 },
            new CostCenter { Id = 4, CostCenterCode = "CC-STOR-002", CostCenterDesc = "STOR COST Centre 002", StatusTypeId = 1 }
@@ -81,7 +81,7 @@ namespace AtoCash.Data
 
 
             builder.Entity<Department>().HasData(
-           new Department { Id = 1,  DeptCode  = "MAIN MFG DEPT",  DeptName  = "MAIN MFG DEPT ", CostCenterId = 1, StatusTypeId = 1 },
+           new Department { Id = 1, DeptCode = "MAIN MFG DEPT", DeptName = "MAIN MFG DEPT ", CostCenterId = 1, StatusTypeId = 1 },
            new Department { Id = 2, DeptCode = "CBE MFG DEPT", DeptName = "COIMBATORE MFG DEPT", CostCenterId = 2, StatusTypeId = 1 },
            new Department { Id = 3, DeptCode = "CBE STORE", DeptName = "COIMBATORE STORE", CostCenterId = 3, StatusTypeId = 1 },
            new Department { Id = 4, DeptCode = "CHENNAI STORE", DeptName = "CHENNAI STORE", CostCenterId = 4, StatusTypeId = 1 }
@@ -90,7 +90,7 @@ namespace AtoCash.Data
 
 
             builder.Entity<ApprovalGroup>().HasData(
-           new ApprovalGroup { Id = 1,  ApprovalGroupCode  = "DEPT-APPRL-GROUP-001",  ApprovalGroupDesc  = "DEPT-APPRL-GROUP-001" },
+           new ApprovalGroup { Id = 1, ApprovalGroupCode = "DEPT-APPRL-GROUP-001", ApprovalGroupDesc = "DEPT-APPRL-GROUP-001" },
            new ApprovalGroup { Id = 2, ApprovalGroupCode = "DEPT-APPRL-GROUP-002", ApprovalGroupDesc = "DEPT-APPRL-GROUP-002" },
            new ApprovalGroup { Id = 3, ApprovalGroupCode = "DEPT-APPRL-GROUP-003", ApprovalGroupDesc = "DEPT-APPRL-GROUP-003" },
            new ApprovalGroup { Id = 4, ApprovalGroupCode = "STOR-APPRL-GROUP-001", ApprovalGroupDesc = "STOR-APPRL-GROUP-001" },
@@ -109,17 +109,46 @@ namespace AtoCash.Data
 
 
             builder.Entity<Employee>().HasData(
-                     new Employee { Id = 1,   FirstName = "Irfan",  MiddleName = "H",  LastName = "Rashid",  EmpCode = "EMP001",
-                          BankAccount = "SBIN0012345",  BankCardNo =  "SBC001234",  NationalID  = "AADH001243", PassportNo = "MDB12345",
-                          TaxNumber = "TIN12345", Nationality="Indian",  DOB = Convert.ToDateTime("06/12/2000"), DOJ = Convert.ToDateTime("06/12/2019"),  Gender="Male", Email="irfan3@gmail.com", MobileNumber="1234533325", 
-                         EmploymentTypeId=1,DepartmentId=1, BusinessAreaId=1, RoleId=1, ApprovalGroupId=1,  BusinessAreaApprovalGroupId=4,BusinessAreaRoleId=6,
-                          CurrencyTypeId=2, StatusTypeId=1 }
+                     new Employee
+                     {
+                         Id = 1,
+                         FirstName = "Irfan",
+                         MiddleName = "H",
+                         LastName = "Rashid",
+                         EmpCode = "EMP001",
+                         BankAccount = "SBIN0012345",
+                         BankCardNo = "SBC001234",
+                         NationalID = "AADH001243",
+                         PassportNo = "MDB12345",
+                         TaxNumber = "TIN12345",
+                         Nationality = "Indian",
+                         DOB = Convert.ToDateTime("06/12/2000"),
+                         DOJ = Convert.ToDateTime("06/12/2019"),
+                         Gender = "Male",
+                         Email = "irfan3@gmail.com",
+                         MobileNumber = "1234533325",
+                         EmploymentTypeId = 1,
+                         DepartmentId = 1,
+                         BusinessAreaId = 1,
+                         RoleId = 1,
+                         ApprovalGroupId = 1,
+                         BusinessAreaApprovalGroupId = 4,
+                         BusinessAreaRoleId = 6,
+                         CurrencyTypeId = 2,
+                         StatusTypeId = 1
+                     }
                      );
 
 
             builder.Entity<EmpCurrentPettyCashBalance>().HasData(
-                     new EmpCurrentPettyCashBalance {  Id =1, EmployeeId=1,  CurBalance=100000, CashOnHand = 0, UpdatedOn= Convert.ToDateTime("06/12/2022") });
+                     new EmpCurrentPettyCashBalance { Id = 1, EmployeeId = 1, CurBalance = 100000, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") });
 
+            builder.Entity<ApprovalStatusType>().HasData(
+                    new ApprovalStatusType { Id = 1, Status = "Initiating", StatusDesc = "Request Initiated" },
+                    new ApprovalStatusType { Id = 2, Status = "Pending", StatusDesc = "Awaiting Approval" },
+                    new ApprovalStatusType { Id = 3, Status = "In Review", StatusDesc = "Request is in progress" },
+                    new ApprovalStatusType { Id = 4, Status = "Approved", StatusDesc = "Request Approved" },
+                    new ApprovalStatusType { Id = 5, Status = "Rejected", StatusDesc = "Request is Rejected" });
 
 
         }

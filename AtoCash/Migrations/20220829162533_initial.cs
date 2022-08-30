@@ -1386,10 +1386,22 @@ namespace AtoCash.Migrations
                 columns: new[] { "Id", "Level", "LevelDesc" },
                 values: new object[,]
                 {
-                    { 3, 3, "Level 3" },
-                    { 4, 4, "Level 4" },
                     { 1, 1, "Level 1" },
-                    { 2, 2, "Level 2" }
+                    { 2, 2, "Level 2" },
+                    { 3, 3, "Level 3" },
+                    { 4, 4, "Level 4" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ApprovalStatusTypes",
+                columns: new[] { "Id", "Status", "StatusDesc" },
+                values: new object[,]
+                {
+                    { 1, "Initiating", "Request Initiated" },
+                    { 2, "Pending", "Awaiting Approval" },
+                    { 3, "In Review", "Request is in progress" },
+                    { 4, "Approved", "Request Approved" },
+                    { 5, "Rejected", "Request is Rejected" }
                 });
 
             migrationBuilder.InsertData(
@@ -1397,8 +1409,8 @@ namespace AtoCash.Migrations
                 columns: new[] { "Id", "EmpJobTypeCode", "EmpJobTypeDesc" },
                 values: new object[,]
                 {
-                    { 1, "FT01", "Full Time Emp" },
-                    { 2, "PT01", "Part Time Emp" }
+                    { 2, "PT01", "Part Time Emp" },
+                    { 1, "FT01", "Full Time Emp" }
                 });
 
             migrationBuilder.InsertData(
@@ -1406,20 +1418,20 @@ namespace AtoCash.Migrations
                 columns: new[] { "Id", "IsStoreRole", "MaxPettyCashAllowed", "RoleCode", "RoleName" },
                 values: new object[,]
                 {
-                    { 9, true, 100000.0, "TRUP STORE-MGR001", "TIRUPUR STORE MANAGER" },
-                    { 14, true, 100000.0, "STOR OPS-MGR", "STORE OPS MANAGER" },
-                    { 13, true, 100000.0, "STOR-AREA-MGR-002", "AREA-002 MANAGER" },
-                    { 12, true, 100000.0, "STOR-AREA-MGR-001", "AREA-001  MANAGER" },
-                    { 11, true, 100000.0, "OOTY STORE-MGR001", "OOTY STORE MANAGER" },
-                    { 10, true, 100000.0, "MADU STORE-MGR001", "MADURAI STORE MANAGER" },
                     { 8, true, 100000.0, "MUMB STORE-MGR001", "MUMBAI STORE MANAGER" },
-                    { 3, false, 50000.0, "DEPTMGR", "DEPARTMENT MANAGER" },
-                    { 6, true, 100000.0, "COIM STORE-MGR001", "COIMBTR STORE MANAGER" },
-                    { 5, false, 100000.0, "DEPT-FIN HEAD", "DEPARTMENT FINANCE HEAD" },
-                    { 4, false, 100000.0, "DEPT-FINMGR", "DEPARTMENT FINANCE MANAGER" },
-                    { 2, false, 20000.0, "DEPT-EMP002", "DEPT SUPERVISOR EMPLOYEE" },
                     { 1, false, 10000.0, "DEPT-EMP001", "DEPT BASE EMPLOYEE" },
-                    { 7, true, 100000.0, "CHEN STORE-MGR001", "CHENNAI STORE MANAGER" }
+                    { 2, false, 20000.0, "DEPT-EMP002", "DEPT SUPERVISOR EMPLOYEE" },
+                    { 3, false, 50000.0, "DEPTMGR", "DEPARTMENT MANAGER" },
+                    { 4, false, 100000.0, "DEPT-FINMGR", "DEPARTMENT FINANCE MANAGER" },
+                    { 5, false, 100000.0, "DEPT-FIN HEAD", "DEPARTMENT FINANCE HEAD" },
+                    { 6, true, 100000.0, "COIM STORE-MGR001", "COIMBTR STORE MANAGER" },
+                    { 7, true, 100000.0, "CHEN STORE-MGR001", "CHENNAI STORE MANAGER" },
+                    { 9, true, 100000.0, "TRUP STORE-MGR001", "TIRUPUR STORE MANAGER" },
+                    { 10, true, 100000.0, "MADU STORE-MGR001", "MADURAI STORE MANAGER" },
+                    { 11, true, 100000.0, "OOTY STORE-MGR001", "OOTY STORE MANAGER" },
+                    { 12, true, 100000.0, "STOR-AREA-MGR-001", "AREA-001  MANAGER" },
+                    { 13, true, 100000.0, "STOR-AREA-MGR-002", "AREA-002 MANAGER" },
+                    { 14, true, 100000.0, "STOR OPS-MGR", "STORE OPS MANAGER" }
                 });
 
             migrationBuilder.InsertData(

@@ -226,6 +226,38 @@ namespace AtoCash.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApprovalStatusTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Status = "Initiating",
+                            StatusDesc = "Request Initiated"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = "Pending",
+                            StatusDesc = "Awaiting Approval"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Status = "In Review",
+                            StatusDesc = "Request is in progress"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Status = "Approved",
+                            StatusDesc = "Request Approved"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Status = "Rejected",
+                            StatusDesc = "Request is Rejected"
+                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.BusinessArea", b =>
