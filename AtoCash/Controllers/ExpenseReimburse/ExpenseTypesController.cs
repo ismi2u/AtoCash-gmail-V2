@@ -62,7 +62,10 @@ namespace AtoCash.Controllers
                     ExpenseTypeName = expenseType.ExpenseTypeName,
                     ExpenseTypeDesc = expenseType.ExpenseTypeDesc,
                     ExpenseCategoryId = expenseType.ExpenseCategoryId,
+                    ExpenseCategoryName = _context.ExpenseCategories.Find(expenseType.ExpenseCategoryId).ExpenseCategoryName,
                     GeneralLedgerId = expenseType.GeneralLedgerId,
+                    GeneralLedgerAccountName = _context.GeneralLedger.Find(expenseType.GeneralLedgerId).GeneralLedgerAccountName,
+                    GeneralLedgerAccountNo = _context.GeneralLedger.Find(expenseType.GeneralLedgerId).GeneralLedgerAccountNo,
                     StatusTypeId = expenseType.StatusTypeId,
                     StatusType = _context.StatusTypes.Find(expenseType.StatusTypeId).Status
                 };
@@ -90,7 +93,10 @@ namespace AtoCash.Controllers
                 ExpenseTypeName = expenseType.ExpenseTypeName,
                 ExpenseTypeDesc = expenseType.ExpenseTypeDesc,
                 ExpenseCategoryId = expenseType.ExpenseCategoryId,
+                ExpenseCategoryName = _context.ExpenseCategories.Find(expenseType.ExpenseCategoryId).ExpenseCategoryName,
                 GeneralLedgerId = expenseType.GeneralLedgerId,
+                GeneralLedgerAccountName = _context.GeneralLedger.Find(expenseType.GeneralLedgerId).GeneralLedgerAccountName,
+                GeneralLedgerAccountNo = _context.GeneralLedger.Find(expenseType.GeneralLedgerId).GeneralLedgerAccountNo,
                 StatusTypeId = expenseType.StatusTypeId,
                 StatusType = _context.StatusTypes.Find(expenseType.StatusTypeId).Status
             };
