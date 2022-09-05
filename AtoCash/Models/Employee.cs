@@ -203,11 +203,11 @@ namespace AtoCash.Models
         public string BusinessAreaApprovalGroup { get; set; }
 
         public int BusinessAreaRoleId { get; set; }
-        public int BusinessAreaRoleName{ get; set; }
+        public string BusinessAreaRoleName{ get; set; }
 
 
         public int BusinessAreaId { get; set; }
-        public int BusinessArea { get; set; }
+        public string BusinessArea { get; set; }
 
         public int CurrencyTypeId { get; set; }
         public int StatusTypeId { get; set; }
