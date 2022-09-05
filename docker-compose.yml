@@ -12,9 +12,20 @@ services:
       - atocashdatavol:/var/opt/postgres/data
     networks:
       mynetwork:
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=atominos@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=Pa55word2019!123
+    ports:
+      - "5050:80"
+    networks:
+      mynetwork:
       
   atocash:
-    image: ${DOCKER_REGISTRY-}ismi2u/atocash
+    image: ${DOCKER_REGISTRY-}ismi2u/atocashdev
     build:
       context: .
       dockerfile: AtoCash/Dockerfile

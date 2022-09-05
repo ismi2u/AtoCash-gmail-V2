@@ -17,8 +17,22 @@ namespace AtoCash.Models
 
 
         [Required]
+        [ForeignKey("ExpenseCategoryId")]
+        public virtual ExpenseCategory ExpenseCategory { get; set; }
+        public int ExpenseCategoryId { get; set; }
+
+        [Required]
         [Column(TypeName = "varchar(250)")]
         public string ExpenseReportTitle { get; set; }
+
+        [Required]
+        public DateTime ExpStrtDate { get; set; }
+        [Required]
+        public DateTime ExpEndDate { get; set; }
+
+        public int ExpNoOfDays { get; set; }
+
+        public string TaxNo { get; set; }
 
         [Required]
         [ForeignKey("EmployeeId")]
@@ -79,11 +93,26 @@ namespace AtoCash.Models
     {
         public int Id { get; set; }
         public string ExpenseReportTitle { get; set; }
+        public string ExpenseCategoryId { get; set; }
+
+        public string ExpenseCategoryName { get; set; }
+
+        public DateTime ExpStrtDate { get; set; }
+        public DateTime ExpEndDate { get; set; }
+        public int ExpNoOfDays { get; set; }
+
+        public string TaxNo { get; set; }
+
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public int CurrencyTypeId { get; set; }
         public Double TotalClaimAmount { get; set; }
         public DateTime ExpReimReqDate { get; set; }
+
+      
+       
+
+       
 
         public string DepartmentName { get; set; }
         public int? DepartmentId { get; set; }

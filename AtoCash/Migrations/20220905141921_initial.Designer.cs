@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtoCash.Migrations
 {
     [DbContext(typeof(AtoCashDbContext))]
-    [Migration("20220829162533_initial")]
+    [Migration("20220905141921_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -921,8 +921,20 @@ namespace AtoCash.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("ExpEndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("ExpNoOfDays")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("ExpReimReqDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("ExpStrtDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("ExpenseCategoryId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ExpenseReportTitle")
                         .IsRequired()
@@ -933,6 +945,9 @@ namespace AtoCash.Migrations
 
                     b.Property<int?>("SubProjectId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("TaxNo")
+                        .HasColumnType("text");
 
                     b.Property<double>("TotalClaimAmount")
                         .HasColumnType("double precision");
@@ -953,6 +968,8 @@ namespace AtoCash.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ExpenseCategoryId");
 
                     b.HasIndex("ProjectId");
 
@@ -2226,6 +2243,12 @@ namespace AtoCash.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AtoCash.Models.ExpenseCategory", "ExpenseCategory")
+                        .WithMany()
+                        .HasForeignKey("ExpenseCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AtoCash.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId");
@@ -2249,6 +2272,8 @@ namespace AtoCash.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Employee");
+
+                    b.Navigation("ExpenseCategory");
 
                     b.Navigation("Project");
 
