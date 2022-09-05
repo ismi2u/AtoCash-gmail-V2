@@ -919,20 +919,8 @@ namespace AtoCash.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ExpEndDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("ExpNoOfDays")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("ExpReimReqDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("ExpStrtDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("ExpenseCategoryId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("ExpenseReportTitle")
                         .IsRequired()
@@ -943,9 +931,6 @@ namespace AtoCash.Migrations
 
                     b.Property<int?>("SubProjectId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("TaxNo")
-                        .HasColumnType("text");
 
                     b.Property<double>("TotalClaimAmount")
                         .HasColumnType("double precision");
@@ -966,8 +951,6 @@ namespace AtoCash.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ExpenseCategoryId");
 
                     b.HasIndex("ProjectId");
 
@@ -1087,6 +1070,18 @@ namespace AtoCash.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("ExpEndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("ExpNoOfDays")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ExpStrtDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("ExpenseCategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<double>("ExpenseReimbClaimAmount")
                         .HasColumnType("double precision");
 
@@ -1119,6 +1114,9 @@ namespace AtoCash.Migrations
                     b.Property<double>("TaxAmount")
                         .HasColumnType("double precision");
 
+                    b.Property<string>("TaxNo")
+                        .HasColumnType("text");
+
                     b.Property<string>("Vendor")
                         .IsRequired()
                         .HasColumnType("varchar(50)");
@@ -1135,6 +1133,8 @@ namespace AtoCash.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ExpenseCategoryId");
 
                     b.HasIndex("ExpenseReimburseRequestId");
 
@@ -2241,12 +2241,6 @@ namespace AtoCash.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AtoCash.Models.ExpenseCategory", "ExpenseCategory")
-                        .WithMany()
-                        .HasForeignKey("ExpenseCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AtoCash.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId");
@@ -2270,8 +2264,6 @@ namespace AtoCash.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Employee");
-
-                    b.Navigation("ExpenseCategory");
 
                     b.Navigation("Project");
 
@@ -2383,6 +2375,12 @@ namespace AtoCash.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AtoCash.Models.ExpenseCategory", "ExpenseCategory")
+                        .WithMany()
+                        .HasForeignKey("ExpenseCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AtoCash.Models.ExpenseReimburseRequest", "ExpenseReimburseRequest")
                         .WithMany()
                         .HasForeignKey("ExpenseReimburseRequestId")
@@ -2414,6 +2412,8 @@ namespace AtoCash.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Employee");
+
+                    b.Navigation("ExpenseCategory");
 
                     b.Navigation("ExpenseReimburseRequest");
 

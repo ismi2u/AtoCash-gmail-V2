@@ -22,9 +22,28 @@ namespace AtoCash.Models
         public int ExpenseReimburseRequestId { get; set; }
 
         [Required]
+        [ForeignKey("ExpenseCategoryId")]
+        public virtual ExpenseCategory ExpenseCategory { get; set; }
+        public int ExpenseCategoryId { get; set; }
+
+
+
+       
+
+        [Required]
         [ForeignKey("ExpenseTypeId")]
         public virtual ExpenseType ExpenseType { get; set; }
         public int ExpenseTypeId { get; set; }
+
+        [Required]
+        public DateTime ExpStrtDate { get; set; }
+        [Required]
+        public DateTime ExpEndDate { get; set; }
+
+        public int ExpNoOfDays { get; set; }
+
+        public string TaxNo { get; set; }
+
 
         [Required]
         [ForeignKey("EmployeeId")]
@@ -100,6 +119,16 @@ namespace AtoCash.Models
         public string EmployeeName { get; set; }
         public int EmployeeId { get; set; }
 
+        
+        public string ExpenseCategoryId { get; set; }
+
+        public string ExpenseCategoryName { get; set; }
+
+        public DateTime ExpStrtDate { get; set; }
+        public DateTime ExpEndDate { get; set; }
+        public int ExpNoOfDays { get; set; }
+
+        public string TaxNo { get; set; }
         public int ExpenseReimburseReqId { get; set; }
         public Double ExpenseReimbClaimAmount { get; set; }
 

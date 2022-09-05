@@ -697,12 +697,7 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ExpenseCategoryId = table.Column<int>(type: "integer", nullable: false),
                     ExpenseReportTitle = table.Column<string>(type: "varchar(250)", nullable: false),
-                    ExpStrtDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ExpEndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ExpNoOfDays = table.Column<int>(type: "integer", nullable: false),
-                    TaxNo = table.Column<string>(type: "text", nullable: true),
                     EmployeeId = table.Column<int>(type: "integer", nullable: false),
                     CurrencyTypeId = table.Column<int>(type: "integer", nullable: false),
                     TotalClaimAmount = table.Column<double>(type: "double precision", nullable: false),
@@ -754,12 +749,6 @@ namespace AtoCash.Migrations
                         name: "FK_ExpenseReimburseRequests_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ExpenseReimburseRequests_ExpenseCategories_ExpenseCategoryId",
-                        column: x => x.ExpenseCategoryId,
-                        principalTable: "ExpenseCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1030,7 +1019,12 @@ namespace AtoCash.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ExpenseReimburseRequestId = table.Column<int>(type: "integer", nullable: false),
+                    ExpenseCategoryId = table.Column<int>(type: "integer", nullable: false),
                     ExpenseTypeId = table.Column<int>(type: "integer", nullable: false),
+                    ExpStrtDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ExpEndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ExpNoOfDays = table.Column<int>(type: "integer", nullable: false),
+                    TaxNo = table.Column<string>(type: "text", nullable: true),
                     EmployeeId = table.Column<int>(type: "integer", nullable: false),
                     ExpenseReimbClaimAmount = table.Column<double>(type: "double precision", nullable: false),
                     DocumentIDs = table.Column<string>(type: "text", nullable: true),
@@ -1073,6 +1067,12 @@ namespace AtoCash.Migrations
                         name: "FK_ExpenseSubClaims_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExpenseSubClaims_ExpenseCategories_ExpenseCategoryId",
+                        column: x => x.ExpenseCategoryId,
+                        principalTable: "ExpenseCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1775,11 +1775,6 @@ namespace AtoCash.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpenseReimburseRequests_ExpenseCategoryId",
-                table: "ExpenseReimburseRequests",
-                column: "ExpenseCategoryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ExpenseReimburseRequests_ProjectId",
                 table: "ExpenseReimburseRequests",
                 column: "ProjectId");
@@ -1868,6 +1863,11 @@ namespace AtoCash.Migrations
                 name: "IX_ExpenseSubClaims_EmployeeId",
                 table: "ExpenseSubClaims",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpenseSubClaims_ExpenseCategoryId",
+                table: "ExpenseSubClaims",
+                column: "ExpenseCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExpenseSubClaims_ExpenseReimburseRequestId",
