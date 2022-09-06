@@ -120,7 +120,7 @@ namespace AtoCash.Models
         public int EmployeeId { get; set; }
 
         
-        public string ExpenseCategoryId { get; set; }
+        public int ExpenseCategoryId { get; set; }
 
         public string ExpenseCategoryName { get; set; }
 
