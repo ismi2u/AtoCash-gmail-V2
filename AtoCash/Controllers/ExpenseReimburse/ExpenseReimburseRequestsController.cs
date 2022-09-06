@@ -539,6 +539,7 @@ namespace AtoCash.Controllers
             double dblTotalClaimAmount = 0;
 
             expenseReimburseRequest.ExpenseReportTitle = expenseReimburseRequestDto.ExpenseReportTitle;
+            expenseReimburseRequest.BusinessAreaId = expenseReimburseRequestDto.BusinessAreaId;
             expenseReimburseRequest.EmployeeId = expenseReimburseRequestDto.EmployeeId;
             expenseReimburseRequest.CurrencyTypeId = expenseReimburseRequestDto.CurrencyTypeId;
             expenseReimburseRequest.TotalClaimAmount = dblTotalClaimAmount; //Currently Zero but added as per the request
@@ -568,6 +569,13 @@ namespace AtoCash.Controllers
                 expenseSubClaim.DocumentIDs = expenseSubClaimDto.DocumentIDs;
                 expenseSubClaim.InvoiceNo = expenseSubClaimDto.InvoiceNo;
                 expenseSubClaim.InvoiceDate = expenseSubClaimDto.InvoiceDate;
+
+                expenseSubClaim.ExpenseCategoryId = expenseSubClaimDto.ExpenseCategoryId;
+                expenseSubClaim.TaxNo = expenseSubClaimDto.TaxNo;
+                expenseSubClaim.ExpStrtDate = expenseSubClaimDto.ExpStrtDate;
+                expenseSubClaim.ExpEndDate = expenseSubClaimDto.ExpEndDate;
+                expenseSubClaim.ExpNoOfDays = expenseSubClaimDto.ExpNoOfDays;
+
                 expenseSubClaim.Tax = expenseSubClaimDto.Tax;
                 expenseSubClaim.TaxAmount = expenseSubClaimDto.TaxAmount;
                 expenseSubClaim.Vendor = expenseSubClaimDto.Vendor;
@@ -785,6 +793,7 @@ namespace AtoCash.Controllers
             double dblTotalClaimAmount = 0;
 
             expenseReimburseRequest.ExpenseReportTitle = expenseReimburseRequestDto.ExpenseReportTitle;
+            expenseReimburseRequest.BusinessAreaId = expenseReimburseRequestDto.BusinessAreaId;
             expenseReimburseRequest.EmployeeId = expenseReimburseRequestDto.EmployeeId;
             expenseReimburseRequest.CurrencyTypeId = expenseReimburseRequestDto.CurrencyTypeId;
             expenseReimburseRequest.TotalClaimAmount = dblTotalClaimAmount; //Currently Zero but added as per the request
@@ -814,6 +823,13 @@ namespace AtoCash.Controllers
                 expenseSubClaim.DocumentIDs = expenseSubClaimDto.DocumentIDs;
                 expenseSubClaim.InvoiceNo = expenseSubClaimDto.InvoiceNo;
                 expenseSubClaim.InvoiceDate = expenseSubClaimDto.InvoiceDate;
+
+                expenseSubClaim.ExpenseCategoryId = expenseSubClaimDto.ExpenseCategoryId;
+                expenseSubClaim.TaxNo = expenseSubClaimDto.TaxNo;
+                expenseSubClaim.ExpStrtDate = expenseSubClaimDto.ExpStrtDate;
+                expenseSubClaim.ExpEndDate = expenseSubClaimDto.ExpEndDate;
+                expenseSubClaim.ExpNoOfDays = expenseSubClaimDto.ExpNoOfDays;
+
                 expenseSubClaim.Tax = expenseSubClaimDto.Tax;
                 expenseSubClaim.TaxAmount = expenseSubClaimDto.TaxAmount;
                 expenseSubClaim.Vendor = expenseSubClaimDto.Vendor;
@@ -1035,6 +1051,7 @@ namespace AtoCash.Controllers
             double dblTotalClaimAmount = 0;
 
             expenseReimburseRequest.ExpenseReportTitle = expenseReimburseRequestDto.ExpenseReportTitle;
+            expenseReimburseRequest.BusinessAreaId = expenseReimburseRequestDto.BusinessAreaId;
             expenseReimburseRequest.EmployeeId = expenseReimburseRequestDto.EmployeeId;
             expenseReimburseRequest.CurrencyTypeId = expenseReimburseRequestDto.CurrencyTypeId;
             expenseReimburseRequest.TotalClaimAmount = dblTotalClaimAmount; //Currently Zero but added as per the request
@@ -1065,6 +1082,13 @@ namespace AtoCash.Controllers
                 expenseSubClaim.DocumentIDs = expenseSubClaimDto.DocumentIDs;
                 expenseSubClaim.InvoiceNo = expenseSubClaimDto.InvoiceNo;
                 expenseSubClaim.InvoiceDate = expenseSubClaimDto.InvoiceDate;
+
+                expenseSubClaim.ExpenseCategoryId = expenseSubClaimDto.ExpenseCategoryId;
+                expenseSubClaim.TaxNo = expenseSubClaimDto.TaxNo;
+                expenseSubClaim.ExpStrtDate = expenseSubClaimDto.ExpStrtDate;
+                expenseSubClaim.ExpEndDate = expenseSubClaimDto.ExpEndDate;
+                expenseSubClaim.ExpNoOfDays = expenseSubClaimDto.ExpNoOfDays;
+
                 expenseSubClaim.Tax = expenseSubClaimDto.Tax;
                 expenseSubClaim.TaxAmount = expenseSubClaimDto.TaxAmount;
                 expenseSubClaim.Vendor = expenseSubClaimDto.Vendor;

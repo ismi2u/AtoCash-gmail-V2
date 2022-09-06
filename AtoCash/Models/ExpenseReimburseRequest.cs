@@ -84,6 +84,8 @@ namespace AtoCash.Models
 
         public string ExpenseReportTitle { get; set; }
         public int EmployeeId { get; set; }
+
+       
         public string EmployeeName { get; set; }
         public int CurrencyTypeId { get; set; }
         public Double TotalClaimAmount { get; set; }
