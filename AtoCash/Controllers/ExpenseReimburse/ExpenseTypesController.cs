@@ -46,6 +46,29 @@ namespace AtoCash.Controllers
             return ListExpenseTypeVM;
 
         }
+
+
+        [HttpGet("{id}")]
+        [ActionName("ExpenseTypesForExpenseCategoryId")]
+        public async Task<ActionResult<IEnumerable<ExpenseTypeVM>>> GetExpenseTypesForExpenseCategoryId(int id)
+        {
+            List<ExpenseTypeVM> ListExpenseTypeVM = new();
+
+            var expenseTypes = await _context.ExpenseTypes.Where(c => c.StatusTypeId == (int)EStatusType.Active && c.ExpenseCategoryId==id).ToListAsync();
+            foreach (ExpenseType expenseType in expenseTypes)
+            {
+                ExpenseTypeVM expenseTypeVM = new()
+                {
+                    Id = expenseType.Id,
+                    ExpenseTypeName = expenseType.ExpenseTypeName + ":" + expenseType.ExpenseTypeDesc,
+                };
+
+                ListExpenseTypeVM.Add(expenseTypeVM);
+            }
+
+            return ListExpenseTypeVM;
+
+        }
         // GET: api/ExpenseTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ExpenseTypeDTO>>> GetExpenseTypes()
