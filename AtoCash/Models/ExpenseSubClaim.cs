@@ -35,9 +35,9 @@ namespace AtoCash.Models
         public virtual ExpenseType ExpenseType { get; set; }
         public int ExpenseTypeId { get; set; }
 
-        [Required]
+
         public DateTime ExpStrtDate { get; set; }
-        [Required]
+ 
         public DateTime ExpEndDate { get; set; }
 
         public int ExpNoOfDays { get; set; }

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtoCash.Migrations
 {
     [DbContext(typeof(AtoCashDbContext))]
-    [Migration("20220906151014_initial")]
+    [Migration("20220920161442_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -686,7 +686,7 @@ namespace AtoCash.Migrations
                         {
                             Id = 1,
                             CashOnHand = 0.0,
-                            CurBalance = 100000.0,
+                            CurBalance = 10000.0,
                             EmployeeId = 1,
                             UpdatedOn = new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });

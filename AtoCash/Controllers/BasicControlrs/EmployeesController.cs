@@ -113,10 +113,10 @@ namespace AtoCash.Controllers
                 employeeDTO.DepartmentId = employee.DepartmentId;
                 employeeDTO.RoleId = employee.RoleId;
                 employeeDTO.CurrencyTypeId = employee.CurrencyTypeId;
-                employeeDTO.ApprovalGroupId = employee.ApprovalGroupId;
-                employeeDTO.BusinessAreaApprovalGroupId = employee.BusinessAreaApprovalGroupId;
-                employeeDTO.BusinessAreaRoleId = employee.BusinessAreaRoleId;
-                employeeDTO.BusinessAreaId = employee.BusinessAreaId;
+                employeeDTO.ApprovalGroupId = (int)employee.ApprovalGroupId;
+                employeeDTO.BusinessAreaApprovalGroupId = (int)employee.BusinessAreaApprovalGroupId;
+                employeeDTO.BusinessAreaRoleId = (int)employee.BusinessAreaRoleId;
+                employeeDTO.BusinessAreaId = (int)employee.BusinessAreaId;
                 employeeDTO.StatusTypeId = employee.StatusTypeId;
 
 
@@ -159,12 +159,12 @@ namespace AtoCash.Controllers
             employeeDTO.EmploymentTypeId = employee.EmploymentTypeId;
             employeeDTO.DepartmentId = employee.DepartmentId;
             employeeDTO.RoleId = employee.RoleId;
-            employeeDTO.CurrencyTypeId = employee.CurrencyTypeId;
-            employeeDTO.ApprovalGroupId = employee.ApprovalGroupId;
-            employeeDTO.BusinessAreaApprovalGroupId = employee.BusinessAreaApprovalGroupId;
-            employeeDTO.BusinessAreaRoleId = employee.BusinessAreaRoleId;
-            employeeDTO.BusinessAreaId = employee.BusinessAreaId;
-            employeeDTO.StatusTypeId = employee.StatusTypeId;
+            employeeDTO.CurrencyTypeId = (int)employee.CurrencyTypeId;
+            employeeDTO.ApprovalGroupId = (int)employee.ApprovalGroupId;
+            employeeDTO.BusinessAreaApprovalGroupId = (int)employee.BusinessAreaApprovalGroupId;
+            employeeDTO.BusinessAreaRoleId = (int)employee.BusinessAreaRoleId;
+            employeeDTO.BusinessAreaId = (int)employee.BusinessAreaId;
+            employeeDTO.StatusTypeId = (int)employee.StatusTypeId;
 
 
             return employeeDTO;

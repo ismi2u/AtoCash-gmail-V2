@@ -1500,7 +1500,7 @@ namespace AtoCash.Migrations
             migrationBuilder.InsertData(
                 table: "EmpCurrentPettyCashBalances",
                 columns: new[] { "Id", "CashOnHand", "CurBalance", "EmployeeId", "UpdatedOn" },
-                values: new object[] { 1, 0.0, 100000.0, 1, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[] { 1, 0.0, 10000.0, 1, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApprovalRoleMaps_ApprovalGroupId",

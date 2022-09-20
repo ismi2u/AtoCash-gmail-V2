@@ -141,7 +141,7 @@ namespace AtoCash.Data
 
 
             builder.Entity<EmpCurrentPettyCashBalance>().HasData(
-                     new EmpCurrentPettyCashBalance { Id = 1, EmployeeId = 1, CurBalance = 100000, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") });
+                     new EmpCurrentPettyCashBalance { Id = 1, EmployeeId = 1, CurBalance = 10000, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") });
 
             builder.Entity<ApprovalStatusType>().HasData(
                     new ApprovalStatusType { Id = 1, Status = "Initiating", StatusDesc = "Request Initiated" },

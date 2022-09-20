@@ -91,7 +91,7 @@ namespace AtoCash.Models
         public Double TotalClaimAmount { get; set; }
         public DateTime ExpReimReqDate { get; set; }
 
-      
+        public bool isBusinessAreaReq { get; set; }
        
 
        

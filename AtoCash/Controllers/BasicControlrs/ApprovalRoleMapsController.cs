@@ -187,7 +187,7 @@ namespace AtoCash.Controllers
 
             ApprovalRoleMap approvalRoleMap = new ApprovalRoleMap
             {
-                Id = approvalRoleMapDto.Id,
+
                 ApprovalGroupId = approvalRoleMapDto.ApprovalGroupId,
                 RoleId = approvalRoleMapDto.RoleId,
                 ApprovalLevelId = approvalRoleMapDto.ApprovalLevelId
