@@ -21,7 +21,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-   [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+  // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseReimburseRequestsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -241,6 +241,33 @@ namespace AtoCash.Controllers
 
 
         [HttpGet("{id}")]
+        [ActionName("CountAllBusinessAreaExpenseReimburseRequestRaisedByEmployee")]
+        public async Task<ActionResult> CountAllBusinessAreaExpenseReimburseRequestRaisedByEmployee(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+
+            if (employee == null)
+            {
+                return Ok(0);
+            }
+
+            var expenseReimburseRequests = await _context.ExpenseReimburseRequests.Where(p => p.EmployeeId == id && p.BusinessAreaId != null).ToListAsync();
+
+            if (expenseReimburseRequests == null)
+            {
+                return Ok(0);
+            }
+
+            int TotalCount = _context.ExpenseReimburseRequests.Where(c => c.EmployeeId == id).Count();
+            int PendingCount = _context.ExpenseReimburseRequests.Where(c => c.EmployeeId == id && c.ApprovalStatusTypeId == (int)EApprovalStatus.Pending).Count();
+            int RejectedCount = _context.ExpenseReimburseRequests.Where(c => c.EmployeeId == id && c.ApprovalStatusTypeId == (int)EApprovalStatus.Rejected).Count();
+            int ApprovedCount = _context.ExpenseReimburseRequests.Where(c => c.EmployeeId == id && c.ApprovalStatusTypeId == (int)EApprovalStatus.Approved).Count();
+
+            return Ok(new { TotalCount, PendingCount, RejectedCount, ApprovedCount });
+        }
+
+
+        [HttpGet("{id}")]
         [ActionName("CountAllExpenseReimburseRequestRaisedByEmployee")]
         public async Task<ActionResult> CountAllExpenseReimburseRequestRaisedByEmployee(int id)
         {
@@ -251,7 +278,7 @@ namespace AtoCash.Controllers
                 return Ok(0);
             }
 
-            var expenseReimburseRequests = await _context.ExpenseReimburseRequests.Where(p => p.EmployeeId == id).ToListAsync();
+            var expenseReimburseRequests = await _context.ExpenseReimburseRequests.Where(p => p.EmployeeId == id && p.BusinessAreaId == null).ToListAsync();
 
             if (expenseReimburseRequests == null)
             {
@@ -500,7 +527,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ExpenseReimburseRequests/5
         [HttpDelete("{id}")]
-       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+      // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteExpenseReimburseRequest(int id)
         {
             var expenseReimburseRequest = await _context.ExpenseReimburseRequests.FindAsync(id);
