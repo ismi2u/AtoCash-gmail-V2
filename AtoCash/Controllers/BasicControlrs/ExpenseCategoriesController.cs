@@ -106,7 +106,6 @@ namespace AtoCash.Controllers
 
             var expCategory = await _context.ExpenseCategories.FindAsync(id);
 
-            expCategory.ExpenseCategoryName = expenseCategoryDTO.ExpenseCategoryName;
             expCategory.ExpenseCategoryDesc = expenseCategoryDTO.ExpenseCategoryDesc;
             expCategory.StatusTypeId = expenseCategoryDTO.StatusTypeId;
             _context.ExpenseCategories.Update(expCategory);
@@ -117,7 +116,7 @@ namespace AtoCash.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
                 throw;
             }
