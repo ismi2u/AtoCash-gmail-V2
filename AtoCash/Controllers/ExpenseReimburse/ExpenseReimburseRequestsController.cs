@@ -830,7 +830,36 @@ namespace AtoCash.Controllers
             int reqRoleId = reqEmp.RoleId;
             int costCenterId = _context.BusinessAreas.Find(reqEmp.BusinessAreaId).CostCenterId;
 
+            //if Approval Role Map list is null
+
+            var approRoleMap = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqBAApprGroupId).FirstOrDefault();
+
+            if (approRoleMap == null)
+            {
+                return Ok(new RespStatus { Status = "Success", Message = "Approver Role Map not Defined - Contact Admin!" });
+            }
+            else
+            {
+                var approRoleMaps = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqBAApprGroupId).ToList();
+
+                foreach (ApprovalRoleMap ApprMap in approRoleMaps)
+                {
+                    int role_id = ApprMap.RoleId;
+                    var approver = _context.Employees.Where(e => e.RoleId == role_id && e.BusinessAreaApprovalGroupId == reqBAApprGroupId).FirstOrDefault();
+                    if (approver == null)
+                    {
+                        return Ok(new RespStatus { Status = "Success", Message = ApprMap.ApprovalLevel + " Approver not defined - Contact Admin!" });
+                    }
+                  
+                }
+            }
+            
+
             var approRolMapsList = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqBAApprGroupId).ToList();
+
+
+          
+
             int maxApprLevel = approRolMapsList.Select(x => x.ApprovalLevel).Max(a => a.Level);
             int reqApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqBAApprGroupId && a.RoleId == reqRoleId).Select(x => x.ApprovalLevel).FirstOrDefault().Level;
 
