@@ -14,7 +14,7 @@ namespace AtoCash.Controllers.BasicControlrs
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class StatusTypesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -71,7 +71,7 @@ namespace AtoCash.Controllers.BasicControlrs
         // PUT: api/StatusTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutStatusType(int id, StatusType statusType)
         {
             if (id != statusType.Id)
@@ -100,7 +100,7 @@ namespace AtoCash.Controllers.BasicControlrs
         // POST: api/StatusTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<StatusType>> PostStatusType(StatusType statusType)
         {
             _context.StatusTypes.Add(statusType);
@@ -111,7 +111,7 @@ namespace AtoCash.Controllers.BasicControlrs
 
         // DELETE: api/StatusTypes/5
         [HttpDelete("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteStatusType(int id)
         {
             var statusType = await _context.StatusTypes.FindAsync(id);

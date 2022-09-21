@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
+   [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
     public class BusinessAreasController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -122,7 +122,7 @@ namespace AtoCash.Controllers
         // PUT: api/BusinessAreas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutBusinessArea(int id, BusinessAreaDTO BusinessAreaDto)
         {
             if (id != BusinessAreaDto.Id)
@@ -160,7 +160,7 @@ namespace AtoCash.Controllers
 
         // POST: api/BusinessAreas
         [HttpPost]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<BusinessArea>> PostBusinessArea(BusinessAreaDTO BusinessAreaDto)
         {
             var dept = _context.BusinessAreas.Where(c => c.BusinessAreaCode == BusinessAreaDto.BusinessAreaCode).FirstOrDefault();
@@ -185,7 +185,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/BusinessAreas/5
         [HttpDelete("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteBusinessArea(int id)
         {
 
