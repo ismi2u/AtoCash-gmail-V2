@@ -828,7 +828,7 @@ namespace AtoCash.Controllers
             Employee reqEmp = _context.Employees.Find(reqEmpid);
             int reqBAApprGroupId = reqEmp.BusinessAreaApprovalGroupId;// here the approval group shoulbe be based on Business Area
             int reqRoleId = reqEmp.RoleId;
-            int costCenterId = _context.BusinessAreas.Find(reqEmp.BusinessAreaApprovalGroupId).CostCenterId;
+            int costCenterId = _context.BusinessAreas.Find(reqEmp.BusinessAreaId).CostCenterId;
 
             var approRolMapsList = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqBAApprGroupId).ToList();
             int maxApprLevel = approRolMapsList.Select(x => x.ApprovalLevel).Max(a => a.Level);
