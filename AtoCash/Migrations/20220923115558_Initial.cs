@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AtoCash.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -1021,9 +1021,9 @@ namespace AtoCash.Migrations
                     ExpenseReimburseRequestId = table.Column<int>(type: "integer", nullable: false),
                     ExpenseCategoryId = table.Column<int>(type: "integer", nullable: false),
                     ExpenseTypeId = table.Column<int>(type: "integer", nullable: false),
-                    ExpStrtDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ExpEndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ExpNoOfDays = table.Column<int>(type: "integer", nullable: false),
+                    ExpStrtDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ExpEndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ExpNoOfDays = table.Column<int>(type: "integer", nullable: true),
                     TaxNo = table.Column<string>(type: "text", nullable: true),
                     EmployeeId = table.Column<int>(type: "integer", nullable: false),
                     ExpenseReimbClaimAmount = table.Column<double>(type: "double precision", nullable: false),

@@ -1070,13 +1070,13 @@ namespace AtoCash.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ExpEndDate")
+                    b.Property<DateTime?>("ExpEndDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("ExpNoOfDays")
+                    b.Property<int?>("ExpNoOfDays")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ExpStrtDate")
+                    b.Property<DateTime?>("ExpStrtDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("ExpenseCategoryId")

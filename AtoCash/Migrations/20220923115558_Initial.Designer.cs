@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtoCash.Migrations
 {
     [DbContext(typeof(AtoCashDbContext))]
-    [Migration("20220920161442_initial")]
-    partial class initial
+    [Migration("20220923115558_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1072,13 +1072,13 @@ namespace AtoCash.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ExpEndDate")
+                    b.Property<DateTime?>("ExpEndDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("ExpNoOfDays")
+                    b.Property<int?>("ExpNoOfDays")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ExpStrtDate")
+                    b.Property<DateTime?>("ExpStrtDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("ExpenseCategoryId")

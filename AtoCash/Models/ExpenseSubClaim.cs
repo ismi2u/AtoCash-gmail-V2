@@ -36,11 +36,11 @@ namespace AtoCash.Models
         public int ExpenseTypeId { get; set; }
 
 
-        public DateTime ExpStrtDate { get; set; }
+        public DateTime? ExpStrtDate { get; set; }
  
-        public DateTime ExpEndDate { get; set; }
+        public DateTime? ExpEndDate { get; set; }
 
-        public int ExpNoOfDays { get; set; }
+        public int? ExpNoOfDays { get; set; }
 
         public string TaxNo { get; set; }
 
