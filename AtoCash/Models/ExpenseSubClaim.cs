@@ -124,9 +124,9 @@ namespace AtoCash.Models
 
         public string ExpenseCategoryName { get; set; }
 
-        public DateTime ExpStrtDate { get; set; }
-        public DateTime ExpEndDate { get; set; }
-        public int ExpNoOfDays { get; set; }
+        public DateTime? ExpStrtDate { get; set; }
+        public DateTime? ExpEndDate { get; set; }
+        public int? ExpNoOfDays { get; set; }
 
         public string TaxNo { get; set; }
         public int ExpenseReimburseReqId { get; set; }
