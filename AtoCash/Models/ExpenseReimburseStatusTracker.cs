@@ -36,12 +36,20 @@ namespace AtoCash.Models
 
         [Required]
         public DateTime ExpReimReqDate { get; set; }
+        [Required]
+        public bool IsBusinessAreaReq { get; set; }
+
+        /// 
+
+        [ForeignKey("BusinessAreaId")]
+        public virtual BusinessArea BusinessArea { get; set; }
+        public int? BusinessAreaId { get; set; }
 
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
         public int? DepartmentId { get; set; }
 
-        /// 
+
         [ForeignKey("ProjManagerId")]
         public virtual Employee ProjManager { get; set; }
         public int? ProjManagerId { get; set; }
@@ -58,14 +66,26 @@ namespace AtoCash.Models
         public virtual WorkTask WorkTask { get; set; }
         public int? WorkTaskId { get; set; }
 
-        [Required]
-        public int ApprovalGroupId { get; set; }
+        [ForeignKey("ApprovalGroupId")]
+        public virtual ApprovalGroup ApprovalGroup { get; set; }
+        public int? ApprovalGroupId { get; set; }
+
 
         //Approver Role
         [Required]
         [ForeignKey("JobRoleId")]
         public virtual JobRole JobRole { get; set; }
-        public int JobRoleId { get; set; }
+        public int? JobRoleId { get; set; }
+
+
+        [ForeignKey("BAApprovalGroupId")]
+        public virtual ApprovalGroup BusinessAreaApprovalGroup { get; set; }
+        public int? BAApprovalGroupId { get; set; }
+
+
+        [ForeignKey("BARoleId")]
+        public virtual JobRole BAJobRole { get; set; }
+        public int? BARoleId { get; set; }
 
         //Approver ApprovalLevel
         [Required]
@@ -99,6 +119,10 @@ namespace AtoCash.Models
         public string CurrencyType { get; set; }
         public Double TotalClaimAmount { get; set; }
         public DateTime ExpReimReqDate { get; set; }
+
+        public int? BusinessAreaId { get; set; }
+
+        public bool IsBusinessAreaReq { get; set; }
         public int? DepartmentId { get; set; }
         public string Department { get; set; }
         public int? ProjectId { get; set; }
@@ -111,11 +135,17 @@ namespace AtoCash.Models
         public string SubProject { get; set; }
 
 
-        public int ApprovalGroupId { get; set; }
+        public int? ApprovalGroupId { get; set; }
         public int ApprovalLevelId { get; set; }
 
-        public int JobRoleId { get; set; }
+        public int? JobRoleId { get; set; }
         public string JobRole { get; set; }
+
+        public int? BARoleId { get; set; }
+        public string BAJobRole { get; set; }
+
+        public int? BAApprovalGroupId { get; set; }
+        public string BAApprovalGroup { get; set; }
 
         public string ApprovalStatusType { get; set; }
         public int ApprovalStatusTypeId { get; set; }

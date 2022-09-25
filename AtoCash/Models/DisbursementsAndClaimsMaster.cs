@@ -34,6 +34,13 @@ namespace AtoCash.Models
         public virtual RequestType RequestType { get; set; }
         public int RequestTypeId { get; set; }
 
+
+        [ForeignKey("BusinessAreaId")]
+        public virtual BusinessArea BusinessArea { get; set; }
+        public int? BusinessAreaId { get; set; }
+
+        public bool IsBusinessAreaReq { get; set; }
+
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
         public int? DepartmentId { get; set; }
@@ -107,6 +114,8 @@ namespace AtoCash.Models
         public string EmployeeName { get; set; }
         public int? PettyCashRequestId { get; set; }
         public int? ExpenseReimburseReqId { get; set; }
+
+        public bool IsBusinessAreaReq { get; set; }
         public int RequestTypeId { get; set; }
         public string RequestType { get; set; }
 

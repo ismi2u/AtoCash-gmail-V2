@@ -82,7 +82,8 @@ namespace AtoCash.Models
         [Column(TypeName = "varchar(250)")]
         public string Description { get; set; }
 
-
+        [Required]
+        public bool IsBusinessAreaReq { get; set; }
 
         [ForeignKey("BusinessAreaId")]
         public virtual BusinessArea BusinessArea { get; set; }
@@ -149,6 +150,8 @@ namespace AtoCash.Models
         public string Location { get; set; }
 
         public string Description { get; set; }
+
+        public bool IsBusinessAreaReq { get; set; }
         //Foreign Key Relationsions
 
         public int CurrencyTypeId { get; set; }

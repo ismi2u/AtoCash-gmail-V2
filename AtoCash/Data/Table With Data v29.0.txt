@@ -1,40 +1,10 @@
-
-INSERT INTO public."ExpenseCategories"(
-	"Id", "ExpenseCategoryName", "ExpenseCategoryDesc", "StatusTypeId")
-	VALUES (1, 'EXP-CAT-INV-001', 'EXP-CAT-INV-001', 1);
-
-INSERT INTO public."GeneralLedger"(
-	"Id", "GeneralLedgerAccountNo", "GeneralLedgerAccountName", "StatusTypeId")
-	VALUES (1, 'GLT001', 'GLT001 DESC', 1);
-	
-	
-	INSERT INTO public."ExpenseTypes"(
-	"Id", "ExpenseTypeName", "ExpenseTypeDesc", "ExpenseCategoryId", "GeneralLedgerId", "StatusTypeId")
-	VALUES (1, 'Food Expsense', 'Food Related Expsenses', 1, 1, 1);
-
-	INSERT INTO public."ApprovalRoleMaps"(
-	"Id", "ApprovalGroupId", "RoleId", "ApprovalLevelId")
-	VALUES (1, 1, 1, 1);
-
-
-	INSERT INTO public."RequestTypes"(
-	"Id", "RequestName", "RequestTypeDesc")
-	VALUES (1, 'Petty Cash Request', 'Petty Cash Request');
-	
-	INSERT INTO public."RequestTypes"(
-	"Id", "RequestName", "RequestTypeDesc")
-	VALUES (2, 'Department Expense Reimbursement', 'Department Expense Reimbursement');
-	
-	INSERT INTO public."RequestTypes"(
-	"Id", "RequestName", "RequestTypeDesc")
-	VALUES (3, 'Store Expense Reimbursement', 'StoreExpense Reimbursement');
---
-
+---
 INSERT INTO public."AspNetUsers" ("Id", "EmployeeId", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'Irfan3@gmail.com', 'IRFAN3@GMAIL.COM', 'irfan3@gmail.com', 'IRFAN3@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
 
 
-INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abf2af3-dc89-4f3f-adaa-6c136358e9b0', 'Admin', 'ADMIN', 'a51632b1-5957-4d1b-8025-75143dff446a');
 INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('user2af3-dc89-4f3f-adaa-6c136358user', 'User', 'USER', 'auser2b1-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abf2af3-dc89-4f3f-adaa-6c136358e9b0', 'Admin', 'ADMIN', 'a51632b1-5957-4d1b-8025-75143dff446a');
+
 
 
 INSERT INTO public."AspNetUserRoles" ("UserId", "RoleId") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', '2abf2af3-dc89-4f3f-adaa-6c136358e9b0');

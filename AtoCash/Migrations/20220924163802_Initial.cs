@@ -702,6 +702,7 @@ namespace AtoCash.Migrations
                     CurrencyTypeId = table.Column<int>(type: "integer", nullable: false),
                     TotalClaimAmount = table.Column<double>(type: "double precision", nullable: false),
                     ExpReimReqDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsBusinessAreaReq = table.Column<bool>(type: "boolean", nullable: false),
                     DepartmentId = table.Column<int>(type: "integer", nullable: true),
                     BusinessAreaId = table.Column<int>(type: "integer", nullable: true),
                     ProjectId = table.Column<int>(type: "integer", nullable: true),
@@ -929,13 +930,17 @@ namespace AtoCash.Migrations
                     CurrencyTypeId = table.Column<int>(type: "integer", nullable: false),
                     TotalClaimAmount = table.Column<double>(type: "double precision", nullable: false),
                     ExpReimReqDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsBusinessAreaReq = table.Column<bool>(type: "boolean", nullable: false),
+                    BusinessAreaId = table.Column<int>(type: "integer", nullable: true),
                     DepartmentId = table.Column<int>(type: "integer", nullable: true),
                     ProjManagerId = table.Column<int>(type: "integer", nullable: true),
                     ProjectId = table.Column<int>(type: "integer", nullable: true),
                     SubProjectId = table.Column<int>(type: "integer", nullable: true),
                     WorkTaskId = table.Column<int>(type: "integer", nullable: true),
-                    ApprovalGroupId = table.Column<int>(type: "integer", nullable: false),
+                    ApprovalGroupId = table.Column<int>(type: "integer", nullable: true),
                     JobRoleId = table.Column<int>(type: "integer", nullable: false),
+                    BAApprovalGroupId = table.Column<int>(type: "integer", nullable: true),
+                    BARoleId = table.Column<int>(type: "integer", nullable: true),
                     ApprovalLevelId = table.Column<int>(type: "integer", nullable: false),
                     ApprovalStatusTypeId = table.Column<int>(type: "integer", nullable: false),
                     ApprovedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -944,6 +949,18 @@ namespace AtoCash.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ExpenseReimburseStatusTrackers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExpenseReimburseStatusTrackers_ApprovalGroups_ApprovalGroup~",
+                        column: x => x.ApprovalGroupId,
+                        principalTable: "ApprovalGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ExpenseReimburseStatusTrackers_ApprovalGroups_BAApprovalGro~",
+                        column: x => x.BAApprovalGroupId,
+                        principalTable: "ApprovalGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ExpenseReimburseStatusTrackers_ApprovalLevels_ApprovalLevel~",
                         column: x => x.ApprovalLevelId,
@@ -956,6 +973,12 @@ namespace AtoCash.Migrations
                         principalTable: "ApprovalStatusTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExpenseReimburseStatusTrackers_BusinessAreas_BusinessAreaId",
+                        column: x => x.BusinessAreaId,
+                        principalTable: "BusinessAreas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ExpenseReimburseStatusTrackers_CurrencyTypes_CurrencyTypeId",
                         column: x => x.CurrencyTypeId,
@@ -986,6 +1009,12 @@ namespace AtoCash.Migrations
                         principalTable: "ExpenseReimburseRequests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExpenseReimburseStatusTrackers_JobRoles_BARoleId",
+                        column: x => x.BARoleId,
+                        principalTable: "JobRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ExpenseReimburseStatusTrackers_JobRoles_JobRoleId",
                         column: x => x.JobRoleId,
@@ -1035,6 +1064,7 @@ namespace AtoCash.Migrations
                     Vendor = table.Column<string>(type: "varchar(50)", nullable: false),
                     Location = table.Column<string>(type: "varchar(20)", nullable: false),
                     Description = table.Column<string>(type: "varchar(250)", nullable: false),
+                    IsBusinessAreaReq = table.Column<bool>(type: "boolean", nullable: false),
                     BusinessAreaId = table.Column<int>(type: "integer", nullable: true),
                     DepartmentId = table.Column<int>(type: "integer", nullable: true),
                     ProjectId = table.Column<int>(type: "integer", nullable: true),
@@ -1203,6 +1233,8 @@ namespace AtoCash.Migrations
                     PettyCashRequestId = table.Column<int>(type: "integer", nullable: true),
                     ExpenseReimburseReqId = table.Column<int>(type: "integer", nullable: true),
                     RequestTypeId = table.Column<int>(type: "integer", nullable: false),
+                    BusinessAreaId = table.Column<int>(type: "integer", nullable: true),
+                    IsBusinessAreaReq = table.Column<bool>(type: "boolean", nullable: false),
                     DepartmentId = table.Column<int>(type: "integer", nullable: true),
                     ProjectId = table.Column<int>(type: "integer", nullable: true),
                     SubProjectId = table.Column<int>(type: "integer", nullable: true),
@@ -1230,6 +1262,12 @@ namespace AtoCash.Migrations
                         principalTable: "ApprovalStatusTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DisbursementsAndClaimsMasters_BusinessAreas_BusinessAreaId",
+                        column: x => x.BusinessAreaId,
+                        principalTable: "BusinessAreas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DisbursementsAndClaimsMasters_CostCenters_CostCenterId",
                         column: x => x.CostCenterId,
@@ -1408,11 +1446,11 @@ namespace AtoCash.Migrations
                 columns: new[] { "Id", "Status", "StatusDesc" },
                 values: new object[,]
                 {
-                    { 1, "Initiating", "Request Initiated" },
-                    { 2, "Pending", "Awaiting Approval" },
-                    { 3, "In Review", "Request is in progress" },
+                    { 5, "Rejected", "Request is Rejected" },
                     { 4, "Approved", "Request Approved" },
-                    { 5, "Rejected", "Request is Rejected" }
+                    { 3, "In Review", "Request is in progress" },
+                    { 2, "Pending", "Awaiting Approval" },
+                    { 1, "Initiating", "Request Initiated" }
                 });
 
             migrationBuilder.InsertData(
@@ -1420,8 +1458,8 @@ namespace AtoCash.Migrations
                 columns: new[] { "Id", "EmpJobTypeCode", "EmpJobTypeDesc" },
                 values: new object[,]
                 {
-                    { 2, "PT01", "Part Time Emp" },
-                    { 1, "FT01", "Full Time Emp" }
+                    { 1, "FT01", "Full Time Emp" },
+                    { 2, "PT01", "Part Time Emp" }
                 });
 
             migrationBuilder.InsertData(
@@ -1429,20 +1467,31 @@ namespace AtoCash.Migrations
                 columns: new[] { "Id", "IsStoreRole", "MaxPettyCashAllowed", "RoleCode", "RoleName" },
                 values: new object[,]
                 {
-                    { 8, true, 100000.0, "MUMB STORE-MGR001", "MUMBAI STORE MANAGER" },
-                    { 1, false, 10000.0, "DEPT-EMP001", "DEPT BASE EMPLOYEE" },
-                    { 2, false, 20000.0, "DEPT-EMP002", "DEPT SUPERVISOR EMPLOYEE" },
-                    { 3, false, 50000.0, "DEPTMGR", "DEPARTMENT MANAGER" },
-                    { 4, false, 100000.0, "DEPT-FINMGR", "DEPARTMENT FINANCE MANAGER" },
-                    { 5, false, 100000.0, "DEPT-FIN HEAD", "DEPARTMENT FINANCE HEAD" },
-                    { 6, true, 100000.0, "COIM STORE-MGR001", "COIMBTR STORE MANAGER" },
-                    { 7, true, 100000.0, "CHEN STORE-MGR001", "CHENNAI STORE MANAGER" },
-                    { 9, true, 100000.0, "TRUP STORE-MGR001", "TIRUPUR STORE MANAGER" },
-                    { 10, true, 100000.0, "MADU STORE-MGR001", "MADURAI STORE MANAGER" },
-                    { 11, true, 100000.0, "OOTY STORE-MGR001", "OOTY STORE MANAGER" },
-                    { 12, true, 100000.0, "STOR-AREA-MGR-001", "AREA-001  MANAGER" },
+                    { 15, true, 100000.0, "STOR-BASEEMP-000", "STOR-BASEEMP-000" },
+                    { 14, true, 100000.0, "STOR OPS-MGR", "STORE OPS MANAGER" },
                     { 13, true, 100000.0, "STOR-AREA-MGR-002", "AREA-002 MANAGER" },
-                    { 14, true, 100000.0, "STOR OPS-MGR", "STORE OPS MANAGER" }
+                    { 12, true, 100000.0, "STOR-AREA-MGR-001", "AREA-001  MANAGER" },
+                    { 11, true, 100000.0, "OOTY STORE-MGR001", "OOTY STORE MANAGER" },
+                    { 10, true, 100000.0, "MADU STORE-MGR001", "MADURAI STORE MANAGER" },
+                    { 9, true, 100000.0, "TRUP STORE-MGR001", "TIRUPUR STORE MANAGER" },
+                    { 2, false, 20000.0, "DEPT-EMP002", "DEPT SUPERVISOR EMPLOYEE" },
+                    { 7, true, 100000.0, "CHEN STORE-MGR001", "CHENNAI STORE MANAGER" },
+                    { 6, true, 100000.0, "COIM STORE-MGR001", "COIMBTR STORE MANAGER" },
+                    { 5, false, 100000.0, "DEPT-FIN HEAD", "DEPARTMENT FINANCE HEAD" },
+                    { 4, false, 100000.0, "DEPT-FINMGR", "DEPARTMENT FINANCE MANAGER" },
+                    { 3, false, 50000.0, "DEPTMGR", "DEPARTMENT MANAGER" },
+                    { 1, false, 10000.0, "DEPT-EMP001", "DEPT BASE EMPLOYEE" },
+                    { 8, true, 100000.0, "MUMB STORE-MGR001", "MUMBAI STORE MANAGER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RequestTypes",
+                columns: new[] { "Id", "RequestName", "RequestTypeDesc" },
+                values: new object[,]
+                {
+                    { 1, "Petty Cash Request", "Petty Cash Request" },
+                    { 2, "Department Expense Reimbursement", "Department Expense Reimbursement" },
+                    { 3, "Store Expense Reimbursement", "Store Expense Reimbursement" }
                 });
 
             migrationBuilder.InsertData(
@@ -1452,6 +1501,17 @@ namespace AtoCash.Migrations
                 {
                     { 1, "Active" },
                     { 2, "Inactive" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ApprovalRoleMaps",
+                columns: new[] { "Id", "ApprovalGroupId", "ApprovalLevelId", "RoleId" },
+                values: new object[,]
+                {
+                    { 3, 1, 1, 1 },
+                    { 4, 1, 2, 2 },
+                    { 2, 4, 2, 6 },
+                    { 1, 4, 1, 15 }
                 });
 
             migrationBuilder.InsertData(
@@ -1477,6 +1537,16 @@ namespace AtoCash.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ExpenseCategories",
+                columns: new[] { "Id", "ExpenseCategoryDesc", "ExpenseCategoryName", "StatusTypeId" },
+                values: new object[] { 1, "EXP-CAT-INV-001", "EXP-CAT-INV-001", 1 });
+
+            migrationBuilder.InsertData(
+                table: "GeneralLedger",
+                columns: new[] { "Id", "GeneralLedgerAccountName", "GeneralLedgerAccountNo", "StatusTypeId" },
+                values: new object[] { 1, "GLT001 NAME", "GLT001", 1 });
+
+            migrationBuilder.InsertData(
                 table: "BusinessAreas",
                 columns: new[] { "Id", "BusinessAreaCode", "BusinessAreaName", "CostCenterId", "StatusTypeId" },
                 values: new object[] { 1, "COIMBATORE-STOR", "CBE-STORE-GROUP-001", 3, 1 });
@@ -1493,14 +1563,27 @@ namespace AtoCash.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ExpenseTypes",
+                columns: new[] { "Id", "ExpenseCategoryId", "ExpenseTypeDesc", "ExpenseTypeName", "GeneralLedgerId", "StatusTypeId" },
+                values: new object[] { 1, 1, "Food Related Expsenses", "Food Expsense", 1, 1 });
+
+            migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "Id", "ApprovalGroupId", "BankAccount", "BankCardNo", "BusinessAreaApprovalGroupId", "BusinessAreaId", "BusinessAreaRoleId", "CurrencyTypeId", "DOB", "DOJ", "DepartmentId", "Email", "EmpCode", "EmploymentTypeId", "FirstName", "Gender", "LastName", "MiddleName", "MobileNumber", "NationalID", "Nationality", "PassportNo", "RoleId", "StatusTypeId", "TaxNumber" },
-                values: new object[] { 1, 1, "SBIN0012345", "SBC001234", 4, 1, 6, 2, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "irfan3@gmail.com", "EMP001", 1, "Irfan", "Male", "Rashid", "H", "1234533325", "AADH001243", "Indian", "MDB12345", 1, 1, "TIN12345" });
+                values: new object[,]
+                {
+                    { 1, 1, "12342N0012345", "1234222222001234", 4, 1, 15, 2, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "irfan3@gmail.com", "EMP001", 1, "Irfan", "Male", "Rashid", "H", "1234533325", "AADH001243", "Indian", "MDB12345", 1, 1, "1234512345" },
+                    { 2, 1, "12342N0012354", "1234222222001134", 4, 1, 6, 2, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "ismi2u@gmail.com", "EMP002", 1, "Ismail", "Male", "Khan", "H", "8297333325", "AADH001249", "Indian", "MD0712345", 2, 1, "1234512345" }
+                });
 
             migrationBuilder.InsertData(
                 table: "EmpCurrentPettyCashBalances",
                 columns: new[] { "Id", "CashOnHand", "CurBalance", "EmployeeId", "UpdatedOn" },
-                values: new object[] { 1, 0.0, 10000.0, 1, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[,]
+                {
+                    { 1, 0.0, 10000.0, 1, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 0.0, 10000.0, 2, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApprovalRoleMaps_ApprovalGroupId",
@@ -1638,6 +1721,11 @@ namespace AtoCash.Migrations
                 name: "IX_DisbursementsAndClaimsMasters_ApprovalStatusId",
                 table: "DisbursementsAndClaimsMasters",
                 column: "ApprovalStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DisbursementsAndClaimsMasters_BusinessAreaId",
+                table: "DisbursementsAndClaimsMasters",
+                column: "BusinessAreaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DisbursementsAndClaimsMasters_CostCenterId",
@@ -1790,6 +1878,11 @@ namespace AtoCash.Migrations
                 column: "WorkTaskId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExpenseReimburseStatusTrackers_ApprovalGroupId",
+                table: "ExpenseReimburseStatusTrackers",
+                column: "ApprovalGroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExpenseReimburseStatusTrackers_ApprovalLevelId",
                 table: "ExpenseReimburseStatusTrackers",
                 column: "ApprovalLevelId");
@@ -1798,6 +1891,21 @@ namespace AtoCash.Migrations
                 name: "IX_ExpenseReimburseStatusTrackers_ApprovalStatusTypeId",
                 table: "ExpenseReimburseStatusTrackers",
                 column: "ApprovalStatusTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpenseReimburseStatusTrackers_BAApprovalGroupId",
+                table: "ExpenseReimburseStatusTrackers",
+                column: "BAApprovalGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpenseReimburseStatusTrackers_BARoleId",
+                table: "ExpenseReimburseStatusTrackers",
+                column: "BARoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpenseReimburseStatusTrackers_BusinessAreaId",
+                table: "ExpenseReimburseStatusTrackers",
+                column: "BusinessAreaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExpenseReimburseStatusTrackers_CurrencyTypeId",

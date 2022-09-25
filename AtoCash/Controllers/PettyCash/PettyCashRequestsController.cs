@@ -121,6 +121,8 @@ namespace AtoCash.Controllers
         public async Task<ActionResult<IEnumerable<PettyCashRequestDTO>>> GetPettyCashRequestRaisedForEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
+            int roleId = employee.RoleId;
+            int BARoleId = employee.BusinessAreaRoleId;
 
             if (employee == null)
             {
@@ -128,7 +130,7 @@ namespace AtoCash.Controllers
             }
 
             //get the employee's approval level for comparison with approver level  to decide "ShowEditDelete" bool
-            int reqEmpApprLevelId = _context.ApprovalRoleMaps.Where(a => a.RoleId == _context.Employees.Find(id).RoleId).FirstOrDefault().ApprovalLevelId;
+            int reqEmpApprLevelId = _context.ApprovalRoleMaps.Where(a => a.RoleId == roleId || a.RoleId == BARoleId).FirstOrDefault().ApprovalLevelId;
             int reqEmpApprLevel = _context.ApprovalLevels.Find(reqEmpApprLevelId).Level;
 
             var pettyCashRequests = await _context.PettyCashRequests.Where(p => p.EmployeeId == id).ToListAsync();

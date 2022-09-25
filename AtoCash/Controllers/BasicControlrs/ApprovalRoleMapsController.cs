@@ -46,8 +46,8 @@ namespace AtoCash.Controllers
                 approvalRoleMapDTO.ApprovalLevel = _context.ApprovalLevels.Find(approvalRoleMap.ApprovalLevelId).Level;
 
 
-                int empCount = _context.Employees.Where(e => e.ApprovalGroupId == approvalRoleMap.ApprovalGroupId && e.RoleId == approvalRoleMap.RoleId).Count();
-                var employeeAssigned = _context.Employees.Where(e => e.ApprovalGroupId == approvalRoleMap.ApprovalGroupId && e.RoleId == approvalRoleMap.RoleId).FirstOrDefault();
+                int empCount = _context.Employees.Where(e => (e.ApprovalGroupId == approvalRoleMap.ApprovalGroupId || e.BusinessAreaApprovalGroupId == approvalRoleMap.ApprovalGroupId) && (e.RoleId == approvalRoleMap.RoleId || e.BusinessAreaRoleId == approvalRoleMap.RoleId)).Count();
+                var employeeAssigned = _context.Employees.Where(e => (e.ApprovalGroupId == approvalRoleMap.ApprovalGroupId || e.BusinessAreaApprovalGroupId == approvalRoleMap.ApprovalGroupId) && (e.RoleId == approvalRoleMap.RoleId || e.BusinessAreaRoleId == approvalRoleMap.RoleId)).FirstOrDefault();
                 
                 string empName = string.Empty;
                 int ApprvLevel = _context.ApprovalLevels.Find(approvalRoleMap.ApprovalLevelId).Level;

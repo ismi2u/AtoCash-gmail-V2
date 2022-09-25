@@ -123,13 +123,15 @@ namespace AtoCash.Controllers
         {
             var employee = await _context.Employees.FindAsync(id);
 
+            var roleid = employee.RoleId;
+
             if (employee == null)
             {
                 return Conflict(new RespStatus { Status = "Failure", Message = "Employee Id is Invalid!" });
             }
 
             //get the employee's approval level for comparison with approver level  to decide "ShowEditDelete" bool
-            int reqEmpApprLevelId = _context.ApprovalRoleMaps.Where(a => a.RoleId == _context.Employees.Find(id).RoleId).FirstOrDefault().ApprovalLevelId;
+            int reqEmpApprLevelId = _context.ApprovalRoleMaps.Where(a => a.RoleId == roleid).FirstOrDefault().ApprovalLevelId;
             int reqEmpApprLevel = _context.ApprovalLevels.Find(reqEmpApprLevelId).Level;
 
 

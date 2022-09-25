@@ -58,7 +58,8 @@ namespace AtoCash.Data
            new JobRole { Id = 11, RoleCode = "OOTY STORE-MGR001", RoleName = "OOTY STORE MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
            new JobRole { Id = 12, RoleCode = "STOR-AREA-MGR-001", RoleName = "AREA-001  MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
            new JobRole { Id = 13, RoleCode = "STOR-AREA-MGR-002", RoleName = "AREA-002 MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 14, RoleCode = "STOR OPS-MGR", RoleName = "STORE OPS MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 }
+           new JobRole { Id = 14, RoleCode = "STOR OPS-MGR", RoleName = "STORE OPS MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
+             new JobRole { Id = 15, RoleCode = "STOR-BASEEMP-000", RoleName = "STOR-BASEEMP-000", IsStoreRole = true, MaxPettyCashAllowed = 100000 }
            );
 
             builder.Entity<ApprovalLevel>().HasData(
@@ -116,11 +117,11 @@ namespace AtoCash.Data
                          MiddleName = "H",
                          LastName = "Rashid",
                          EmpCode = "EMP001",
-                         BankAccount = "SBIN0012345",
-                         BankCardNo = "SBC001234",
+                         BankAccount = "12342N0012345",
+                         BankCardNo = "1234222222001234",
                          NationalID = "AADH001243",
                          PassportNo = "MDB12345",
-                         TaxNumber = "TIN12345",
+                         TaxNumber = "1234512345",
                          Nationality = "Indian",
                          DOB = Convert.ToDateTime("06/12/2000"),
                          DOJ = Convert.ToDateTime("06/12/2019"),
@@ -133,6 +134,34 @@ namespace AtoCash.Data
                          RoleId = 1,
                          ApprovalGroupId = 1,
                          BusinessAreaApprovalGroupId = 4,
+                         BusinessAreaRoleId = 15,
+                         CurrencyTypeId = 2,
+                         StatusTypeId = 1
+                     },
+                     new Employee
+                     {
+                         Id = 2,
+                         FirstName = "Ismail",
+                         MiddleName = "H",
+                         LastName = "Khan",
+                         EmpCode = "EMP002",
+                         BankAccount = "12342N0012354",
+                         BankCardNo = "1234222222001134",
+                         NationalID = "AADH001249",
+                         PassportNo = "MD0712345",
+                         TaxNumber = "1234512345",
+                         Nationality = "Indian",
+                         DOB = Convert.ToDateTime("06/12/2000"),
+                         DOJ = Convert.ToDateTime("06/12/2019"),
+                         Gender = "Male",
+                         Email = "ismi2u@gmail.com",
+                         MobileNumber = "8297333325",
+                         EmploymentTypeId = 1,
+                         DepartmentId = 1,
+                         BusinessAreaId = 1,
+                         RoleId = 2,
+                         ApprovalGroupId = 1,
+                         BusinessAreaApprovalGroupId = 4,
                          BusinessAreaRoleId = 6,
                          CurrencyTypeId = 2,
                          StatusTypeId = 1
@@ -141,7 +170,8 @@ namespace AtoCash.Data
 
 
             builder.Entity<EmpCurrentPettyCashBalance>().HasData(
-                     new EmpCurrentPettyCashBalance { Id = 1, EmployeeId = 1, CurBalance = 10000, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") });
+                     new EmpCurrentPettyCashBalance { Id = 1, EmployeeId = 1, CurBalance = 10000, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") },
+                     new EmpCurrentPettyCashBalance { Id = 2, EmployeeId = 2, CurBalance = 10000, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") });
 
             builder.Entity<ApprovalStatusType>().HasData(
                     new ApprovalStatusType { Id = 1, Status = "Initiating", StatusDesc = "Request Initiated" },
@@ -151,7 +181,30 @@ namespace AtoCash.Data
                     new ApprovalStatusType { Id = 5, Status = "Rejected", StatusDesc = "Request is Rejected" });
 
 
-        }
+
+            builder.Entity<ApprovalRoleMap>().HasData(
+                   new ApprovalRoleMap { Id = 1, ApprovalGroupId = 4, RoleId = 15, ApprovalLevelId = 1 },
+                   new ApprovalRoleMap { Id = 2, ApprovalGroupId = 4, RoleId = 6, ApprovalLevelId = 2 },
+                    new ApprovalRoleMap { Id = 3, ApprovalGroupId = 1, RoleId = 1, ApprovalLevelId = 1 },
+                     new ApprovalRoleMap { Id = 4, ApprovalGroupId = 1, RoleId = 2, ApprovalLevelId = 2 });
+
+
+            builder.Entity<RequestType>().HasData(
+                new RequestType { Id = 1,  RequestName = "Petty Cash Request",  RequestTypeDesc = "Petty Cash Request"},
+                 new RequestType { Id = 2, RequestName = "Department Expense Reimbursement", RequestTypeDesc = "Department Expense Reimbursement" },
+                  new RequestType { Id = 3, RequestName = "Store Expense Reimbursement", RequestTypeDesc = "Store Expense Reimbursement" }
+                );
+
+
+            builder.Entity<ExpenseCategory>().HasData(new ExpenseCategory {Id = 1, ExpenseCategoryName = "EXP-CAT-INV-001" , ExpenseCategoryDesc= "EXP-CAT-INV-001", StatusTypeId =1 });
+            
+            builder.Entity<GeneralLedger>().HasData(new GeneralLedger { Id = 1, GeneralLedgerAccountNo= "GLT001", GeneralLedgerAccountName = "GLT001 NAME", StatusTypeId = 1 });
+            
+            builder.Entity<ExpenseType>().HasData(new ExpenseType { Id = 1,  ExpenseTypeName = "Food Expsense",  ExpenseTypeDesc = "Food Related Expsenses", ExpenseCategoryId = 1, GeneralLedgerId=1,  StatusTypeId = 1 });
+
+
+
+    }
 
         public DbSet<Employee> Employees { get; set; }
 

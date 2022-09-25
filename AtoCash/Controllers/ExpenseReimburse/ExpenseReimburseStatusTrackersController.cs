@@ -61,7 +61,7 @@ namespace AtoCash.Controllers.ExpenseReimburse
 
 
 
-            var expenseReimburseStatusTrackers = _context.ExpenseReimburseStatusTrackers.Where(e => e.ExpenseReimburseRequestId == id).ToList().ToList().OrderBy(x => x.JobRoleId);
+            var expenseReimburseStatusTrackers = _context.ExpenseReimburseStatusTrackers.Where(e => e.ExpenseReimburseRequestId == id).ToList().OrderBy(x => x.JobRoleId) ;
 
             if (expenseReimburseStatusTrackers == null)
             {
@@ -70,27 +70,44 @@ namespace AtoCash.Controllers.ExpenseReimburse
 
             List<ApprovalStatusFlowVM> ListApprovalStatusFlow = new();
 
-            foreach (ExpenseReimburseStatusTracker claim in expenseReimburseStatusTrackers)
+            foreach (ExpenseReimburseStatusTracker statusTracker in expenseReimburseStatusTrackers)
             {
                 string claimApproverName = null;
 
-                if (claim.ProjectId > 0)
+                if (statusTracker.ProjectId > 0)
                 {
-                    claimApproverName = _context.Employees.Where(e => e.Id == _context.Projects.Find(claim.ProjectId).ProjectManagerId)
+                    claimApproverName = _context.Employees.Where(e => e.Id == _context.Projects.Find(statusTracker.ProjectId).ProjectManagerId)
                         .Select(s => s.GetFullName()).FirstOrDefault();
+                }
+                else if(statusTracker.IsBusinessAreaReq == true)
+                {
+                    claimApproverName = _context.Employees.Where(x => ( x.BusinessAreaRoleId == statusTracker.BARoleId) && (x.BusinessAreaApprovalGroupId == statusTracker.BAApprovalGroupId))
+                       .Select(s => s.GetFullName()).FirstOrDefault();
                 }
                 else
                 {
-                    claimApproverName = _context.Employees.Where(x => x.RoleId == claim.JobRoleId && x.ApprovalGroupId == claim.ApprovalGroupId)
+                    claimApproverName = _context.Employees.Where(x => (x.RoleId == statusTracker.JobRoleId ) && (x.ApprovalGroupId == statusTracker.ApprovalGroupId))
                         .Select(s => s.GetFullName()).FirstOrDefault();
                 }
 
                 ApprovalStatusFlowVM approvalStatusFlow = new();
-                approvalStatusFlow.ApprovalLevel = claim.ApprovalLevelId;
-                approvalStatusFlow.ApproverRole = claim.ProjectId == null ? _context.JobRoles.Find(claim.JobRoleId).RoleName : "Project Manager";
+                approvalStatusFlow.ApprovalLevel = statusTracker.ApprovalLevelId;
+
+                if (statusTracker.IsBusinessAreaReq == true)
+                {
+                    approvalStatusFlow.ApproverRole = _context.JobRoles.Find(statusTracker.BARoleId).RoleName;
+                }
+                else if (statusTracker.ProjectId != null)
+                {
+                    approvalStatusFlow.ApproverRole = "Project Manager";
+                }
+                else
+                {
+                    approvalStatusFlow.ApproverRole = _context.JobRoles.Find(statusTracker.JobRoleId).RoleName;
+                }
                 approvalStatusFlow.ApproverName = claimApproverName;
-                approvalStatusFlow.ApprovedDate = claim.ApprovedDate;
-                approvalStatusFlow.ApprovalStatusType = _context.ApprovalStatusTypes.Find(claim.ApprovalStatusTypeId).Status;
+                approvalStatusFlow.ApprovedDate = statusTracker.ApprovedDate;
+                approvalStatusFlow.ApprovalStatusType = _context.ApprovalStatusTypes.Find(statusTracker.ApprovalStatusTypeId).Status;
                 ListApprovalStatusFlow.Add(approvalStatusFlow);
             }
 
@@ -115,6 +132,8 @@ namespace AtoCash.Controllers.ExpenseReimburse
             Employee apprEmp = _context.Employees.Find(id);
             int jobRoleid = apprEmp.RoleId;
             int apprGroupId = apprEmp.ApprovalGroupId;
+            int BARoleid = apprEmp.BusinessAreaRoleId;
+            int BAApprovalGroupId = apprEmp.BusinessAreaApprovalGroupId;
 
             if (jobRoleid == 0)
             {
@@ -123,8 +142,8 @@ namespace AtoCash.Controllers.ExpenseReimburse
 
             var expenseReimburseStatusTrackers = _context.ExpenseReimburseStatusTrackers
                                 .Where(r =>
-                                    r.JobRoleId == jobRoleid &&
-                                    r.ApprovalGroupId == apprGroupId &&
+                                    (r.JobRoleId == jobRoleid || r.JobRoleId == BARoleid) &&
+                                    (r.ApprovalGroupId == apprGroupId || r.ApprovalGroupId == BAApprovalGroupId) &&
                                     r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending 
                                     && r.ProjManagerId == null
 
@@ -252,7 +271,7 @@ namespace AtoCash.Controllers.ExpenseReimburse
                         int CurClaimApprovalLevel = _context.ApprovalLevels.Find(expenseReimburseStatusTrackerDto.ApprovalLevelId).Level;
                         int nextClaimApprovalLevel = CurClaimApprovalLevel + 1;
                         int qApprovalLevelId;
-                        int apprGroupId = _context.ExpenseReimburseStatusTrackers.Find(expenseReimburseStatusTrackerDto.Id).ApprovalGroupId;
+                        int apprGroupId = (int)_context.ExpenseReimburseStatusTrackers.Find(expenseReimburseStatusTrackerDto.Id).ApprovalGroupId;
 
                         if (_context.ApprovalRoleMaps.Where(a => a.ApprovalGroupId == apprGroupId && a.ApprovalLevelId == nextClaimApprovalLevel).FirstOrDefault() != null)
                         {

@@ -39,6 +39,9 @@ namespace AtoCash.Models
         [Required]
         public DateTime ExpReimReqDate { get; set; }
 
+        [Required]
+        public bool IsBusinessAreaReq { get; set; }
+
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
         public int? DepartmentId { get; set; }
@@ -91,7 +94,7 @@ namespace AtoCash.Models
         public Double TotalClaimAmount { get; set; }
         public DateTime ExpReimReqDate { get; set; }
 
-        public bool isBusinessAreaReq { get; set; }
+        public bool IsBusinessAreaReq { get; set; }
        
 
        
