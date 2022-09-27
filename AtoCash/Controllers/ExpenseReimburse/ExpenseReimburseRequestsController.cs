@@ -21,7 +21,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseReimburseRequestsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -59,8 +59,9 @@ namespace AtoCash.Controllers
                     CurrencyTypeId = expenseReimbRequest.CurrencyTypeId,
                     TotalClaimAmount = expenseReimbRequest.TotalClaimAmount,
 
-                    DepartmentId = expenseReimbRequest.DepartmentId,
-                    DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null,
+
+                    DepartmentId = expenseReimbRequest.IsBusinessAreaReq == false ? expenseReimbRequest.DepartmentId : null,
+                    DepartmentName = expenseReimbRequest.IsBusinessAreaReq == false ? expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null : null,
 
                     BusinessAreaId = expenseReimbRequest.BusinessAreaId,
                     BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null,
@@ -114,7 +115,7 @@ namespace AtoCash.Controllers
 
             if (disbAndClaim != null)
             {
-                tmpAmountToCredit = disbAndClaim.AmountToCredit ??  0;
+                tmpAmountToCredit = disbAndClaim.AmountToCredit ?? 0;
                 tmpAmountToWallet = disbAndClaim.AmountToWallet ?? 0;
                 tmpIsSettledAmountCredited = (bool)disbAndClaim.IsSettledAmountCredited;
 
@@ -129,8 +130,9 @@ namespace AtoCash.Controllers
             expenseReimburseRequestDTO.CurrencyTypeId = expenseReimbRequest.CurrencyTypeId;
             expenseReimburseRequestDTO.TotalClaimAmount = expenseReimbRequest.TotalClaimAmount;
 
-            expenseReimburseRequestDTO.DepartmentId = expenseReimbRequest.DepartmentId;
-            expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null;
+            expenseReimburseRequestDTO.DepartmentId = expenseReimbRequest.IsBusinessAreaReq == false?expenseReimbRequest.DepartmentId : null;
+            expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.IsBusinessAreaReq == false? expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null:null;
+
 
             expenseReimburseRequestDTO.BusinessAreaId = expenseReimbRequest.BusinessAreaId;
             expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
@@ -174,7 +176,7 @@ namespace AtoCash.Controllers
             }
 
             //get the employee's approval level for comparison with approver level  to decide "ShowEditDelete" bool
-            
+
             int empRoleId = employee.RoleId;
             int empBARoleId = employee.BusinessAreaRoleId;
             var approvalRoleMap = _context.ApprovalRoleMaps.Where(a => a.RoleId == empRoleId || a.RoleId == empBARoleId).FirstOrDefault();
@@ -191,51 +193,51 @@ namespace AtoCash.Controllers
             List<ExpenseReimburseRequestDTO> ListExpenseReimburseRequestDTO = new();
             //await Task.Run(() =>
             //{
-                foreach (ExpenseReimburseRequest expenseReimbRequest in expenseReimbRequests)
-                {
-                    ExpenseReimburseRequestDTO expenseReimburseRequestDTO = new();
+            foreach (ExpenseReimburseRequest expenseReimbRequest in expenseReimbRequests)
+            {
+                ExpenseReimburseRequestDTO expenseReimburseRequestDTO = new();
 
-                    expenseReimburseRequestDTO.Id = expenseReimbRequest.Id;
-                    expenseReimburseRequestDTO.EmployeeId = expenseReimbRequest.EmployeeId;
-                    expenseReimburseRequestDTO.EmployeeName = _context.Employees.Find(expenseReimbRequest.EmployeeId).GetFullName();
-                    expenseReimburseRequestDTO.ExpenseReportTitle = expenseReimbRequest.ExpenseReportTitle;
-                    expenseReimburseRequestDTO.CurrencyTypeId = expenseReimbRequest.CurrencyTypeId;
-                    expenseReimburseRequestDTO.TotalClaimAmount = expenseReimbRequest.TotalClaimAmount;
+                expenseReimburseRequestDTO.Id = expenseReimbRequest.Id;
+                expenseReimburseRequestDTO.EmployeeId = expenseReimbRequest.EmployeeId;
+                expenseReimburseRequestDTO.EmployeeName = _context.Employees.Find(expenseReimbRequest.EmployeeId).GetFullName();
+                expenseReimburseRequestDTO.ExpenseReportTitle = expenseReimbRequest.ExpenseReportTitle;
+                expenseReimburseRequestDTO.CurrencyTypeId = expenseReimbRequest.CurrencyTypeId;
+                expenseReimburseRequestDTO.TotalClaimAmount = expenseReimbRequest.TotalClaimAmount;
                 if (expenseReimbRequest.IsBusinessAreaReq == false)
                 {
                     expenseReimburseRequestDTO.DepartmentId = expenseReimbRequest.DepartmentId;
                     expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null;
                 }
-                    expenseReimburseRequestDTO.BusinessAreaId = expenseReimbRequest.BusinessAreaId;
-                    expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
+                expenseReimburseRequestDTO.BusinessAreaId = expenseReimbRequest.BusinessAreaId;
+                expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
 
 
-                    expenseReimburseRequestDTO.ProjectId = expenseReimbRequest.ProjectId;
-                    expenseReimburseRequestDTO.ProjectName = expenseReimbRequest.ProjectId != null ? _context.Projects.Find(expenseReimbRequest.ProjectId).ProjectName : null;
+                expenseReimburseRequestDTO.ProjectId = expenseReimbRequest.ProjectId;
+                expenseReimburseRequestDTO.ProjectName = expenseReimbRequest.ProjectId != null ? _context.Projects.Find(expenseReimbRequest.ProjectId).ProjectName : null;
 
-                    expenseReimburseRequestDTO.SubProjectId = expenseReimbRequest.SubProjectId;
-                    expenseReimburseRequestDTO.SubProjectName = expenseReimbRequest.SubProjectId != null ? _context.SubProjects.Find(expenseReimbRequest.SubProjectId).SubProjectName : null;
+                expenseReimburseRequestDTO.SubProjectId = expenseReimbRequest.SubProjectId;
+                expenseReimburseRequestDTO.SubProjectName = expenseReimbRequest.SubProjectId != null ? _context.SubProjects.Find(expenseReimbRequest.SubProjectId).SubProjectName : null;
 
-                    expenseReimburseRequestDTO.WorkTaskId = expenseReimbRequest.WorkTaskId;
-                    expenseReimburseRequestDTO.WorkTaskName = expenseReimbRequest.WorkTaskId != null ? _context.WorkTasks.Find(expenseReimbRequest.WorkTaskId).TaskName : null;
+                expenseReimburseRequestDTO.WorkTaskId = expenseReimbRequest.WorkTaskId;
+                expenseReimburseRequestDTO.WorkTaskName = expenseReimbRequest.WorkTaskId != null ? _context.WorkTasks.Find(expenseReimbRequest.WorkTaskId).TaskName : null;
 
-                    expenseReimburseRequestDTO.ExpReimReqDate = expenseReimbRequest.ExpReimReqDate;
-                    expenseReimburseRequestDTO.ApprovedDate = expenseReimbRequest.ApprovedDate;
-                    expenseReimburseRequestDTO.ApprovalStatusTypeId = expenseReimbRequest.ApprovalStatusTypeId;
-                    expenseReimburseRequestDTO.ApprovalStatusType = _context.ApprovalStatusTypes.Find(expenseReimbRequest.ApprovalStatusTypeId).Status;
+                expenseReimburseRequestDTO.ExpReimReqDate = expenseReimbRequest.ExpReimReqDate;
+                expenseReimburseRequestDTO.ApprovedDate = expenseReimbRequest.ApprovedDate;
+                expenseReimburseRequestDTO.ApprovalStatusTypeId = expenseReimbRequest.ApprovalStatusTypeId;
+                expenseReimburseRequestDTO.ApprovalStatusType = _context.ApprovalStatusTypes.Find(expenseReimbRequest.ApprovalStatusTypeId).Status;
 
 
-                    int NextApproverInPending = _context.ExpenseReimburseStatusTrackers.Where(t =>
-                          t.ApprovalStatusTypeId == (int)EApprovalStatus.Pending &&
-                          t.ExpenseReimburseRequestId == expenseReimbRequest.Id).Select(s => s.ApprovalLevel.Level).FirstOrDefault();
+                int NextApproverInPending = _context.ExpenseReimburseStatusTrackers.Where(t =>
+                      t.ApprovalStatusTypeId == (int)EApprovalStatus.Pending &&
+                      t.ExpenseReimburseRequestId == expenseReimbRequest.Id).Select(s => s.ApprovalLevel.Level).FirstOrDefault();
 
-                    //set the bookean flat to TRUE if No approver has yet approved the Request else FALSE
-                    //expenseReimburseRequestDTO.ShowEditDelete = reqEmpApprLevel + 1 == NextApproverInPending ? true : false;
-                    expenseReimburseRequestDTO.ShowEditDelete = (reqEmpApprLevel + 1 == NextApproverInPending) && false;
+                //set the bookean flat to TRUE if No approver has yet approved the Request else FALSE
+                //expenseReimburseRequestDTO.ShowEditDelete = reqEmpApprLevel + 1 == NextApproverInPending ? true : false;
+                expenseReimburseRequestDTO.ShowEditDelete = (reqEmpApprLevel + 1 == NextApproverInPending) && false;
 
-                    ListExpenseReimburseRequestDTO.Add(expenseReimburseRequestDTO);
+                ListExpenseReimburseRequestDTO.Add(expenseReimburseRequestDTO);
 
-                }
+            }
             //});
 
             return Ok(ListExpenseReimburseRequestDTO.OrderByDescending(o => o.ExpReimReqDate).ToList());
@@ -530,7 +532,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ExpenseReimburseRequests/5
         [HttpDelete("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteExpenseReimburseRequest(int id)
         {
             var expenseReimburseRequest = await _context.ExpenseReimburseRequests.FindAsync(id);
@@ -569,7 +571,7 @@ namespace AtoCash.Controllers
             Employee reqEmp = _context.Employees.Find(reqEmpid);
             int reqApprGroupId = (int)reqEmp.ApprovalGroupId;
             int reqRoleId = reqEmp.RoleId;
-            int costCenterId = _context.Departments.Find(reqEmp.DepartmentId ).CostCenterId;
+            int costCenterId = _context.Departments.Find(reqEmp.DepartmentId).CostCenterId;
 
             var approRolMapsList = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).ToList();
             int maxApprLevel = approRolMapsList.Select(x => x.ApprovalLevel).Max(a => a.Level);
@@ -727,7 +729,7 @@ namespace AtoCash.Controllers
                     expenseReimburseStatusTracker.ApprovedDate = null;
                     expenseReimburseStatusTracker.ApprovalStatusTypeId = isFirstApprover ? (int)EApprovalStatus.Pending : (int)EApprovalStatus.Initiating;
                     expenseReimburseStatusTracker.Comments = "Awaiting Approver Action";
-                    
+
                     _context.ExpenseReimburseStatusTrackers.Add(expenseReimburseStatusTracker);
                     await _context.SaveChangesAsync();
 
@@ -790,7 +792,7 @@ namespace AtoCash.Controllers
                 {
                     disbursementsAndClaimsMaster.AmountToWallet = RoleLimitAmt - empCurPettyBal;
                     disbursementsAndClaimsMaster.AmountToCredit = expenseReimAmt - (RoleLimitAmt - empCurPettyBal);
-                    
+
                 }
                 else
                 {
@@ -818,7 +820,7 @@ namespace AtoCash.Controllers
 
                     throw;
                 }
-               
+
                 return Ok(new RespStatus { Status = "Success", Message = "Self approved Expense Claim Submitted Successfully!" });
             }
             ///
@@ -861,15 +863,15 @@ namespace AtoCash.Controllers
                     {
                         return Ok(new RespStatus { Status = "Success", Message = ApprMap.ApprovalLevel + " Approver not defined - Contact Admin!" });
                     }
-                  
+
                 }
             }
-            
+
 
             var approRolMapsList = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqBAApprGroupId).ToList();
 
 
-          
+
 
             int maxApprLevel = approRolMapsList.Select(x => x.ApprovalLevel).Max(a => a.Level);
             int reqApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqBAApprGroupId && a.RoleId == reqRoleId).Select(x => x.ApprovalLevel).FirstOrDefault().Level;
@@ -999,7 +1001,7 @@ namespace AtoCash.Controllers
                     {
                         continue;
                     }
-                  
+
                     int approverLevelid = _context.ApprovalRoleMaps.Where(x => x.RoleId == approver.BusinessAreaRoleId && x.ApprovalGroupId == reqBAApprGroupId).FirstOrDefault().ApprovalLevelId;
                     int approverLevel = _context.ApprovalLevels.Find(approverLevelid).Level;
 
