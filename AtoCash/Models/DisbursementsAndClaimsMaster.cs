@@ -121,6 +121,9 @@ namespace AtoCash.Models
 
         public int? DepartmentId { get; set; }
         public string DepartmentName { get; set; }
+
+        public int? BusinessAreaId { get; set; }
+        public string BusinessAreaName { get; set; }
         public int? ProjectId { get; set; }
         public string ProjectName { get; set; }
 

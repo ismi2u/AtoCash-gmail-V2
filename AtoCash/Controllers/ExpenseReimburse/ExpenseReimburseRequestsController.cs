@@ -64,7 +64,7 @@ namespace AtoCash.Controllers
                     DepartmentName = expenseReimbRequest.IsBusinessAreaReq == false ? expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null : null,
 
                     BusinessAreaId = expenseReimbRequest.BusinessAreaId,
-                    BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null,
+                    BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaCode + ":"+ _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null,
 
 
                     ProjectId = expenseReimbRequest.ProjectId,
@@ -135,7 +135,7 @@ namespace AtoCash.Controllers
 
 
             expenseReimburseRequestDTO.BusinessAreaId = expenseReimbRequest.BusinessAreaId;
-            expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
+            expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaCode + ":"+ _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
 
             expenseReimburseRequestDTO.ProjectId = expenseReimbRequest.ProjectId;
             expenseReimburseRequestDTO.ProjectName = expenseReimbRequest.ProjectId != null ? _context.Projects.Find(expenseReimbRequest.ProjectId).ProjectName : null;
