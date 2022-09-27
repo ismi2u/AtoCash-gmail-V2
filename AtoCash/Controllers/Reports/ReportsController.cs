@@ -573,8 +573,8 @@ namespace AtoCash.Controllers
                     disbursementsAndClaimsMasterDTO.RequestType = _context.RequestTypes.Find(disb.RequestTypeId).RequestName;
                     disbursementsAndClaimsMasterDTO.DepartmentId = disb.IsBusinessAreaReq==false? disb.DepartmentId: null;
                     disbursementsAndClaimsMasterDTO.DepartmentName = disb.IsBusinessAreaReq == false ? disb.DepartmentId != null ? _context.Departments.Find(disb.DepartmentId).DeptCode : null:null;
-                    disbursementsAndClaimsMasterDTO.BusinessAreaId = disb.BusinessAreaId;
-                    disbursementsAndClaimsMasterDTO.BusinessAreaName = _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaName;
+                    disbursementsAndClaimsMasterDTO.BusinessAreaId = disb.IsBusinessAreaReq ? disb.BusinessAreaId: null;
+                    disbursementsAndClaimsMasterDTO.BusinessAreaName = disb.IsBusinessAreaReq == true ? _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaName: null;
 
                     disbursementsAndClaimsMasterDTO.ProjectId = disb.ProjectId;
                     disbursementsAndClaimsMasterDTO.ProjectName = disb.ProjectId != null ? _context.Projects.Find(disb.ProjectId).ProjectName : null;
