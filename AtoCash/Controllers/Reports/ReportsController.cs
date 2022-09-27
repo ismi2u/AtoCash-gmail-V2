@@ -559,8 +559,8 @@ namespace AtoCash.Controllers
 
             List<DisbursementsAndClaimsMasterDTO> ListDisbItemsDTO = new();
 
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
                 foreach (DisbursementsAndClaimsMaster disb in result)
                 {
                     DisbursementsAndClaimsMasterDTO disbursementsAndClaimsMasterDTO = new();
@@ -611,7 +611,7 @@ namespace AtoCash.Controllers
                     ListDisbItemsDTO.Add(disbursementsAndClaimsMasterDTO);
                 }
 
-            });
+            //});
             return Ok(ListDisbItemsDTO);
 
         }
