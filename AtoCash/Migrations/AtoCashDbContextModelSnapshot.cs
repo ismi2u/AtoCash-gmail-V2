@@ -109,32 +109,8 @@ namespace AtoCash.Migrations
                         new
                         {
                             Id = 1,
-                            ApprovalGroupCode = "DEPT-APPRL-GROUP-001",
-                            ApprovalGroupDesc = "DEPT-APPRL-GROUP-001"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ApprovalGroupCode = "DEPT-APPRL-GROUP-002",
-                            ApprovalGroupDesc = "DEPT-APPRL-GROUP-002"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ApprovalGroupCode = "DEPT-APPRL-GROUP-003",
-                            ApprovalGroupDesc = "DEPT-APPRL-GROUP-003"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ApprovalGroupCode = "STOR-APPRL-GROUP-001",
-                            ApprovalGroupDesc = "STOR-APPRL-GROUP-001"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ApprovalGroupCode = "STOR-APPRL-GROUP-002",
-                            ApprovalGroupDesc = "STOR-APPRL-GROUP-002"
+                            ApprovalGroupCode = "SETUP-ADMIN",
+                            ApprovalGroupDesc = "SETUP-ADMIN"
                         });
                 });
 
@@ -207,36 +183,6 @@ namespace AtoCash.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("ApprovalRoleMaps");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ApprovalGroupId = 4,
-                            ApprovalLevelId = 1,
-                            RoleId = 15
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ApprovalGroupId = 4,
-                            ApprovalLevelId = 2,
-                            RoleId = 6
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ApprovalGroupId = 1,
-                            ApprovalLevelId = 1,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ApprovalGroupId = 1,
-                            ApprovalLevelId = 2,
-                            RoleId = 2
-                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.ApprovalStatusType", b =>
@@ -323,9 +269,9 @@ namespace AtoCash.Migrations
                         new
                         {
                             Id = 1,
-                            BusinessAreaCode = "COIMBATORE-STOR",
-                            BusinessAreaName = "CBE-STORE-GROUP-001",
-                            CostCenterId = 3,
+                            BusinessAreaCode = "SETUP-BUSSAREA",
+                            BusinessAreaName = "SETUP-BUSSAREA",
+                            CostCenterId = 1,
                             StatusTypeId = 1
                         });
                 });
@@ -433,29 +379,8 @@ namespace AtoCash.Migrations
                         new
                         {
                             Id = 1,
-                            CostCenterCode = "CC-DEPT-001",
-                            CostCenterDesc = "MFG DEPT COST Centre 001",
-                            StatusTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CostCenterCode = "CC-DEPT-002",
-                            CostCenterDesc = "MFG DEPT COST Centre 002",
-                            StatusTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CostCenterCode = "CC-STOR-001",
-                            CostCenterDesc = "STOR COST Centre 001",
-                            StatusTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CostCenterCode = "CC-STOR-002",
-                            CostCenterDesc = "STOR COST Centre 002",
+                            CostCenterCode = "ADM",
+                            CostCenterDesc = "Administration",
                             StatusTypeId = 1
                         });
                 });
@@ -557,32 +482,8 @@ namespace AtoCash.Migrations
                         {
                             Id = 1,
                             CostCenterId = 1,
-                            DeptCode = "MAIN MFG DEPT",
-                            DeptName = "MAIN MFG DEPT ",
-                            StatusTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CostCenterId = 2,
-                            DeptCode = "CBE MFG DEPT",
-                            DeptName = "COIMBATORE MFG DEPT",
-                            StatusTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CostCenterId = 3,
-                            DeptCode = "CBE STORE",
-                            DeptName = "COIMBATORE STORE",
-                            StatusTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CostCenterId = 4,
-                            DeptCode = "CHENNAI STORE",
-                            DeptName = "CHENNAI STORE",
+                            DeptCode = "ADM",
+                            DeptName = "Administration",
                             StatusTypeId = 1
                         });
                 });
@@ -722,16 +623,8 @@ namespace AtoCash.Migrations
                         {
                             Id = 1,
                             CashOnHand = 0.0,
-                            CurBalance = 10000.0,
+                            CurBalance = 0.0,
                             EmployeeId = 1,
-                            UpdatedOn = new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CashOnHand = 0.0,
-                            CurBalance = 10000.0,
-                            EmployeeId = 2,
                             UpdatedOn = new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -848,55 +741,27 @@ namespace AtoCash.Migrations
                         {
                             Id = 1,
                             ApprovalGroupId = 1,
-                            BankAccount = "12342N0012345",
+                            BankAccount = "1234567890",
                             BankCardNo = "1234222222001234",
-                            BusinessAreaApprovalGroupId = 4,
+                            BusinessAreaApprovalGroupId = 1,
                             BusinessAreaId = 1,
-                            BusinessAreaRoleId = 15,
-                            CurrencyTypeId = 2,
+                            BusinessAreaRoleId = 1,
+                            CurrencyTypeId = 3,
                             DOB = new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOJ = new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1,
-                            Email = "irfan3@gmail.com",
-                            EmpCode = "EMP001",
+                            Email = "atocash@gmail.com",
+                            EmpCode = "EMP000",
                             EmploymentTypeId = 1,
-                            FirstName = "Irfan",
+                            FirstName = "Atominos",
                             Gender = "Male",
-                            LastName = "Rashid",
-                            MiddleName = "H",
+                            LastName = "Admin",
+                            MiddleName = "AtoCash",
                             MobileNumber = "1234533325",
-                            NationalID = "AADH001243",
+                            NationalID = "AAAAAAAAAA",
                             Nationality = "Indian",
-                            PassportNo = "MDB12345",
+                            PassportNo = "AAAAAAA",
                             RoleId = 1,
-                            StatusTypeId = 1,
-                            TaxNumber = "1234512345"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ApprovalGroupId = 1,
-                            BankAccount = "12342N0012354",
-                            BankCardNo = "1234222222001134",
-                            BusinessAreaApprovalGroupId = 4,
-                            BusinessAreaId = 1,
-                            BusinessAreaRoleId = 6,
-                            CurrencyTypeId = 2,
-                            DOB = new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DOJ = new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DepartmentId = 1,
-                            Email = "ismi2u@gmail.com",
-                            EmpCode = "EMP002",
-                            EmploymentTypeId = 1,
-                            FirstName = "Ismail",
-                            Gender = "Male",
-                            LastName = "Khan",
-                            MiddleName = "H",
-                            MobileNumber = "8297333325",
-                            NationalID = "AADH001249",
-                            Nationality = "Indian",
-                            PassportNo = "MD0712345",
-                            RoleId = 2,
                             StatusTypeId = 1,
                             TaxNumber = "1234512345"
                         });
@@ -926,13 +791,13 @@ namespace AtoCash.Migrations
                         {
                             Id = 1,
                             EmpJobTypeCode = "FT01",
-                            EmpJobTypeDesc = "Full Time Emp"
+                            EmpJobTypeDesc = "Full Time Employee"
                         },
                         new
                         {
                             Id = 2,
                             EmpJobTypeCode = "PT01",
-                            EmpJobTypeDesc = "Part Time Emp"
+                            EmpJobTypeDesc = "Part Time Employee"
                         });
                 });
 
@@ -959,15 +824,6 @@ namespace AtoCash.Migrations
                     b.HasIndex("StatusTypeId");
 
                     b.ToTable("ExpenseCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ExpenseCategoryDesc = "EXP-CAT-INV-001",
-                            ExpenseCategoryName = "EXP-CAT-INV-001",
-                            StatusTypeId = 1
-                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.ExpenseReimburseRequest", b =>
@@ -1292,17 +1148,6 @@ namespace AtoCash.Migrations
                     b.HasIndex("StatusTypeId");
 
                     b.ToTable("ExpenseTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ExpenseCategoryId = 1,
-                            ExpenseTypeDesc = "Food Related Expsenses",
-                            ExpenseTypeName = "Food Expsense",
-                            GeneralLedgerId = 1,
-                            StatusTypeId = 1
-                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.FileDocument", b =>
@@ -1348,15 +1193,6 @@ namespace AtoCash.Migrations
                     b.HasIndex("StatusTypeId");
 
                     b.ToTable("GeneralLedger");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            GeneralLedgerAccountName = "GLT001 NAME",
-                            GeneralLedgerAccountNo = "GLT001",
-                            StatusTypeId = 1
-                        });
                 });
 
             modelBuilder.Entity("AtoCash.Models.JobRole", b =>
@@ -1389,121 +1225,9 @@ namespace AtoCash.Migrations
                         {
                             Id = 1,
                             IsStoreRole = false,
-                            MaxPettyCashAllowed = 10000.0,
-                            RoleCode = "DEPT-EMP001",
-                            RoleName = "DEPT BASE EMPLOYEE"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsStoreRole = false,
-                            MaxPettyCashAllowed = 20000.0,
-                            RoleCode = "DEPT-EMP002",
-                            RoleName = "DEPT SUPERVISOR EMPLOYEE"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsStoreRole = false,
-                            MaxPettyCashAllowed = 50000.0,
-                            RoleCode = "DEPTMGR",
-                            RoleName = "DEPARTMENT MANAGER"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsStoreRole = false,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "DEPT-FINMGR",
-                            RoleName = "DEPARTMENT FINANCE MANAGER"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsStoreRole = false,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "DEPT-FIN HEAD",
-                            RoleName = "DEPARTMENT FINANCE HEAD"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "COIM STORE-MGR001",
-                            RoleName = "COIMBTR STORE MANAGER"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "CHEN STORE-MGR001",
-                            RoleName = "CHENNAI STORE MANAGER"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "MUMB STORE-MGR001",
-                            RoleName = "MUMBAI STORE MANAGER"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "TRUP STORE-MGR001",
-                            RoleName = "TIRUPUR STORE MANAGER"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "MADU STORE-MGR001",
-                            RoleName = "MADURAI STORE MANAGER"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "OOTY STORE-MGR001",
-                            RoleName = "OOTY STORE MANAGER"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "STOR-AREA-MGR-001",
-                            RoleName = "AREA-001  MANAGER"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "STOR-AREA-MGR-002",
-                            RoleName = "AREA-002 MANAGER"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "STOR OPS-MGR",
-                            RoleName = "STORE OPS MANAGER"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            IsStoreRole = true,
-                            MaxPettyCashAllowed = 100000.0,
-                            RoleCode = "STOR-BASEEMP-000",
-                            RoleName = "STOR-BASEEMP-000"
+                            MaxPettyCashAllowed = 0.0,
+                            RoleCode = "SETUP-ROLE",
+                            RoleName = "SETUP-ROLE"
                         });
                 });
 

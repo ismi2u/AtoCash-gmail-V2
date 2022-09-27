@@ -1421,14 +1421,7 @@ namespace AtoCash.Migrations
             migrationBuilder.InsertData(
                 table: "ApprovalGroups",
                 columns: new[] { "Id", "ApprovalGroupCode", "ApprovalGroupDesc" },
-                values: new object[,]
-                {
-                    { 1, "DEPT-APPRL-GROUP-001", "DEPT-APPRL-GROUP-001" },
-                    { 2, "DEPT-APPRL-GROUP-002", "DEPT-APPRL-GROUP-002" },
-                    { 3, "DEPT-APPRL-GROUP-003", "DEPT-APPRL-GROUP-003" },
-                    { 4, "STOR-APPRL-GROUP-001", "STOR-APPRL-GROUP-001" },
-                    { 5, "STOR-APPRL-GROUP-002", "STOR-APPRL-GROUP-002" }
-                });
+                values: new object[] { 1, "SETUP-ADMIN", "SETUP-ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "ApprovalLevels",
@@ -1447,10 +1440,10 @@ namespace AtoCash.Migrations
                 values: new object[,]
                 {
                     { 5, "Rejected", "Request is Rejected" },
-                    { 4, "Approved", "Request Approved" },
                     { 3, "In Review", "Request is in progress" },
-                    { 2, "Pending", "Awaiting Approval" },
-                    { 1, "Initiating", "Request Initiated" }
+                    { 4, "Approved", "Request Approved" },
+                    { 1, "Initiating", "Request Initiated" },
+                    { 2, "Pending", "Awaiting Approval" }
                 });
 
             migrationBuilder.InsertData(
@@ -1458,31 +1451,14 @@ namespace AtoCash.Migrations
                 columns: new[] { "Id", "EmpJobTypeCode", "EmpJobTypeDesc" },
                 values: new object[,]
                 {
-                    { 1, "FT01", "Full Time Emp" },
-                    { 2, "PT01", "Part Time Emp" }
+                    { 1, "FT01", "Full Time Employee" },
+                    { 2, "PT01", "Part Time Employee" }
                 });
 
             migrationBuilder.InsertData(
                 table: "JobRoles",
                 columns: new[] { "Id", "IsStoreRole", "MaxPettyCashAllowed", "RoleCode", "RoleName" },
-                values: new object[,]
-                {
-                    { 15, true, 100000.0, "STOR-BASEEMP-000", "STOR-BASEEMP-000" },
-                    { 14, true, 100000.0, "STOR OPS-MGR", "STORE OPS MANAGER" },
-                    { 13, true, 100000.0, "STOR-AREA-MGR-002", "AREA-002 MANAGER" },
-                    { 12, true, 100000.0, "STOR-AREA-MGR-001", "AREA-001  MANAGER" },
-                    { 11, true, 100000.0, "OOTY STORE-MGR001", "OOTY STORE MANAGER" },
-                    { 10, true, 100000.0, "MADU STORE-MGR001", "MADURAI STORE MANAGER" },
-                    { 9, true, 100000.0, "TRUP STORE-MGR001", "TIRUPUR STORE MANAGER" },
-                    { 2, false, 20000.0, "DEPT-EMP002", "DEPT SUPERVISOR EMPLOYEE" },
-                    { 7, true, 100000.0, "CHEN STORE-MGR001", "CHENNAI STORE MANAGER" },
-                    { 6, true, 100000.0, "COIM STORE-MGR001", "COIMBTR STORE MANAGER" },
-                    { 5, false, 100000.0, "DEPT-FIN HEAD", "DEPARTMENT FINANCE HEAD" },
-                    { 4, false, 100000.0, "DEPT-FINMGR", "DEPARTMENT FINANCE MANAGER" },
-                    { 3, false, 50000.0, "DEPTMGR", "DEPARTMENT MANAGER" },
-                    { 1, false, 10000.0, "DEPT-EMP001", "DEPT BASE EMPLOYEE" },
-                    { 8, true, 100000.0, "MUMB STORE-MGR001", "MUMBAI STORE MANAGER" }
-                });
+                values: new object[] { 1, false, 0.0, "SETUP-ROLE", "SETUP-ROLE" });
 
             migrationBuilder.InsertData(
                 table: "RequestTypes",
@@ -1504,26 +1480,9 @@ namespace AtoCash.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ApprovalRoleMaps",
-                columns: new[] { "Id", "ApprovalGroupId", "ApprovalLevelId", "RoleId" },
-                values: new object[,]
-                {
-                    { 3, 1, 1, 1 },
-                    { 4, 1, 2, 2 },
-                    { 2, 4, 2, 6 },
-                    { 1, 4, 1, 15 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "CostCenters",
                 columns: new[] { "Id", "CostCenterCode", "CostCenterDesc", "StatusTypeId" },
-                values: new object[,]
-                {
-                    { 1, "CC-DEPT-001", "MFG DEPT COST Centre 001", 1 },
-                    { 2, "CC-DEPT-002", "MFG DEPT COST Centre 002", 1 },
-                    { 3, "CC-STOR-001", "STOR COST Centre 001", 1 },
-                    { 4, "CC-STOR-002", "STOR COST Centre 002", 1 }
-                });
+                values: new object[] { 1, "ADM", "Administration", 1 });
 
             migrationBuilder.InsertData(
                 table: "CurrencyTypes",
@@ -1537,53 +1496,24 @@ namespace AtoCash.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ExpenseCategories",
-                columns: new[] { "Id", "ExpenseCategoryDesc", "ExpenseCategoryName", "StatusTypeId" },
-                values: new object[] { 1, "EXP-CAT-INV-001", "EXP-CAT-INV-001", 1 });
-
-            migrationBuilder.InsertData(
-                table: "GeneralLedger",
-                columns: new[] { "Id", "GeneralLedgerAccountName", "GeneralLedgerAccountNo", "StatusTypeId" },
-                values: new object[] { 1, "GLT001 NAME", "GLT001", 1 });
-
-            migrationBuilder.InsertData(
                 table: "BusinessAreas",
                 columns: new[] { "Id", "BusinessAreaCode", "BusinessAreaName", "CostCenterId", "StatusTypeId" },
-                values: new object[] { 1, "COIMBATORE-STOR", "CBE-STORE-GROUP-001", 3, 1 });
+                values: new object[] { 1, "SETUP-BUSSAREA", "SETUP-BUSSAREA", 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Departments",
                 columns: new[] { "Id", "CostCenterId", "DeptCode", "DeptName", "StatusTypeId" },
-                values: new object[,]
-                {
-                    { 1, 1, "MAIN MFG DEPT", "MAIN MFG DEPT ", 1 },
-                    { 2, 2, "CBE MFG DEPT", "COIMBATORE MFG DEPT", 1 },
-                    { 3, 3, "CBE STORE", "COIMBATORE STORE", 1 },
-                    { 4, 4, "CHENNAI STORE", "CHENNAI STORE", 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ExpenseTypes",
-                columns: new[] { "Id", "ExpenseCategoryId", "ExpenseTypeDesc", "ExpenseTypeName", "GeneralLedgerId", "StatusTypeId" },
-                values: new object[] { 1, 1, "Food Related Expsenses", "Food Expsense", 1, 1 });
+                values: new object[] { 1, 1, "ADM", "Administration", 1 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "Id", "ApprovalGroupId", "BankAccount", "BankCardNo", "BusinessAreaApprovalGroupId", "BusinessAreaId", "BusinessAreaRoleId", "CurrencyTypeId", "DOB", "DOJ", "DepartmentId", "Email", "EmpCode", "EmploymentTypeId", "FirstName", "Gender", "LastName", "MiddleName", "MobileNumber", "NationalID", "Nationality", "PassportNo", "RoleId", "StatusTypeId", "TaxNumber" },
-                values: new object[,]
-                {
-                    { 1, 1, "12342N0012345", "1234222222001234", 4, 1, 15, 2, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "irfan3@gmail.com", "EMP001", 1, "Irfan", "Male", "Rashid", "H", "1234533325", "AADH001243", "Indian", "MDB12345", 1, 1, "1234512345" },
-                    { 2, 1, "12342N0012354", "1234222222001134", 4, 1, 6, 2, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "ismi2u@gmail.com", "EMP002", 1, "Ismail", "Male", "Khan", "H", "8297333325", "AADH001249", "Indian", "MD0712345", 2, 1, "1234512345" }
-                });
+                values: new object[] { 1, 1, "1234567890", "1234222222001234", 1, 1, 1, 3, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "atocash@gmail.com", "EMP000", 1, "Atominos", "Male", "Admin", "AtoCash", "1234533325", "AAAAAAAAAA", "Indian", "AAAAAAA", 1, 1, "1234512345" });
 
             migrationBuilder.InsertData(
                 table: "EmpCurrentPettyCashBalances",
                 columns: new[] { "Id", "CashOnHand", "CurBalance", "EmployeeId", "UpdatedOn" },
-                values: new object[,]
-                {
-                    { 1, 0.0, 10000.0, 1, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 0.0, 10000.0, 2, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) }
-                });
+                values: new object[] { 1, 0.0, 0.0, 1, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApprovalRoleMaps_ApprovalGroupId",

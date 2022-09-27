@@ -15,7 +15,7 @@ namespace AtoCash.Controllers.ExpenseReimburse
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-  // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseReimburseStatusTrackersController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -60,8 +60,24 @@ namespace AtoCash.Controllers.ExpenseReimburse
             }
 
 
+            var expenseReimburseStatusTrackers = _context.ExpenseReimburseStatusTrackers.Where(e => e.ExpenseReimburseRequestId == id).FirstOrDefault();
 
-            var expenseReimburseStatusTrackers = _context.ExpenseReimburseStatusTrackers.Where(e => e.ExpenseReimburseRequestId == id).ToList().OrderBy(x => x.JobRoleId) ;
+
+            if (expenseReimburseStatusTrackers == null)
+            {
+                return Conflict(new RespStatus { Status = "Failure", Message = "Expense-Reimburse Request Id is Not Found" });
+            }
+
+            bool isBussAreaReq = (bool)_context.ExpenseReimburseStatusTrackers.Where(e=> e.ExpenseReimburseRequestId == id).FirstOrDefault().IsBusinessAreaReq;
+
+            var ListOfExpReimStatusTrackers = isBussAreaReq ? _context.ExpenseReimburseStatusTrackers.Where(e => 
+                                e.ExpenseReimburseRequestId == id).ToList().OrderBy(x => x.BARoleId) : _context.ExpenseReimburseStatusTrackers.Where(e => 
+                                e.ExpenseReimburseRequestId == id).ToList().OrderBy(x => x.JobRoleId);
+
+            if (expenseReimburseStatusTrackers == null)
+            {
+                return Conflict(new RespStatus { Status = "Failure", Message = "Expense-Reimburse Request Id is Not Found" });
+            }
 
             if (expenseReimburseStatusTrackers == null)
             {
@@ -70,7 +86,7 @@ namespace AtoCash.Controllers.ExpenseReimburse
 
             List<ApprovalStatusFlowVM> ListApprovalStatusFlow = new();
 
-            foreach (ExpenseReimburseStatusTracker statusTracker in expenseReimburseStatusTrackers)
+            foreach (ExpenseReimburseStatusTracker statusTracker in ListOfExpReimStatusTrackers)
             {
                 string claimApproverName = null;
 
@@ -256,7 +272,13 @@ namespace AtoCash.Controllers.ExpenseReimburse
                 //Department based Expense Reimburse approval/rejection
                 if (expenseReimburseStatusTrackerDto.DepartmentId != null)
                 {
-                    int empApprGroupId = _context.Employees.Find(expenseReimburseStatusTracker.EmployeeId).ApprovalGroupId;
+
+                    int empApprGroupId = 0;
+                    if (expenseReimburseStatusTracker.IsBusinessAreaReq == true)
+                    { empApprGroupId = (int)_context.Employees.Find(expenseReimburseStatusTracker.EmployeeId).BusinessAreaApprovalGroupId; }
+                    else
+                    { empApprGroupId = (int)_context.Employees.Find(expenseReimburseStatusTracker.EmployeeId).ApprovalGroupId; }
+                   
 
                     //Check if the record is already approved
                     //if it is not approved then trigger next approver level email & Change the status to approved
@@ -271,16 +293,31 @@ namespace AtoCash.Controllers.ExpenseReimburse
                         int CurClaimApprovalLevel = _context.ApprovalLevels.Find(expenseReimburseStatusTrackerDto.ApprovalLevelId).Level;
                         int nextClaimApprovalLevel = CurClaimApprovalLevel + 1;
                         int qApprovalLevelId;
-                        int apprGroupId = (int)_context.ExpenseReimburseStatusTrackers.Find(expenseReimburseStatusTrackerDto.Id).ApprovalGroupId;
+                        int apprGroupId = (int)_context.Employees.Find(expenseReimburseStatusTracker.EmployeeId).ApprovalGroupId;
 
-                        if (_context.ApprovalRoleMaps.Where(a => a.ApprovalGroupId == apprGroupId && a.ApprovalLevelId == nextClaimApprovalLevel).FirstOrDefault() != null)
+                        if (expenseReimburseStatusTracker.IsBusinessAreaReq == true)
                         {
-                            qApprovalLevelId = _context.ApprovalLevels.Where(x => x.Level == nextClaimApprovalLevel).FirstOrDefault().Id;
+                            if (_context.ApprovalRoleMaps.Where(a => a.ApprovalGroupId == empApprGroupId && a.ApprovalLevelId == nextClaimApprovalLevel).FirstOrDefault() != null)
+                            {
+                                qApprovalLevelId = _context.ApprovalLevels.Where(x => x.Level == nextClaimApprovalLevel).FirstOrDefault().Id;
+                            }
+                            else
+                            {
+                                qApprovalLevelId = _context.ApprovalLevels.Where(x => x.Level == CurClaimApprovalLevel).FirstOrDefault().Id;
+                                isNextApproverAvailable = false;
+                            }
                         }
                         else
                         {
-                            qApprovalLevelId = _context.ApprovalLevels.Where(x => x.Level == CurClaimApprovalLevel).FirstOrDefault().Id;
-                            isNextApproverAvailable = false;
+                            if (_context.ApprovalRoleMaps.Where(a => a.ApprovalGroupId == apprGroupId && a.ApprovalLevelId == nextClaimApprovalLevel).FirstOrDefault() != null)
+                            {
+                                qApprovalLevelId = _context.ApprovalLevels.Where(x => x.Level == nextClaimApprovalLevel).FirstOrDefault().Id;
+                            }
+                            else
+                            {
+                                qApprovalLevelId = _context.ApprovalLevels.Where(x => x.Level == CurClaimApprovalLevel).FirstOrDefault().Id;
+                                isNextApproverAvailable = false;
+                            }
                         }
 
                         int qApprovalStatusTypeId = isNextApproverAvailable ? (int)EApprovalStatus.Initiating : (int)EApprovalStatus.Pending;

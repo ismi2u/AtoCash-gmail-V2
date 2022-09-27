@@ -1,9 +1,14 @@
 ---
-INSERT INTO public."AspNetUsers" ("Id", "EmployeeId", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'Irfan3@gmail.com', 'IRFAN3@GMAIL.COM', 'irfan3@gmail.com', 'IRFAN3@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" ("Id", "EmployeeId", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'atocash@gmail.com', 'ATOCASH@GMAIL.COM', 'atocash@gmail.com', 'ATOCASH@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
 
 
 INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('user2af3-dc89-4f3f-adaa-6c136358user', 'User', 'USER', 'auser2b1-5957-4d1b-8025-75143dff446a');
 INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abf2af3-dc89-4f3f-adaa-6c136358e9b0', 'Admin', 'ADMIN', 'a51632b1-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abfbara-dc89-4f3f-adaa-6c136358e9b0', 'Manager', 'MANAGER', 'a516bara-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abftera-dc89-4f3f-adaa-6c136358e9b0', 'Finmgr', 'FINMGR', 'a516tera-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abfsaud-dc89-4f3f-adaa-6c136358e9b0', 'AccPayable', 'ACCPAYABLE', 'a516saud-5957-4d1b-8025-75143dff446a');
+
+
 
 
 

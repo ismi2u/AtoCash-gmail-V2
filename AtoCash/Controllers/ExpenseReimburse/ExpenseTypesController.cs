@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseTypesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -129,7 +129,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/ExpenseTypes/5
         [HttpPut("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutExpenseType(int id, ExpenseTypeDTO expenseTypeDTO)
         {
             if (id != expenseTypeDTO.Id)
@@ -163,7 +163,7 @@ namespace AtoCash.Controllers
         // POST: api/ExpenseTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<ExpenseType>> PostExpenseType(ExpenseTypeDTO expenseTypeDTO)
         {
             var eType = _context.ExpenseTypes.Where(e => e.ExpenseTypeName == expenseTypeDTO.ExpenseTypeName).FirstOrDefault();
@@ -186,7 +186,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ExpenseTypes/5
         [HttpDelete("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteExpenseType(int id)
         {
 

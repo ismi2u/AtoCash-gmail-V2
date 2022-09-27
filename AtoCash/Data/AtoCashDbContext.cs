@@ -29,8 +29,8 @@ namespace AtoCash.Data
 
 
             builder.Entity<EmploymentType>().HasData(
-               new EmploymentType { Id = 1, EmpJobTypeCode = "FT01", EmpJobTypeDesc = "Full Time Emp" },
-                new EmploymentType { Id = 2, EmpJobTypeCode = "PT01", EmpJobTypeDesc = "Part Time Emp" }
+               new EmploymentType { Id = 1, EmpJobTypeCode = "FT01", EmpJobTypeDesc = "Full Time Employee" },
+                new EmploymentType { Id = 2, EmpJobTypeCode = "PT01", EmpJobTypeDesc = "Part Time Employee" }
                );
 
 
@@ -44,23 +44,6 @@ namespace AtoCash.Data
 
 
 
-            builder.Entity<JobRole>().HasData(
-           new JobRole { Id = 1, RoleCode = "DEPT-EMP001", RoleName = "DEPT BASE EMPLOYEE", IsStoreRole = false, MaxPettyCashAllowed = 10000 },
-           new JobRole { Id = 2, RoleCode = "DEPT-EMP002", RoleName = "DEPT SUPERVISOR EMPLOYEE", IsStoreRole = false, MaxPettyCashAllowed = 20000 },
-           new JobRole { Id = 3, RoleCode = "DEPTMGR", RoleName = "DEPARTMENT MANAGER", IsStoreRole = false, MaxPettyCashAllowed = 50000 },
-           new JobRole { Id = 4, RoleCode = "DEPT-FINMGR", RoleName = "DEPARTMENT FINANCE MANAGER", IsStoreRole = false, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 5, RoleCode = "DEPT-FIN HEAD", RoleName = "DEPARTMENT FINANCE HEAD", IsStoreRole = false, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 6, RoleCode = "COIM STORE-MGR001", RoleName = "COIMBTR STORE MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 7, RoleCode = "CHEN STORE-MGR001", RoleName = "CHENNAI STORE MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 8, RoleCode = "MUMB STORE-MGR001", RoleName = "MUMBAI STORE MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 9, RoleCode = "TRUP STORE-MGR001", RoleName = "TIRUPUR STORE MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 10, RoleCode = "MADU STORE-MGR001", RoleName = "MADURAI STORE MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 11, RoleCode = "OOTY STORE-MGR001", RoleName = "OOTY STORE MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 12, RoleCode = "STOR-AREA-MGR-001", RoleName = "AREA-001  MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 13, RoleCode = "STOR-AREA-MGR-002", RoleName = "AREA-002 MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-           new JobRole { Id = 14, RoleCode = "STOR OPS-MGR", RoleName = "STORE OPS MANAGER", IsStoreRole = true, MaxPettyCashAllowed = 100000 },
-             new JobRole { Id = 15, RoleCode = "STOR-BASEEMP-000", RoleName = "STOR-BASEEMP-000", IsStoreRole = true, MaxPettyCashAllowed = 100000 }
-           );
 
             builder.Entity<ApprovalLevel>().HasData(
           new ApprovalLevel { Id = 1, Level = 1, LevelDesc = "Level 1" },
@@ -72,106 +55,59 @@ namespace AtoCash.Data
 
 
             builder.Entity<CostCenter>().HasData(
-           new CostCenter { Id = 1, CostCenterCode = "CC-DEPT-001", CostCenterDesc = "MFG DEPT COST Centre 001", StatusTypeId = 1 },
-           new CostCenter { Id = 2, CostCenterCode = "CC-DEPT-002", CostCenterDesc = "MFG DEPT COST Centre 002", StatusTypeId = 1 },
-           new CostCenter { Id = 3, CostCenterCode = "CC-STOR-001", CostCenterDesc = "STOR COST Centre 001", StatusTypeId = 1 },
-           new CostCenter { Id = 4, CostCenterCode = "CC-STOR-002", CostCenterDesc = "STOR COST Centre 002", StatusTypeId = 1 }
-
+           new CostCenter { Id = 1, CostCenterCode = "ADM", CostCenterDesc = "Administration", StatusTypeId = 1 }
            );
 
 
 
             builder.Entity<Department>().HasData(
-           new Department { Id = 1, DeptCode = "MAIN MFG DEPT", DeptName = "MAIN MFG DEPT ", CostCenterId = 1, StatusTypeId = 1 },
-           new Department { Id = 2, DeptCode = "CBE MFG DEPT", DeptName = "COIMBATORE MFG DEPT", CostCenterId = 2, StatusTypeId = 1 },
-           new Department { Id = 3, DeptCode = "CBE STORE", DeptName = "COIMBATORE STORE", CostCenterId = 3, StatusTypeId = 1 },
-           new Department { Id = 4, DeptCode = "CHENNAI STORE", DeptName = "CHENNAI STORE", CostCenterId = 4, StatusTypeId = 1 }
-
+           new Department { Id = 1, DeptCode = "ADM", DeptName = "Administration", CostCenterId = 1, StatusTypeId = 1 }
            );
 
-
-            builder.Entity<ApprovalGroup>().HasData(
-           new ApprovalGroup { Id = 1, ApprovalGroupCode = "DEPT-APPRL-GROUP-001", ApprovalGroupDesc = "DEPT-APPRL-GROUP-001" },
-           new ApprovalGroup { Id = 2, ApprovalGroupCode = "DEPT-APPRL-GROUP-002", ApprovalGroupDesc = "DEPT-APPRL-GROUP-002" },
-           new ApprovalGroup { Id = 3, ApprovalGroupCode = "DEPT-APPRL-GROUP-003", ApprovalGroupDesc = "DEPT-APPRL-GROUP-003" },
-           new ApprovalGroup { Id = 4, ApprovalGroupCode = "STOR-APPRL-GROUP-001", ApprovalGroupDesc = "STOR-APPRL-GROUP-001" },
-           new ApprovalGroup { Id = 5, ApprovalGroupCode = "STOR-APPRL-GROUP-002", ApprovalGroupDesc = "STOR-APPRL-GROUP-002" }
-
-           );
-
-
+            builder.Entity<JobRole>().HasData(
+         new JobRole { Id = 1, RoleCode = "SETUP-ROLE", RoleName = "SETUP-ROLE", IsStoreRole = false, MaxPettyCashAllowed = 0 });
 
             builder.Entity<BusinessArea>().HasData(
-           new BusinessArea { Id = 1, BusinessAreaCode = "COIMBATORE-STOR", BusinessAreaName = "CBE-STORE-GROUP-001", CostCenterId = 3, StatusTypeId = 1 }
-           );
+          new BusinessArea { Id = 1, BusinessAreaCode = "SETUP-BUSSAREA", BusinessAreaName = "SETUP-BUSSAREA", CostCenterId = 1, StatusTypeId = 1 }
+          );
 
-
-
-
+            builder.Entity<ApprovalGroup>().HasData(
+           new ApprovalGroup { Id = 1, ApprovalGroupCode = "SETUP-ADMIN", ApprovalGroupDesc = "SETUP-ADMIN" });
 
             builder.Entity<Employee>().HasData(
                      new Employee
                      {
                          Id = 1,
-                         FirstName = "Irfan",
-                         MiddleName = "H",
-                         LastName = "Rashid",
-                         EmpCode = "EMP001",
-                         BankAccount = "12342N0012345",
+                         FirstName = "Atominos",
+                         MiddleName = "AtoCash",
+                         LastName = "Admin",
+                         EmpCode = "EMP000",
+                         BankAccount = "1234567890",
                          BankCardNo = "1234222222001234",
-                         NationalID = "AADH001243",
-                         PassportNo = "MDB12345",
+                         NationalID = "AAAAAAAAAA",
+                         PassportNo = "AAAAAAA",
                          TaxNumber = "1234512345",
                          Nationality = "Indian",
                          DOB = Convert.ToDateTime("06/12/2000"),
                          DOJ = Convert.ToDateTime("06/12/2019"),
                          Gender = "Male",
-                         Email = "irfan3@gmail.com",
+                         Email = "atocash@gmail.com",
                          MobileNumber = "1234533325",
                          EmploymentTypeId = 1,
                          DepartmentId = 1,
                          BusinessAreaId = 1,
                          RoleId = 1,
                          ApprovalGroupId = 1,
-                         BusinessAreaApprovalGroupId = 4,
-                         BusinessAreaRoleId = 15,
-                         CurrencyTypeId = 2,
+                         BusinessAreaApprovalGroupId = 1,
+                         BusinessAreaRoleId = 1,
+                         CurrencyTypeId = 3,
                          StatusTypeId = 1
-                     },
-                     new Employee
-                     {
-                         Id = 2,
-                         FirstName = "Ismail",
-                         MiddleName = "H",
-                         LastName = "Khan",
-                         EmpCode = "EMP002",
-                         BankAccount = "12342N0012354",
-                         BankCardNo = "1234222222001134",
-                         NationalID = "AADH001249",
-                         PassportNo = "MD0712345",
-                         TaxNumber = "1234512345",
-                         Nationality = "Indian",
-                         DOB = Convert.ToDateTime("06/12/2000"),
-                         DOJ = Convert.ToDateTime("06/12/2019"),
-                         Gender = "Male",
-                         Email = "ismi2u@gmail.com",
-                         MobileNumber = "8297333325",
-                         EmploymentTypeId = 1,
-                         DepartmentId = 1,
-                         BusinessAreaId = 1,
-                         RoleId = 2,
-                         ApprovalGroupId = 1,
-                         BusinessAreaApprovalGroupId = 4,
-                         BusinessAreaRoleId = 6,
-                         CurrencyTypeId = 2,
-                         StatusTypeId = 1
-                     }
-                     );
+                     });
 
 
             builder.Entity<EmpCurrentPettyCashBalance>().HasData(
-                     new EmpCurrentPettyCashBalance { Id = 1, EmployeeId = 1, CurBalance = 10000, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") },
-                     new EmpCurrentPettyCashBalance { Id = 2, EmployeeId = 2, CurBalance = 10000, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") });
+                     new EmpCurrentPettyCashBalance { Id = 1, EmployeeId = 1, CurBalance = 0, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") });
+                    
 
             builder.Entity<ApprovalStatusType>().HasData(
                     new ApprovalStatusType { Id = 1, Status = "Initiating", StatusDesc = "Request Initiated" },
@@ -180,28 +116,11 @@ namespace AtoCash.Data
                     new ApprovalStatusType { Id = 4, Status = "Approved", StatusDesc = "Request Approved" },
                     new ApprovalStatusType { Id = 5, Status = "Rejected", StatusDesc = "Request is Rejected" });
 
-
-
-            builder.Entity<ApprovalRoleMap>().HasData(
-                   new ApprovalRoleMap { Id = 1, ApprovalGroupId = 4, RoleId = 15, ApprovalLevelId = 1 },
-                   new ApprovalRoleMap { Id = 2, ApprovalGroupId = 4, RoleId = 6, ApprovalLevelId = 2 },
-                    new ApprovalRoleMap { Id = 3, ApprovalGroupId = 1, RoleId = 1, ApprovalLevelId = 1 },
-                     new ApprovalRoleMap { Id = 4, ApprovalGroupId = 1, RoleId = 2, ApprovalLevelId = 2 });
-
-
             builder.Entity<RequestType>().HasData(
                 new RequestType { Id = 1,  RequestName = "Petty Cash Request",  RequestTypeDesc = "Petty Cash Request"},
                  new RequestType { Id = 2, RequestName = "Department Expense Reimbursement", RequestTypeDesc = "Department Expense Reimbursement" },
                   new RequestType { Id = 3, RequestName = "Store Expense Reimbursement", RequestTypeDesc = "Store Expense Reimbursement" }
                 );
-
-
-            builder.Entity<ExpenseCategory>().HasData(new ExpenseCategory {Id = 1, ExpenseCategoryName = "EXP-CAT-INV-001" , ExpenseCategoryDesc= "EXP-CAT-INV-001", StatusTypeId =1 });
-            
-            builder.Entity<GeneralLedger>().HasData(new GeneralLedger { Id = 1, GeneralLedgerAccountNo= "GLT001", GeneralLedgerAccountName = "GLT001 NAME", StatusTypeId = 1 });
-            
-            builder.Entity<ExpenseType>().HasData(new ExpenseType { Id = 1,  ExpenseTypeName = "Food Expsense",  ExpenseTypeDesc = "Food Related Expsenses", ExpenseCategoryId = 1, GeneralLedgerId=1,  StatusTypeId = 1 });
-
 
 
     }
