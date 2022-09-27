@@ -201,10 +201,11 @@ namespace AtoCash.Controllers
                     expenseReimburseRequestDTO.ExpenseReportTitle = expenseReimbRequest.ExpenseReportTitle;
                     expenseReimburseRequestDTO.CurrencyTypeId = expenseReimbRequest.CurrencyTypeId;
                     expenseReimburseRequestDTO.TotalClaimAmount = expenseReimbRequest.TotalClaimAmount;
-
+                if (expenseReimbRequest.IsBusinessAreaReq == false)
+                {
                     expenseReimburseRequestDTO.DepartmentId = expenseReimbRequest.DepartmentId;
                     expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null;
-
+                }
                     expenseReimburseRequestDTO.BusinessAreaId = expenseReimbRequest.BusinessAreaId;
                     expenseReimburseRequestDTO.StoreName = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
 
