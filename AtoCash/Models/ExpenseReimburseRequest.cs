@@ -102,7 +102,7 @@ namespace AtoCash.Models
         public string DepartmentName { get; set; }
         public int? DepartmentId { get; set; }
         public int? BusinessAreaId { get; set; }
-        public string StoreName { get; set; }
+        public string BusinessArea { get; set; }
         public string ProjectName { get; set; }
         public int? ProjectId { get; set; }
 
