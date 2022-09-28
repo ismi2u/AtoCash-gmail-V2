@@ -64,7 +64,7 @@ namespace AtoCash.Controllers
                     DepartmentName = expenseReimbRequest.IsBusinessAreaReq == false ? expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null : null,
 
                     BusinessAreaId = expenseReimbRequest.BusinessAreaId,
-                    BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaCode + ":"+ _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null,
+                    BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null,
 
 
                     ProjectId = expenseReimbRequest.ProjectId,
@@ -130,12 +130,12 @@ namespace AtoCash.Controllers
             expenseReimburseRequestDTO.CurrencyTypeId = expenseReimbRequest.CurrencyTypeId;
             expenseReimburseRequestDTO.TotalClaimAmount = expenseReimbRequest.TotalClaimAmount;
 
-            expenseReimburseRequestDTO.DepartmentId = expenseReimbRequest.IsBusinessAreaReq == false?expenseReimbRequest.DepartmentId : null;
-            expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.IsBusinessAreaReq == false? expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null:null;
+            expenseReimburseRequestDTO.DepartmentId = expenseReimbRequest.IsBusinessAreaReq == false ? expenseReimbRequest.DepartmentId : null;
+            expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.IsBusinessAreaReq == false ? expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null : null;
 
 
             expenseReimburseRequestDTO.BusinessAreaId = expenseReimbRequest.BusinessAreaId;
-            expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaCode + ":"+ _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
+            expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
 
             expenseReimburseRequestDTO.ProjectId = expenseReimbRequest.ProjectId;
             expenseReimburseRequestDTO.ProjectName = expenseReimbRequest.ProjectId != null ? _context.Projects.Find(expenseReimbRequest.ProjectId).ProjectName : null;
@@ -678,6 +678,8 @@ namespace AtoCash.Controllers
                     ProjectId = null, //Approver Project Id
                     JobRoleId = reqEmp.RoleId,
                     IsBusinessAreaReq = false,
+                    BAApprovalGroupId = null,
+                    BARoleId = null,
                     ApprovalGroupId = reqApprGroupId,
                     ApprovalLevelId = reqApprLevel,
                     ApprovedDate = null,
@@ -891,7 +893,7 @@ namespace AtoCash.Controllers
             expenseReimburseRequest.ExpReimReqDate = DateTime.Now;
             expenseReimburseRequest.BusinessAreaId = reqEmp.BusinessAreaId;
             expenseReimburseRequest.IsBusinessAreaReq = true;
-            expenseReimburseRequest.DepartmentId = expenseReimburseRequestDto.IsBusinessAreaReq==false? reqEmp.DepartmentId:null;
+            expenseReimburseRequest.DepartmentId = expenseReimburseRequestDto.IsBusinessAreaReq == false ? reqEmp.DepartmentId : null;
             expenseReimburseRequest.CostCenterId = costCenterId;
             expenseReimburseRequest.ProjectId = null;
             expenseReimburseRequest.SubProjectId = null;
@@ -937,7 +939,16 @@ namespace AtoCash.Controllers
                 expenseSubClaim.Description = expenseSubClaimDto.Description;
 
                 _context.ExpenseSubClaims.Add(expenseSubClaim);
-                await _context.SaveChangesAsync();
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+
                 dblTotalClaimAmount = dblTotalClaimAmount + expenseSubClaimDto.TaxAmount + expenseSubClaimDto.ExpenseReimbClaimAmount;
 
             }
@@ -977,8 +988,10 @@ namespace AtoCash.Controllers
                     TotalClaimAmount = dblTotalClaimAmount,
                     ExpReimReqDate = DateTime.Now,
                     IsBusinessAreaReq = true,
-                    DepartmentId =expenseReimburseRequestDto.IsBusinessAreaReq==false? reqEmp.DepartmentId : null,
+                    DepartmentId = expenseReimburseRequestDto.IsBusinessAreaReq == false ? reqEmp.DepartmentId : null,
                     BusinessAreaId = expenseReimburseRequestDto.BusinessAreaId,
+                    BAApprovalGroupId = reqEmp.BusinessAreaApprovalGroupId,
+                    BARoleId = reqEmp.BusinessAreaRoleId,
                     ProjectId = null, //Approver Project Id
                     JobRoleId = reqEmp.BusinessAreaRoleId,
                     ApprovalGroupId = reqBAApprGroupId,
@@ -1020,6 +1033,7 @@ namespace AtoCash.Controllers
                         TotalClaimAmount = dblTotalClaimAmount,
                         ExpReimReqDate = DateTime.Now,
                         IsBusinessAreaReq = true,
+                        BusinessAreaId = reqEmp.BusinessAreaId,
                         DepartmentId = reqEmp.DepartmentId,
                         ProjectId = null, //Approver Project Id
                         JobRoleId = approver.RoleId,
@@ -1062,8 +1076,8 @@ namespace AtoCash.Controllers
             disbursementsAndClaimsMaster.ExpenseReimburseReqId = expenseReimburseRequest.Id;
             disbursementsAndClaimsMaster.RequestTypeId = (int)ERequestType.ExpenseReim;
             disbursementsAndClaimsMaster.IsBusinessAreaReq = true;
-            disbursementsAndClaimsMaster.DepartmentId = expenseReimburseRequest.IsBusinessAreaReq==false? reqEmp.DepartmentId:null;
-            disbursementsAndClaimsMaster.BusinessAreaId = expenseReimburseRequest.IsBusinessAreaReq == true ? reqEmp.BusinessAreaId: null;
+            disbursementsAndClaimsMaster.DepartmentId = expenseReimburseRequest.IsBusinessAreaReq == false ? reqEmp.DepartmentId : null;
+            disbursementsAndClaimsMaster.BusinessAreaId = expenseReimburseRequest.IsBusinessAreaReq == true ? reqEmp.BusinessAreaId : null;
             disbursementsAndClaimsMaster.ProjectId = expenseReimburseRequestDto.ProjectId;
             disbursementsAndClaimsMaster.SubProjectId = expenseReimburseRequestDto.SubProjectId;
             disbursementsAndClaimsMaster.WorkTaskId = expenseReimburseRequestDto.WorkTaskId;
