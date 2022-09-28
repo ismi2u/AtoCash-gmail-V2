@@ -159,6 +159,13 @@ namespace AtoCash.Models
         public int ExpenseTypeId { get; set; }
         public string ExpenseType { get; set; }
 
+        public int? GeneralLedgerId { get; set; }
+        public string GeneralLedger { get; set; }
+
+
+        public int? BusinessAreaId { get; set; }
+        public string BusinessArea { get; set; }
+
         public string DepartmentName { get; set; }
         public int? DepartmentId { get; set; }
         public string ProjectName { get; set; }

@@ -574,7 +574,7 @@ namespace AtoCash.Controllers
                     disbursementsAndClaimsMasterDTO.DepartmentId = disb.IsBusinessAreaReq==false? disb.DepartmentId: null;
                     disbursementsAndClaimsMasterDTO.DepartmentName = disb.IsBusinessAreaReq == false ? disb.DepartmentId != null ? _context.Departments.Find(disb.DepartmentId).DeptCode : null:null;
                     disbursementsAndClaimsMasterDTO.BusinessAreaId = disb.IsBusinessAreaReq ? disb.BusinessAreaId: null;
-                    disbursementsAndClaimsMasterDTO.BusinessAreaName = disb.IsBusinessAreaReq == true ? _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaName: null;
+                    disbursementsAndClaimsMasterDTO.BusinessArea= disb.IsBusinessAreaReq == true ? _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaName: null;
 
                     disbursementsAndClaimsMasterDTO.ProjectId = disb.ProjectId;
                     disbursementsAndClaimsMasterDTO.ProjectName = disb.ProjectId != null ? _context.Projects.Find(disb.ProjectId).ProjectName : null;
@@ -702,8 +702,11 @@ namespace AtoCash.Controllers
                     disbursementsAndClaimsMasterDTO.ExpenseReimburseReqId = disb.ExpenseReimburseReqId;
                     disbursementsAndClaimsMasterDTO.RequestTypeId = disb.RequestTypeId;
                     disbursementsAndClaimsMasterDTO.RequestType = _context.RequestTypes.Find(disb.RequestTypeId).RequestName;
-                    disbursementsAndClaimsMasterDTO.DepartmentId = disb.DepartmentId;
-                    disbursementsAndClaimsMasterDTO.DepartmentName = disb.DepartmentId != null ? _context.Departments.Find(disb.DepartmentId).DeptCode : null;
+                    disbursementsAndClaimsMasterDTO.DepartmentId = disb.IsBusinessAreaReq == false ? disb.DepartmentId : null;
+                    disbursementsAndClaimsMasterDTO.DepartmentName = disb.IsBusinessAreaReq == false ? disb.DepartmentId != null ? _context.Departments.Find(disb.DepartmentId).DeptCode : null : null;
+                    disbursementsAndClaimsMasterDTO.BusinessAreaId = disb.IsBusinessAreaReq ? disb.BusinessAreaId : null;
+                    disbursementsAndClaimsMasterDTO.BusinessArea = disb.IsBusinessAreaReq == true ? _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(disb.BusinessAreaId).BusinessAreaName : null;
+
                     disbursementsAndClaimsMasterDTO.ProjectId = disb.ProjectId;
                     disbursementsAndClaimsMasterDTO.ProjectName = disb.ProjectId != null ? _context.Projects.Find(disb.ProjectId).ProjectName : null;
                     disbursementsAndClaimsMasterDTO.SubProjectId = disb.SubProjectId;
@@ -727,6 +730,7 @@ namespace AtoCash.Controllers
                     disbursementsAndClaimsMasterDTO.SettlementBankCard = disb.SettlementBankCard;
                     disbursementsAndClaimsMasterDTO.AdditionalData = disb.AdditionalData;
 
+
                     if (searchModel.RequestTypeId == 1)
                     {
                         disbursementsAndClaimsMasterDTO.RequestTitleDescription = _context.PettyCashRequests.Find(disb.PettyCashRequestId).Comments;
@@ -744,7 +748,7 @@ namespace AtoCash.Controllers
 
 
             DataTable dt = new();
-            dt.Columns.AddRange(new DataColumn[22]
+            dt.Columns.AddRange(new DataColumn[23]
                 {
                     //new DataColumn("Id", typeof(int)),
                     new DataColumn("EmployeeName", typeof(string)),
@@ -752,6 +756,7 @@ namespace AtoCash.Controllers
                     new DataColumn("ExpenseReimburseReqId", typeof(int)),
                     new DataColumn("RequestType",typeof(string)),
                     new DataColumn("Department",typeof(string)),
+                    new DataColumn("BusinessArea",typeof(string)),
                     new DataColumn("Project",typeof(string)),
                     new DataColumn("SubProject", typeof(string)),
                     new DataColumn("WorkTask",typeof(string)),
@@ -780,6 +785,7 @@ namespace AtoCash.Controllers
                     disbItem.ExpenseReimburseReqId,
                     disbItem.RequestType,
                     disbItem.DepartmentName,
+                    disbItem.BusinessArea,
                     disbItem.ProjectName,
                     disbItem.SubProjectName,
                     disbItem.WorkTaskName,
@@ -1112,8 +1118,14 @@ namespace AtoCash.Controllers
                 disbursementsAndClaimsMasterDTO.EmployeeName = _context.Employees.Find(disbursementsAndClaimsMaster.EmployeeId).GetFullName();
                 disbursementsAndClaimsMasterDTO.ExpenseReimburseReqId = disbursementsAndClaimsMaster.ExpenseReimburseReqId;
                 disbursementsAndClaimsMasterDTO.PettyCashRequestId = disbursementsAndClaimsMaster.PettyCashRequestId;
-                disbursementsAndClaimsMasterDTO.DepartmentId = disbursementsAndClaimsMaster.DepartmentId;
-                disbursementsAndClaimsMasterDTO.DepartmentName = disbursementsAndClaimsMaster.DepartmentId != null ? _context.Departments.Find(disbursementsAndClaimsMaster.DepartmentId).DeptName : string.Empty;
+
+
+                disbursementsAndClaimsMasterDTO.DepartmentId = disbursementsAndClaimsMaster.IsBusinessAreaReq == false ? disbursementsAndClaimsMaster.DepartmentId : null;
+                disbursementsAndClaimsMasterDTO.DepartmentName = disbursementsAndClaimsMaster.IsBusinessAreaReq == false ? disbursementsAndClaimsMaster.DepartmentId != null ? _context.Departments.Find(disbursementsAndClaimsMaster.DepartmentId).DeptCode : null : null;
+                disbursementsAndClaimsMasterDTO.BusinessAreaId = disbursementsAndClaimsMaster.IsBusinessAreaReq ? disbursementsAndClaimsMaster.BusinessAreaId : null;
+                disbursementsAndClaimsMasterDTO.BusinessArea = disbursementsAndClaimsMaster.IsBusinessAreaReq == true ? _context.BusinessAreas.Find(disbursementsAndClaimsMaster.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(disbursementsAndClaimsMaster.BusinessAreaId).BusinessAreaName : null;
+
+                
                 disbursementsAndClaimsMasterDTO.ProjectId = disbursementsAndClaimsMaster.ProjectId;
                 disbursementsAndClaimsMasterDTO.ProjectName = disbursementsAndClaimsMaster.ProjectId != null ? _context.Projects.Find(disbursementsAndClaimsMaster.ProjectId).ProjectName : string.Empty;
                 disbursementsAndClaimsMasterDTO.SubProjectId = disbursementsAndClaimsMaster.SubProjectId;
@@ -1378,9 +1390,15 @@ namespace AtoCash.Controllers
                 expenseSubClaimDTO.CurrencyType = _context.CurrencyTypes.Find(expReimReq.CurrencyTypeId).CurrencyCode;
                 expenseSubClaimDTO.ExpenseTypeId = expenseSubClaim.ExpenseTypeId;
                 expenseSubClaimDTO.ExpenseType = _context.ExpenseTypes.Find(expenseSubClaim.ExpenseTypeId).ExpenseTypeName;
+                expenseSubClaimDTO.GeneralLedgerId = _context.ExpenseTypes.Find(expenseSubClaim.ExpenseTypeId).GeneralLedgerId;
+                expenseSubClaimDTO.GeneralLedger = _context.GeneralLedger.Find(expenseSubClaimDTO.GeneralLedgerId).GeneralLedgerAccountNo + ":" + _context.GeneralLedger.Find(expenseSubClaimDTO.GeneralLedgerId).GeneralLedgerAccountName;
 
-                expenseSubClaimDTO.DepartmentId = expenseSubClaim.DepartmentId;
-                expenseSubClaimDTO.DepartmentName = expenseSubClaim.DepartmentId != null ? _context.Departments.Find(expenseSubClaim.DepartmentId).DeptName : string.Empty;
+                expenseSubClaimDTO.DepartmentId = expenseSubClaim.IsBusinessAreaReq == false ? expenseSubClaim.DepartmentId : null;
+                expenseSubClaimDTO.DepartmentName = expenseSubClaim.IsBusinessAreaReq == false ? expenseSubClaim.DepartmentId != null ? _context.Departments.Find(expenseSubClaim.DepartmentId).DeptCode : null : null;
+                expenseSubClaimDTO.BusinessAreaId = expenseSubClaim.IsBusinessAreaReq ? expenseSubClaim.BusinessAreaId : null;
+                expenseSubClaimDTO.BusinessArea = expenseSubClaim.IsBusinessAreaReq == true ? _context.BusinessAreas.Find(expenseSubClaim.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(expenseSubClaim.BusinessAreaId).BusinessAreaName : null;
+
+
 
                 expenseSubClaimDTO.ProjectId = expenseSubClaim.ProjectId;
                 expenseSubClaimDTO.ProjectName = expenseSubClaim.ProjectId != null ? _context.Projects.Find(expenseSubClaim.ProjectId).ProjectName : string.Empty;
@@ -1493,8 +1511,13 @@ namespace AtoCash.Controllers
                 expenseSubClaimDTO.ExpenseTypeId = expenseSubClaim.ExpenseTypeId;
                 expenseSubClaimDTO.ExpenseType = _context.ExpenseTypes.Find(expenseSubClaim.ExpenseTypeId).ExpenseTypeName;
 
-                expenseSubClaimDTO.DepartmentId = expenseSubClaim.DepartmentId;
-                expenseSubClaimDTO.DepartmentName = expenseSubClaim.DepartmentId != null ? _context.Departments.Find(expenseSubClaim.DepartmentId).DeptName : string.Empty;
+                expenseSubClaimDTO.GeneralLedgerId = _context.ExpenseTypes.Find(expenseSubClaim.ExpenseTypeId).GeneralLedgerId;
+                expenseSubClaimDTO.GeneralLedger = _context.GeneralLedger.Find(expenseSubClaimDTO.GeneralLedgerId).GeneralLedgerAccountNo + ":" + _context.GeneralLedger.Find(expenseSubClaimDTO.GeneralLedgerId).GeneralLedgerAccountName;
+
+                expenseSubClaimDTO.DepartmentId = expenseSubClaim.IsBusinessAreaReq == false ? expenseSubClaim.DepartmentId : null;
+                expenseSubClaimDTO.DepartmentName = expenseSubClaim.IsBusinessAreaReq == false ? expenseSubClaim.DepartmentId != null ? _context.Departments.Find(expenseSubClaim.DepartmentId).DeptCode : null : null;
+                expenseSubClaimDTO.BusinessAreaId = expenseSubClaim.IsBusinessAreaReq ? expenseSubClaim.BusinessAreaId : null;
+                expenseSubClaimDTO.BusinessArea = expenseSubClaim.IsBusinessAreaReq == true ? _context.BusinessAreas.Find(expenseSubClaim.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(expenseSubClaim.BusinessAreaId).BusinessAreaName : null;
 
                 expenseSubClaimDTO.ProjectId = expenseSubClaim.ProjectId;
                 expenseSubClaimDTO.ProjectName = expenseSubClaim.ProjectId != null ? _context.Projects.Find(expenseSubClaim.ProjectId).ProjectName : string.Empty;
@@ -1512,11 +1535,8 @@ namespace AtoCash.Controllers
             }
 
 
-
-
-
             DataTable dt = new();
-            dt.Columns.AddRange(new DataColumn[19]
+            dt.Columns.AddRange(new DataColumn[21]
                 {
                     //new DataColumn("Id", typeof(int)),
                     new DataColumn("ExpenseReimburseId", typeof(int)),
@@ -1532,6 +1552,8 @@ namespace AtoCash.Controllers
                     new DataColumn("Location",typeof(string)),
                     new DataColumn("CurrencyType",typeof(string)),
                     new DataColumn("ExpenseType", typeof(string)),
+                    new DataColumn("BusinessArea", typeof(string)),
+                    new DataColumn("GeneralLedger", typeof(string)),
                     new DataColumn("Department",typeof(string)),
                     new DataColumn("CostCenter",typeof(string)),
                     new DataColumn("Project",typeof(string)),
@@ -1557,6 +1579,8 @@ namespace AtoCash.Controllers
                     claimItem.Location,
                     claimItem.CurrencyType,
                     claimItem.ExpenseType,
+                    claimItem.BusinessArea,
+                    claimItem.GeneralLedger,
                     claimItem.CostCenter,
                     claimItem.DepartmentName,
                     claimItem.ProjectName,

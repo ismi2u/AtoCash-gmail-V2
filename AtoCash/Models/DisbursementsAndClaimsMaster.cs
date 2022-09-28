@@ -123,7 +123,8 @@ namespace AtoCash.Models
         public string DepartmentName { get; set; }
 
         public int? BusinessAreaId { get; set; }
-        public string BusinessAreaName { get; set; }
+        public string BusinessArea{ get; set; }
+
         public int? ProjectId { get; set; }
         public string ProjectName { get; set; }
 
