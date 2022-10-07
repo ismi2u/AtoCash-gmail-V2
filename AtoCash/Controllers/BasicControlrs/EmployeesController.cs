@@ -98,6 +98,9 @@ namespace AtoCash.Controllers
                 employeeDTO.MiddleName = employee.MiddleName;
                 employeeDTO.LastName = employee.LastName;
                 employeeDTO.EmpCode = employee.EmpCode;
+                employeeDTO.IBAN = employee.IBAN;
+                employeeDTO.BankId = employee.BankId;
+                employeeDTO.BankName= _context.Banks.Find(employee.BankId).BankName;
                 employeeDTO.BankAccount = employee.BankAccount;
                 employeeDTO.BankCardNo = employee.BankCardNo;
                 employeeDTO.NationalID = employee.NationalID;
@@ -145,6 +148,9 @@ namespace AtoCash.Controllers
             employeeDTO.MiddleName = employee.MiddleName;
             employeeDTO.LastName = employee.LastName;
             employeeDTO.EmpCode = employee.EmpCode;
+            employeeDTO.IBAN = employee.IBAN;
+            employeeDTO.BankId = employee.BankId;
+            employeeDTO.BankName = _context.Banks.Find(employee.BankId).BankName;
             employeeDTO.BankAccount = employee.BankAccount;
             employeeDTO.BankCardNo = employee.BankCardNo;
             employeeDTO.NationalID = employee.NationalID;
@@ -205,6 +211,8 @@ namespace AtoCash.Controllers
             employee.LastName = employeeDto.LastName;
             employee.EmpCode = employeeDto.EmpCode;
             employee.BankAccount = employeeDto.BankAccount;
+            employee.IBAN = employeeDto.IBAN;
+            employee.BankId = employeeDto.BankId;
             employee.BankCardNo = employeeDto.BankCardNo;
             employee.NationalID = employeeDto.NationalID;
             employee.PassportNo = employeeDto.PassportNo;
@@ -297,6 +305,8 @@ namespace AtoCash.Controllers
                 MiddleName = employeeDto.MiddleName,
                 LastName = employeeDto.LastName,
                 EmpCode = employeeDto.EmpCode,
+                IBAN = employeeDto.IBAN,
+                BankId = employeeDto.BankId,
                 BankAccount = employeeDto.BankAccount,
                 BankCardNo = employeeDto.BankCardNo,
                 NationalID = employeeDto.NationalID,

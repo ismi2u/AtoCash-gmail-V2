@@ -160,6 +160,11 @@ namespace AtoCash.Models
 
         public string EmpCode { get; set; }
 
+        public string IBAN { get; set; }
+        public int? BankId { get; set; }
+
+        public string BankName { get; set; }
+
         public string BankAccount { get; set; }
 
 
