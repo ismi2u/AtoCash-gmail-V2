@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AtoCash.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -301,6 +301,27 @@ namespace AtoCash.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Banks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BankName = table.Column<string>(type: "varchar(50)", nullable: false),
+                    BankDesc = table.Column<string>(type: "varchar(150)", nullable: false),
+                    StatusTypeId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Banks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Banks_StatusTypes_StatusTypeId",
+                        column: x => x.StatusTypeId,
+                        principalTable: "StatusTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CostCenters",
                 columns: table => new
                 {
@@ -487,6 +508,7 @@ namespace AtoCash.Migrations
                     LastName = table.Column<string>(type: "varchar(100)", nullable: false),
                     EmpCode = table.Column<string>(type: "varchar(30)", nullable: false),
                     BankAccount = table.Column<string>(type: "varchar(30)", nullable: false),
+                    IBAN = table.Column<string>(type: "varchar(30)", nullable: false),
                     BankCardNo = table.Column<string>(type: "varchar(50)", nullable: true),
                     NationalID = table.Column<string>(type: "text", nullable: true),
                     PassportNo = table.Column<string>(type: "varchar(20)", nullable: true),
@@ -497,6 +519,7 @@ namespace AtoCash.Migrations
                     Gender = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     MobileNumber = table.Column<string>(type: "varchar(20)", nullable: true),
+                    BankId = table.Column<int>(type: "integer", nullable: true),
                     EmploymentTypeId = table.Column<int>(type: "integer", nullable: false),
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
                     RoleId = table.Column<int>(type: "integer", nullable: false),
@@ -522,6 +545,12 @@ namespace AtoCash.Migrations
                         principalTable: "ApprovalGroups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_Banks_BankId",
+                        column: x => x.BankId,
+                        principalTable: "Banks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Employees_BusinessAreas_BusinessAreaId",
                         column: x => x.BusinessAreaId,
@@ -1439,11 +1468,12 @@ namespace AtoCash.Migrations
                 columns: new[] { "Id", "Status", "StatusDesc" },
                 values: new object[,]
                 {
-                    { 5, "Rejected", "Request is Rejected" },
-                    { 3, "In Review", "Request is in progress" },
+                    { 6, "Settled", "Request is Settled" },
                     { 4, "Approved", "Request Approved" },
+                    { 5, "Rejected", "Request is Rejected" },
+                    { 2, "Pending", "Awaiting Approval" },
                     { 1, "Initiating", "Request Initiated" },
-                    { 2, "Pending", "Awaiting Approval" }
+                    { 3, "In Review", "Request is in progress" }
                 });
 
             migrationBuilder.InsertData(
@@ -1480,6 +1510,11 @@ namespace AtoCash.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Banks",
+                columns: new[] { "Id", "BankDesc", "BankName", "StatusTypeId" },
+                values: new object[] { 1, "Private Ltd Bank", "Standard Chartered", 1 });
+
+            migrationBuilder.InsertData(
                 table: "CostCenters",
                 columns: new[] { "Id", "CostCenterCode", "CostCenterDesc", "StatusTypeId" },
                 values: new object[] { 1, "ADM", "Administration", 1 });
@@ -1507,8 +1542,8 @@ namespace AtoCash.Migrations
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "Id", "ApprovalGroupId", "BankAccount", "BankCardNo", "BusinessAreaApprovalGroupId", "BusinessAreaId", "BusinessAreaRoleId", "CurrencyTypeId", "DOB", "DOJ", "DepartmentId", "Email", "EmpCode", "EmploymentTypeId", "FirstName", "Gender", "LastName", "MiddleName", "MobileNumber", "NationalID", "Nationality", "PassportNo", "RoleId", "StatusTypeId", "TaxNumber" },
-                values: new object[] { 1, 1, "1234567890", "1234222222001234", 1, 1, 1, 3, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "atocash@gmail.com", "EMP000", 1, "Atominos", "Male", "Admin", "AtoCash", "1234533325", "AAAAAAAAAA", "Indian", "AAAAAAA", 1, 1, "1234512345" });
+                columns: new[] { "Id", "ApprovalGroupId", "BankAccount", "BankCardNo", "BankId", "BusinessAreaApprovalGroupId", "BusinessAreaId", "BusinessAreaRoleId", "CurrencyTypeId", "DOB", "DOJ", "DepartmentId", "Email", "EmpCode", "EmploymentTypeId", "FirstName", "Gender", "IBAN", "LastName", "MiddleName", "MobileNumber", "NationalID", "Nationality", "PassportNo", "RoleId", "StatusTypeId", "TaxNumber" },
+                values: new object[] { 1, 1, "1234567890", "1234222222001234", 1, 1, 1, 1, 3, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "atocash@gmail.com", "EMP000", 1, "Atominos", "Male", "AD1400080001001234567890", "Admin", "AtoCash", "1234533325", "AAAAAAAAAA", "Indian", "AAAAAAA", 1, 1, "1234512345" });
 
             migrationBuilder.InsertData(
                 table: "EmpCurrentPettyCashBalances",
@@ -1566,6 +1601,11 @@ namespace AtoCash.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Banks_StatusTypeId",
+                table: "Banks",
+                column: "StatusTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BusinessAreas_CostCenterId",
@@ -1716,6 +1756,11 @@ namespace AtoCash.Migrations
                 name: "IX_Employees_ApprovalGroupId",
                 table: "Employees",
                 column: "ApprovalGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_BankId",
+                table: "Employees",
+                column: "BankId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_BusinessAreaApprovalGroupId",
@@ -2209,6 +2254,9 @@ namespace AtoCash.Migrations
 
             migrationBuilder.DropTable(
                 name: "ApprovalGroups");
+
+            migrationBuilder.DropTable(
+                name: "Banks");
 
             migrationBuilder.DropTable(
                 name: "BusinessAreas");

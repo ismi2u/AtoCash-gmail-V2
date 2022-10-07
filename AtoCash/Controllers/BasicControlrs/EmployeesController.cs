@@ -194,7 +194,7 @@ namespace AtoCash.Controllers
             //var emplye = _context.Employees.Where(e => e.FirstName == employeeDto.FirstName && e.MiddleName == employeeDto.MiddleName && e.LastName == employeeDto.LastName).FirstOrDefault();
             //if (emplye != null)
             //{
-            //    return Conflict(new RespStatus { Status = "Failure", Message = "Employee Already Exists" });
+            //    return Conflict(new RespStatus { Status = "Failure", Message = "Employee already exists" });
             //}
 
             var employee = await _context.Employees.FindAsync(id);

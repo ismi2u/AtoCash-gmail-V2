@@ -166,7 +166,7 @@ namespace AtoCash.Controllers
             var dept = _context.BusinessAreas.Where(c => c.BusinessAreaCode == BusinessAreaDto.BusinessAreaCode).FirstOrDefault();
             if (dept != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "BusinessArea Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "BusinessArea already exists" });
             }
 
             BusinessArea BusinessArea = new BusinessArea

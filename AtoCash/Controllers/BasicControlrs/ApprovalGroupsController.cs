@@ -105,7 +105,7 @@ namespace AtoCash.Controllers
             var aprGrpCode = _context.ApprovalGroups.Where(a => a.ApprovalGroupCode == approvalGroup.ApprovalGroupCode).FirstOrDefault();
             if (aprGrpCode != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Approval Group Code Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Approval Group Code already exists" });
             }
 
             _context.ApprovalGroups.Add(approvalGroup);

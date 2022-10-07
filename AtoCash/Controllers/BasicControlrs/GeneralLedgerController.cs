@@ -134,7 +134,7 @@ namespace AtoCash.Controllers
             var gLedger = _context.GeneralLedger.Where(e => e.GeneralLedgerAccountNo == generalLedgerDTO.GeneralLedgerAccountNo).FirstOrDefault();
             if (gLedger != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "General Ledger Account No Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "General Ledger Account No already exists" });
             }
 
             GeneralLedger generalLedger = new();

@@ -162,7 +162,7 @@ namespace AtoCash.Controllers
             var subproject = _context.SubProjects.Where(c => c.SubProjectName == subProjectDto.SubProjectName).FirstOrDefault();
             if (subproject != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Sub Project Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Sub Project already exists" });
             }
 
             SubProject SubProj = new()

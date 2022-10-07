@@ -117,7 +117,7 @@ namespace AtoCash.Controllers
             var aprlevel = _context.ApprovalLevels.Where(a => a.Level == approvalLevelDto.Level).FirstOrDefault();
             if (aprlevel != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Approval Level Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Approval Level already exists" });
             }
 
 

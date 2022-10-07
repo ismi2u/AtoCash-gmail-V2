@@ -139,7 +139,7 @@ namespace AtoCash.Controllers.BasicControlrs
             var curncyType = _context.CurrencyTypes.Where(c => c.CurrencyCode == currencyTypeDto.CurrencyCode).FirstOrDefault();
             if (curncyType != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Currency Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Currency already exists" });
             }
 
             CurrencyType currencyTyp = new();

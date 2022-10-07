@@ -166,7 +166,7 @@ namespace AtoCash.Controllers
             var dept = _context.Departments.Where(c => c.DeptCode == departmentDto.DeptCode).FirstOrDefault();
             if (dept != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Department Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Department already exists" });
             }
 
             Department department = new Department

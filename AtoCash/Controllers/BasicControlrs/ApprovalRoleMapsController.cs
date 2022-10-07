@@ -162,7 +162,7 @@ namespace AtoCash.Controllers
             var AprvRolMap = _context.ApprovalRoleMaps.Where(a => a.ApprovalGroupId == approvalRoleMapDto.ApprovalGroupId && a.RoleId == approvalRoleMapDto.RoleId && a.ApprovalLevelId == approvalRoleMapDto.ApprovalLevelId).FirstOrDefault();
             if (AprvRolMap != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Approval Role Map Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Approval Role Map already exists" });
             }
 
             var approvalgroup = _context.ApprovalRoleMaps.Where(a => a.ApprovalGroupId == approvalRoleMapDto.ApprovalGroupId).ToList();

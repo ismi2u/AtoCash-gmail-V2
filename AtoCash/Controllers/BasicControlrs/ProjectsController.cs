@@ -182,7 +182,7 @@ namespace AtoCash.Controllers
             var project = _context.Projects.Where(c => c.ProjectName == projectDto.ProjectName).FirstOrDefault();
             if (project != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "ProjectName Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "ProjectName already exists" });
             }
 
             Project proj = new()

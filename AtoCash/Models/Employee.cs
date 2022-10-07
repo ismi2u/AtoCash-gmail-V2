@@ -34,6 +34,11 @@ namespace AtoCash.Models
         [Column(TypeName = "varchar(30)")]
         public string BankAccount { get; set; }
 
+
+        [Required]
+        [Column(TypeName = "varchar(30)")]
+        public string IBAN { get; set; }
+
         [Column(TypeName = "varchar(50)")]
         public string BankCardNo { get; set; }
 
@@ -67,6 +72,11 @@ namespace AtoCash.Models
         //Navigation Properties
         //------------------------------------------------
 
+
+        
+        [ForeignKey("BankId")]
+        public virtual Bank Bank { get; set; }
+        public int? BankId { get; set; }
 
         [Required]
         [ForeignKey("EmploymentTypeId")]

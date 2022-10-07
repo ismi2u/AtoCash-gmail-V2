@@ -130,7 +130,7 @@ namespace AtoCash.Controllers
             var emplymtTypes = _context.EmploymentTypes.Where(e => e.EmpJobTypeCode == employmentType.EmpJobTypeCode).FirstOrDefault();
             if (emplymtTypes != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "EmploymentType Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "EmploymentType already exists" });
             }
 
             _context.EmploymentTypes.Add(employmentType);

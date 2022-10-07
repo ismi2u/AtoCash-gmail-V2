@@ -133,7 +133,7 @@ namespace AtoCash.Controllers
             var jRole = _context.JobRoles.Where(c => c.RoleCode == role.RoleCode).FirstOrDefault();
             if (jRole != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "JobRole Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "JobRole already exists" });
             }
             _context.JobRoles.Add(role);
             await _context.SaveChangesAsync();

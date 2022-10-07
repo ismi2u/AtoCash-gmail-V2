@@ -106,7 +106,7 @@ namespace AtoCash.Controllers
             var ReqType = _context.RequestTypes.Where(r => r.RequestName == requestType.RequestName).FirstOrDefault();
             if (ReqType != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "RequestType Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "RequestType already exists" });
             }
 
             _context.RequestTypes.Add(requestType);

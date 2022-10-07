@@ -74,6 +74,10 @@ namespace AtoCash.Data
             builder.Entity<ApprovalGroup>().HasData(
            new ApprovalGroup { Id = 1, ApprovalGroupCode = "SETUP-ADMIN", ApprovalGroupDesc = "SETUP-ADMIN" });
 
+
+            builder.Entity<Bank>().HasData(
+          new Bank { Id = 1,  BankName = "Standard Chartered",   BankDesc = "Private Ltd Bank", StatusTypeId =1});
+
             builder.Entity<Employee>().HasData(
                      new Employee
                      {
@@ -82,6 +86,8 @@ namespace AtoCash.Data
                          MiddleName = "AtoCash",
                          LastName = "Admin",
                          EmpCode = "EMP000",
+                         BankId = 1,
+                         IBAN = "AD1400080001001234567890",
                          BankAccount = "1234567890",
                          BankCardNo = "1234222222001234",
                          NationalID = "AAAAAAAAAA",
@@ -114,7 +120,8 @@ namespace AtoCash.Data
                     new ApprovalStatusType { Id = 2, Status = "Pending", StatusDesc = "Awaiting Approval" },
                     new ApprovalStatusType { Id = 3, Status = "In Review", StatusDesc = "Request is in progress" },
                     new ApprovalStatusType { Id = 4, Status = "Approved", StatusDesc = "Request Approved" },
-                    new ApprovalStatusType { Id = 5, Status = "Rejected", StatusDesc = "Request is Rejected" });
+                    new ApprovalStatusType { Id = 5, Status = "Rejected", StatusDesc = "Request is Rejected" },
+                    new ApprovalStatusType { Id = 6, Status = "Settled", StatusDesc = "Request is Settled" });
 
             builder.Entity<RequestType>().HasData(
                 new RequestType { Id = 1,  RequestName = "Petty Cash Request",  RequestTypeDesc = "Petty Cash Request"},
@@ -160,6 +167,8 @@ namespace AtoCash.Data
         public DbSet<WorkTask> WorkTasks { get; set; }
 
         public DbSet<ProjectManagement> ProjectManagements { get; set; }
+
+        public DbSet<Bank> Banks { get; set; }
 
         public DbSet<GeneralLedger> GeneralLedger { get; set; }
 

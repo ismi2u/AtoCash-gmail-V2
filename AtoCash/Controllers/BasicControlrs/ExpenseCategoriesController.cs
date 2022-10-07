@@ -133,7 +133,7 @@ namespace AtoCash.Controllers
             var eCategory = _context.ExpenseCategories.Where(e => e.ExpenseCategoryName == expenseCategoryDTO.ExpenseCategoryName).FirstOrDefault();
             if (eCategory != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Expense Category Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Expense Category already exists" });
             }
 
             ExpenseCategory expenseCategory = new();

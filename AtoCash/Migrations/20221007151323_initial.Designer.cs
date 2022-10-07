@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtoCash.Migrations
 {
     [DbContext(typeof(AtoCashDbContext))]
-    [Migration("20220925150903_Initial")]
-    partial class Initial
+    [Migration("20221007151323_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,6 +235,46 @@ namespace AtoCash.Migrations
                             Id = 5,
                             Status = "Rejected",
                             StatusDesc = "Request is Rejected"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Status = "Settled",
+                            StatusDesc = "Request is Settled"
+                        });
+                });
+
+            modelBuilder.Entity("AtoCash.Models.Bank", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("BankDesc")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("StatusTypeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusTypeId");
+
+                    b.ToTable("Banks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BankDesc = "Private Ltd Bank",
+                            BankName = "Standard Chartered",
+                            StatusTypeId = 1
                         });
                 });
 
@@ -648,6 +688,9 @@ namespace AtoCash.Migrations
                     b.Property<string>("BankCardNo")
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("BankId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("BusinessAreaApprovalGroupId")
                         .HasColumnType("integer");
 
@@ -688,6 +731,10 @@ namespace AtoCash.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("IBAN")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
@@ -720,6 +767,8 @@ namespace AtoCash.Migrations
 
                     b.HasIndex("ApprovalGroupId");
 
+                    b.HasIndex("BankId");
+
                     b.HasIndex("BusinessAreaApprovalGroupId");
 
                     b.HasIndex("BusinessAreaId");
@@ -745,6 +794,7 @@ namespace AtoCash.Migrations
                             ApprovalGroupId = 1,
                             BankAccount = "1234567890",
                             BankCardNo = "1234222222001234",
+                            BankId = 1,
                             BusinessAreaApprovalGroupId = 1,
                             BusinessAreaId = 1,
                             BusinessAreaRoleId = 1,
@@ -757,6 +807,7 @@ namespace AtoCash.Migrations
                             EmploymentTypeId = 1,
                             FirstName = "Atominos",
                             Gender = "Male",
+                            IBAN = "AD1400080001001234567890",
                             LastName = "Admin",
                             MiddleName = "AtoCash",
                             MobileNumber = "1234533325",
@@ -1786,6 +1837,17 @@ namespace AtoCash.Migrations
                     b.Navigation("JobRole");
                 });
 
+            modelBuilder.Entity("AtoCash.Models.Bank", b =>
+                {
+                    b.HasOne("AtoCash.Models.StatusType", "StatusType")
+                        .WithMany()
+                        .HasForeignKey("StatusTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StatusType");
+                });
+
             modelBuilder.Entity("AtoCash.Models.BusinessArea", b =>
                 {
                     b.HasOne("AtoCash.Models.CostCenter", "CostCenter")
@@ -2021,6 +2083,10 @@ namespace AtoCash.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AtoCash.Models.Bank", "Bank")
+                        .WithMany()
+                        .HasForeignKey("BankId");
+
                     b.HasOne("AtoCash.Models.ApprovalGroup", "BusinessAreaApprovalGroup")
                         .WithMany()
                         .HasForeignKey("BusinessAreaApprovalGroupId")
@@ -2070,6 +2136,8 @@ namespace AtoCash.Migrations
                         .IsRequired();
 
                     b.Navigation("ApprovalGroup");
+
+                    b.Navigation("Bank");
 
                     b.Navigation("BusinessArea");
 

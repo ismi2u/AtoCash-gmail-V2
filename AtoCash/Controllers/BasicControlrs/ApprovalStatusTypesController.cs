@@ -90,7 +90,7 @@ namespace AtoCash.Controllers
             var aStatus = _context.ApprovalStatusTypes.Where(a => a.Status == approvalStatusType.Status).FirstOrDefault();
             if (aStatus != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Approval Status Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Approval Status already exists" });
             }
 
             _context.ApprovalStatusTypes.Add(approvalStatusType);

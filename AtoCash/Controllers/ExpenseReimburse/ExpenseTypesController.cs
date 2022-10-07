@@ -169,7 +169,7 @@ namespace AtoCash.Controllers
             var eType = _context.ExpenseTypes.Where(e => e.ExpenseTypeName == expenseTypeDTO.ExpenseTypeName).FirstOrDefault();
             if (eType != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Expense Type Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "Expense Type already exists" });
             }
 
             ExpenseType expenseType = new();

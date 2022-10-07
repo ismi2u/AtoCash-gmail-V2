@@ -142,7 +142,7 @@ namespace AtoCash.Controllers
             var ccentre = _context.CostCenters.Where(c => c.CostCenterCode == costCenterDTO.CostCenterCode).FirstOrDefault();
             if (ccentre != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "CostCenter Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "CostCenter already exists" });
             }
             CostCenter costCenter = new();
             costCenter.CostCenterCode = costCenterDTO.CostCenterCode;

@@ -188,7 +188,7 @@ namespace AtoCash.Controllers
             var wTask = _context.WorkTasks.Where(c => c.TaskName == workTaskDto.TaskName).FirstOrDefault();
             if (wTask != null)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "TaskName Already Exists" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "TaskName already exists" });
             }
 
             WorkTask workTask = new()
