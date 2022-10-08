@@ -26,8 +26,8 @@ namespace AtoCash.Controllers
 
 
         [HttpGet]
-        [ActionName("SelectedExpenseCategoriesForDropdown")]
-        public async Task<ActionResult<IEnumerable<ExpenseCategoryVM>>> SelectedExpenseCategoriesForDropdown(bool isBussCategory)
+        [ActionName("GetSelectedExpenseCategoriesForDropdown")]
+        public async Task<ActionResult<IEnumerable<ExpenseCategoryVM>>> GetSelectedExpenseCategoriesForDropdown(bool isBussCategory)
         {
             List<ExpenseCategoryVM> ListExpenseCategoryVM = new();
 

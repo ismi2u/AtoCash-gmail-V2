@@ -37,10 +37,20 @@ INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (2, 2, 10000, 0, '2022-0
 
 
 INSERT INTO public."ExpenseCategories" VALUES (1, 'JB-Store Expenses', 'JB-Store Expenses', true, 1);
-INSERT INTO public."ExpenseCategories" VALUES (2, 'JB-DEP', 'JB-Department Expenses',true, 1);
+INSERT INTO public."ExpenseCategories" VALUES (2, 'JB-DEP', 'JB-Department Expenses',false, 1);
 INSERT INTO public."ExpenseCategories" VALUES (3, 'JBINV', 'JB- Inventory Expenses',false, 1);
-INSERT INTO public."ExpenseCategories" VALUES (4, 'JBSTEXP', 'Janburger Store expenses',false, 1);
+INSERT INTO public."ExpenseCategories" VALUES (4, 'JBSTEXP', 'Janburger Store expenses',true, 1);
 
+
+
+INSERT INTO public."ApprovalRoleMaps" VALUES (1, 3, 6, 1);
+INSERT INTO public."ApprovalRoleMaps" VALUES (2, 3, 7, 2);
+INSERT INTO public."ApprovalRoleMaps" VALUES (3, 3, 8, 3);
+INSERT INTO public."ApprovalRoleMaps" VALUES (4, 3, 9, 4);
+INSERT INTO public."ApprovalRoleMaps" VALUES (5, 2, 2, 1);
+INSERT INTO public."ApprovalRoleMaps" VALUES (6, 2, 3, 2);
+INSERT INTO public."ApprovalRoleMaps" VALUES (7, 2, 4, 3);
+INSERT INTO public."ApprovalRoleMaps" VALUES (8, 2, 5, 4);
 ==================================
 
 ---
@@ -62,12 +72,6 @@ INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencySt
 
 
 
-INSERT INTO public."AspNetUserRoles" ("UserId", "RoleId") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', '2abf2af3-dc89-4f3f-adaa-6c136358e9b0');
-
----
-
-
-
 INSERT INTO public."AspNetUserRoles" VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', '2abf2af3-dc89-4f3f-adaa-6c136358e9b0');
 INSERT INTO public."AspNetUserRoles" VALUES ('2f4869b4-1e97-4011-bf98-cfe44553babf', 'user2af3-dc89-4f3f-adaa-6c136358user');
 INSERT INTO public."AspNetUserRoles" VALUES ('897fa80a-0cad-491e-8010-95ea35992b8b', 'user2af3-dc89-4f3f-adaa-6c136358user');
@@ -75,6 +79,8 @@ INSERT INTO public."AspNetUserRoles" VALUES ('1cf0e451-9b40-469c-a235-f703e1d6fb
 INSERT INTO public."AspNetUserRoles" VALUES ('c9b95d3c-b95a-46c7-b6bd-6502c1e91d7f', '2abfbara-dc89-4f3f-adaa-6c136358e9b0');
 INSERT INTO public."AspNetUserRoles" VALUES ('bd77d1f7-8eb1-40cc-823a-fa7186c71461', '2abftera-dc89-4f3f-adaa-6c136358e9b0');
 INSERT INTO public."AspNetUserRoles" VALUES ('bd77d1f7-8eb1-40cc-823a-fa7186c71461', '2abfsaud-dc89-4f3f-adaa-6c136358e9b0');
+
+-----
 
 
 SELECT pg_catalog.setval('public."ApprovalGroups_Id_seq"', 3, true);
