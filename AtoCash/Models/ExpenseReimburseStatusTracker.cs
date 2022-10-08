@@ -121,6 +121,7 @@ namespace AtoCash.Models
         public DateTime ExpReimReqDate { get; set; }
 
         public int? BusinessAreaId { get; set; }
+        public string BusinessArea{ get; set; }
 
         public bool IsBusinessAreaReq { get; set; }
         public int? DepartmentId { get; set; }

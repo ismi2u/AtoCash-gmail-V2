@@ -41,6 +41,19 @@ INSERT INTO public."ExpenseCategories" VALUES (2, 'JB-DEP', 'JB-Department Expen
 INSERT INTO public."ExpenseCategories" VALUES (3, 'JBINV', 'JB- Inventory Expenses',false, 1);
 INSERT INTO public."ExpenseCategories" VALUES (4, 'JBSTEXP', 'Janburger Store expenses',true, 1);
 
+INSERT INTO public."GeneralLedger" VALUES (1, '6111504000005', 'Internet', 1);
+INSERT INTO public."GeneralLedger" VALUES (2, '6111904000001', 'Out.Service  Pest Control', 1);
+INSERT INTO public."GeneralLedger" VALUES (3, '6111504000003', 'Telephone', 1);
+INSERT INTO public."GeneralLedger" VALUES (4, '6111504000001', 'Water', 1);
+INSERT INTO public."GeneralLedger" VALUES (5, '6111204000005', 'Medical Expenses', 1);
+
+
+INSERT INTO public."ExpenseTypes" VALUES (1, 'Internet Expenses', 'Internet', 1, 1, 1);
+INSERT INTO public."ExpenseTypes" VALUES (2, 'Telephone', 'Telephone Expenses', 1, 3, 1);
+INSERT INTO public."ExpenseTypes" VALUES (3, 'Pest Control', 'Pest Control', 2, 2, 1);
+INSERT INTO public."ExpenseTypes" VALUES (4, 'Water Expenses', 'Water Expenses', 3, 4, 1);
+INSERT INTO public."ExpenseTypes" VALUES (5, 'Medical Exp', 'Medical Expenses', 2, 5, 1);
+
 
 
 INSERT INTO public."ApprovalRoleMaps" VALUES (1, 3, 6, 1);
@@ -94,16 +107,17 @@ SELECT pg_catalog.setval('public."ClaimApprovalStatusTrackers_Id_seq"', 1, false
 SELECT pg_catalog.setval('public."CostCenters_Id_seq"', 4, true);
 SELECT pg_catalog.setval('public."CurrencyTypes_Id_seq"', 5, false);
 SELECT pg_catalog.setval('public."Departments_Id_seq"', 2, true);
-SELECT pg_catalog.setval('public."DisbursementsAndClaimsMasters_Id_seq"', 15, true);
+SELECT pg_catalog.setval('public."DisbursementsAndClaimsMasters_Id_seq"', 1, true);
+SELECT pg_catalog.setval('public."ExpenseReimburseRequests_Id_seq"', 1, true);
+SELECT pg_catalog.setval('public."ExpenseReimburseStatusTrackers_Id_seq"', 1, true);
+SELECT pg_catalog.setval('public."ExpenseSubClaims_Id_seq"', 1, true);
 SELECT pg_catalog.setval('public."EmpCurrentPettyCashBalances_Id_seq"', 6, true);
 SELECT pg_catalog.setval('public."Employees_Id_seq"', 6, true);
 SELECT pg_catalog.setval('public."EmploymentTypes_Id_seq"', 3, false);
 SELECT pg_catalog.setval('public."ExpenseCategories_Id_seq"', 4, true);
-SELECT pg_catalog.setval('public."ExpenseReimburseRequests_Id_seq"', 15, true);
-SELECT pg_catalog.setval('public."ExpenseReimburseStatusTrackers_Id_seq"', 44, true);
-SELECT pg_catalog.setval('public."ExpenseSubClaims_Id_seq"', 20, true);
+
 SELECT pg_catalog.setval('public."ExpenseTypes_Id_seq"', 5, true);
-SELECT pg_catalog.setval('public."FileDocuments_Id_seq"', 19, true);
+SELECT pg_catalog.setval('public."FileDocuments_Id_seq"', 1, true);
 SELECT pg_catalog.setval('public."GeneralLedger_Id_seq"', 5, true);
 SELECT pg_catalog.setval('public."JobRoles_Id_seq"', 9, true);
 SELECT pg_catalog.setval('public."PettyCashRequests_Id_seq"', 1, false);

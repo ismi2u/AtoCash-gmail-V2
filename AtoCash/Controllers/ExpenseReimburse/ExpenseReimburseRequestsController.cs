@@ -744,14 +744,6 @@ namespace AtoCash.Controllers
                         string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
                         Employee emp = _context.Employees.Find(expenseReimburseRequestDto.EmployeeId);
 
-                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\exp-req-email-template.html";
-                        StreamReader str = new StreamReader(FilePath);
-                        string MailText = str.ReadToEnd();
-                        str.Close();
-
-                        //MailText = MailText.Replace("[username]", request.UserName).Replace("[email]", request.ToEmail);
-
-                        
                         string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expenseReimburseRequest.TotalClaimAmount + "<br/>towards " + expenseReimburseRequest.ExpenseReportTitle;
                         var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
 
@@ -902,7 +894,7 @@ namespace AtoCash.Controllers
             expenseReimburseRequest.ExpReimReqDate = DateTime.Now;
             expenseReimburseRequest.BusinessAreaId = reqEmp.BusinessAreaId;
             expenseReimburseRequest.IsBusinessAreaReq = true;
-            expenseReimburseRequest.DepartmentId = expenseReimburseRequestDto.IsBusinessAreaReq == false ? reqEmp.DepartmentId : null;
+            expenseReimburseRequest.DepartmentId = null;
             expenseReimburseRequest.CostCenterId = costCenterId;
             expenseReimburseRequest.ProjectId = null;
             expenseReimburseRequest.SubProjectId = null;
@@ -940,7 +932,7 @@ namespace AtoCash.Controllers
                 expenseSubClaim.TaxAmount = expenseSubClaimDto.TaxAmount;
                 expenseSubClaim.Vendor = expenseSubClaimDto.Vendor;
                 expenseSubClaim.Location = expenseSubClaimDto.Location;
-                expenseSubClaim.DepartmentId = reqEmp.DepartmentId;
+                expenseSubClaim.DepartmentId = null;
                 expenseSubClaim.ProjectId = null;
                 expenseSubClaim.SubProjectId = null;
                 expenseSubClaim.WorkTaskId = null;
@@ -997,7 +989,7 @@ namespace AtoCash.Controllers
                     TotalClaimAmount = dblTotalClaimAmount,
                     ExpReimReqDate = DateTime.Now,
                     IsBusinessAreaReq = true,
-                    DepartmentId = expenseReimburseRequestDto.IsBusinessAreaReq == false ? reqEmp.DepartmentId : null,
+                    DepartmentId = null,
                     BusinessAreaId = expenseReimburseRequestDto.BusinessAreaId,
                     BAApprovalGroupId = reqEmp.BusinessAreaApprovalGroupId,
                     BARoleId = reqEmp.BusinessAreaRoleId,
@@ -1043,7 +1035,7 @@ namespace AtoCash.Controllers
                         ExpReimReqDate = DateTime.Now,
                         IsBusinessAreaReq = true,
                         BusinessAreaId = reqEmp.BusinessAreaId,
-                        DepartmentId = reqEmp.DepartmentId,
+                        DepartmentId = null,
                         ProjectId = null, //Approver Project Id
                         JobRoleId = approver.RoleId,
                         ApprovalGroupId = approver.ApprovalGroupId,
@@ -1064,9 +1056,15 @@ namespace AtoCash.Controllers
                     {
                         var approverMailAddress = approver.Email;
                         string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
+                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\exp-req-email-template.html";
+                        StreamReader str = new StreamReader(FilePath);
+                        string MailText = str.ReadToEnd();
+                        str.Close();
+
+                        //MailText = MailText.Replace("[username]", request.UserName).Replace("[email]", request.ToEmail);
                         Employee emp = _context.Employees.Find(expenseReimburseRequestDto.EmployeeId);
                         string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expenseReimburseRequest.TotalClaimAmount + "<br/>towards " + expenseReimburseRequest.ExpenseReportTitle;
-                        var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+                        var messagemail = new Message(new string[] { approverMailAddress }, subject, MailText);
 
                         await _emailSender.SendEmailAsync(messagemail);
                     }

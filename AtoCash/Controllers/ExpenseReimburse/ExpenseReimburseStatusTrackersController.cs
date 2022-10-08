@@ -176,8 +176,11 @@ namespace AtoCash.Controllers.ExpenseReimburse
                 expenseReimburseStatusTrackerDTO.EmployeeId = expenseReimburseStatusTracker.EmployeeId;
                 expenseReimburseStatusTrackerDTO.EmployeeName = _context.Employees.Find(expenseReimburseStatusTracker.EmployeeId).GetFullName();
                 expenseReimburseStatusTrackerDTO.ExpenseReimburseRequestId = expenseReimburseStatusTracker.ExpenseReimburseRequestId;
-                expenseReimburseStatusTrackerDTO.DepartmentId = expenseReimburseStatusTracker.DepartmentId;
+               
                 expenseReimburseStatusTrackerDTO.TotalClaimAmount = expenseReimburseStatusTracker.TotalClaimAmount;
+                expenseReimburseStatusTrackerDTO.BusinessAreaId = expenseReimburseStatusTracker.BusinessAreaId;
+                expenseReimburseStatusTrackerDTO.BusinessArea = expenseReimburseStatusTracker.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimburseStatusTracker.BusinessAreaId).BusinessAreaCode + ":" +  _context.BusinessAreas.Find(expenseReimburseStatusTracker.BusinessAreaId).BusinessAreaName : null;
+                expenseReimburseStatusTrackerDTO.DepartmentId = expenseReimburseStatusTracker.DepartmentId;
                 expenseReimburseStatusTrackerDTO.Department = expenseReimburseStatusTracker.DepartmentId != null ? _context.Departments.Find(expenseReimburseStatusTracker.DepartmentId).DeptName : null;
                 expenseReimburseStatusTrackerDTO.ProjectId = expenseReimburseStatusTracker.ProjectId;
                 expenseReimburseStatusTrackerDTO.Project = expenseReimburseStatusTracker.ProjectId != null ? _context.Projects.Find(expenseReimburseStatusTracker.ProjectId).ProjectName : null;
