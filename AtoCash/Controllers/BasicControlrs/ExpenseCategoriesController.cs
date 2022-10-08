@@ -26,8 +26,8 @@ namespace AtoCash.Controllers
 
 
         [HttpGet]
-        [ActionName("ExpenseCategoriesForDropdown")]
-        public async Task<ActionResult<IEnumerable<ExpenseCategoryVM>>> GetExpenseCategoriesForDropdown(bool isBussCategory)
+        [ActionName("SelectedExpenseCategoriesForDropdown")]
+        public async Task<ActionResult<IEnumerable<ExpenseCategoryVM>>> SelectedExpenseCategoriesForDropdown(bool isBussCategory)
         {
             List<ExpenseCategoryVM> ListExpenseCategoryVM = new();
 
@@ -38,6 +38,30 @@ namespace AtoCash.Controllers
                 {
                     Id = expenseCategory.Id,
                     ExpenseCategoryName = expenseCategory.ExpenseCategoryName + ":" +  expenseCategory.ExpenseCategoryDesc,
+                };
+
+                ListExpenseCategoryVM.Add(expenseCategoryVM);
+            }
+
+            return ListExpenseCategoryVM;
+
+        }
+
+
+
+        [HttpGet]
+        [ActionName("ExpenseCategoriesForDropdown")]
+        public async Task<ActionResult<IEnumerable<ExpenseCategoryVM>>> GetExpenseCategoriesForDropdown()
+        {
+            List<ExpenseCategoryVM> ListExpenseCategoryVM = new();
+
+            var expenseCategories = await _context.ExpenseCategories.Where(c => c.StatusTypeId == (int)EStatusType.Active).ToListAsync();
+            foreach (ExpenseCategory expenseCategory in expenseCategories)
+            {
+                ExpenseCategoryVM expenseCategoryVM = new()
+                {
+                    Id = expenseCategory.Id,
+                    ExpenseCategoryName = expenseCategory.ExpenseCategoryName + ":" + expenseCategory.ExpenseCategoryDesc,
                 };
 
                 ListExpenseCategoryVM.Add(expenseCategoryVM);

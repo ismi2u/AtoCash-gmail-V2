@@ -1,0 +1,112 @@
+INSERT INTO public."ApprovalGroups" VALUES (3, 'JB_DEP_APPGRP1', 'JB Sales Dept Approval Group ');
+INSERT INTO public."ApprovalGroups" VALUES (2, 'JB_STORE_APP1', 'JB Store Approval Group');
+
+
+INSERT INTO public."CostCenters" VALUES (2, 'BUD', 'Business Development', 1);
+INSERT INTO public."CostCenters" VALUES (3, '11001', 'JB- Al Shawkiya', 1);
+INSERT INTO public."CostCenters" VALUES (4, '11009', 'JB-Andalus Mall', 1);
+
+INSERT INTO public."BusinessAreas" VALUES (2, '11001', 'JB- Al Shawkiya', 3, 1);
+INSERT INTO public."BusinessAreas" VALUES (3, '11009', 'JB-Andalus Mall', 4, 1);
+
+INSERT INTO public."Departments" VALUES (2, 'BUD	', 'Business Development', 2, 1);
+
+===
+
+INSERT INTO public."JobRoles" VALUES (2, 'BAS_STORE_EMP', 'Store Employee', true, 10000);
+INSERT INTO public."JobRoles" VALUES (3, 'BAS_STORE_SUPER', 'Store Supervisor', true, 20000);
+INSERT INTO public."JobRoles" VALUES (4, 'BAS_STORE_OPR', 'Operations Head', true, 25000);
+INSERT INTO public."JobRoles" VALUES (8, 'DP-OPR', 'Sales Operations Manager', false, 25000);
+INSERT INTO public."JobRoles" VALUES (6, 'DEP_EMP', 'Sales Employee', false, 10000);
+INSERT INTO public."JobRoles" VALUES (7, 'DEP_MAN', 'Sales Manager', false, 20000);
+INSERT INTO public."JobRoles" VALUES (9, 'DEP-ACC', 'Finance Manager', false, 30000);
+INSERT INTO public."JobRoles" VALUES (5, 'BAS_STORE_ACC', 'Accounts Payable', true, 30000);
+
+
+INSERT INTO public."Employees" VALUES (2, 'ابراهيم عدنان القوزي', NULL, 'E-11000', 'E-11000', '235453565636',  'AD1400080001001234567890', '3453564667678854', '3249094', 'ZT445666', '343423123532423', 'Saudi', '2021-09-08 11:33:30.165', '2022-09-27 11:34:43.152', 'male', '11000@gmail.com', '24245435',1, 1, 2, 6, 3, 2, 2, 2, 1, 1);
+INSERT INTO public."Employees" VALUES (5, 'Mahmoud', ' Ali ', 'Ibrahim', 'E-8602', '3247565434567',  'AD1400080001001234567890', '2345547653424567', '3442342456', NULL, NULL, 'Indian', '2022-09-05 11:39:44.544', '2022-09-28 11:39:44.555', 'male', 'ibrahim@gmail.com', '344354545',1, 1, 2, 8, 3, 2, 4, 2, 1, 1);
+INSERT INTO public."Employees" VALUES (6, 'Walid', NULL, 'E-4166', 'E-4166', '2345468765',  'AD1400080001001234567890', '3453456547532343', '2343244', NULL, NULL, 'Saudi', '2022-09-14 11:42:55.352', '2022-09-27 11:41:50.017', 'male', 'walid@gmail.com', '23423445',1, 1, 2, 9, 3, 2, 5, 2, 1, 1);
+INSERT INTO public."Employees" VALUES (4, 'Eslam ', 'Al ', 'Shazly', 'E-8450', '3445679876543456', 'AD1400080001001234567890' ,'4555675534345678', '324243232', NULL, NULL, 'Saudi', '2022-09-05 11:37:55.973', '2022-09-14 11:37:55.981', 'male', 'eslam@gmail.com', '847577744', 1,1, 2, 7, 3, 2, 3, 2, 1, 1);
+INSERT INTO public."Employees" VALUES (3, 'أحمد عبدالمقصود احمد السيد', NULL, 'E-11002', 'E-11002', '2354535656361',  'AD1400080001001234567890', '3453564667678853', '2344662', 'z22435666', '3243577787', 'Saudi', '2022-09-06 11:35:32.934', '2022-09-20 11:35:32.945', 'male', '11002@gmail.com', '32445566',1, 1, 2, 6, 3, 2, 2, 2, 1, 1);
+
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (4, 4, 20000, 0, '2022-09-28 11:39:19.125081');
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (5, 5, 25000, 0, '2022-09-28 11:41:37.616992');
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (6, 6, 30000, 0, '2022-09-28 11:44:55.218718');
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (3, 3, 10000, 0, '2022-09-28 11:37:05.395571');
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (2, 2, 10000, 0, '2022-09-28 11:35:13.909336');
+
+
+INSERT INTO public."ExpenseCategories" VALUES (1, 'JB-Store Expenses', 'JB-Store Expenses', true, 1);
+INSERT INTO public."ExpenseCategories" VALUES (2, 'JB-DEP', 'JB-Department Expenses',true, 1);
+INSERT INTO public."ExpenseCategories" VALUES (3, 'JBINV', 'JB- Inventory Expenses',false, 1);
+INSERT INTO public."ExpenseCategories" VALUES (4, 'JBSTEXP', 'Janburger Store expenses',false, 1);
+
+==================================
+
+---
+INSERT INTO public."AspNetUsers" VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'atocash@gmail.com', 'ATOCASH@GMAIL.COM', 'atocash@gmail.com', 'ATOCASH@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('2f4869b4-1e97-4011-bf98-cfe44553babf', 2, '11000@gmail.com', '11000@GMAIL.COM', '11000@gmail.com', '11000@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEFcUJKNLQgiPP0+9k8W1I89x/XExO+3ownHsgLt+vkCl4yDT4VtA+xPiPvmHbmvYsA==', 'WORHL4NNAN6XYLLCTMCWMPPUUBTAEUZD', '257de412-bcc6-4f6a-92bf-3362a71876b8', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('897fa80a-0cad-491e-8010-95ea35992b8b', 3, '11002@gmail.com', '11002@GMAIL.COM', '11002@gmail.com', '11002@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEJCWsSmKmWMIqxtUkiV8jbwdpMcvnr7WbmR41VICqResmPNFXLODR4nUK0YMvfro9w==', 'VWONPC2A5QEMWVRW6SRYRGDSEPCRF2G2', '446b754a-2c35-46b3-ad07-223591bbdbb3', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('1cf0e451-9b40-469c-a235-f703e1d6fb1f', 4, 'Eslam@gmail.com', 'ESLAM@GMAIL.COM', 'eslam@gmail.com', 'ESLAM@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEDT5OA1avJiRa2ZS70yv2v47++TVW65VPlRVjQVK3YsFGMbZRLLY5Cgl3ldKImy7Mg==', 'HF5PT6MBC3AWQBP2OWBLIADJ55VTIB5F', '246f3e8d-357c-4369-95d5-c28c3bf593b9', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('c9b95d3c-b95a-46c7-b6bd-6502c1e91d7f', 5, 'Ibrahim@gmail.com', 'IBRAHIM@GMAIL.COM', 'ibrahim@gmail.com', 'IBRAHIM@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEA6w6RReuPGnAMVjAT/KGb+gldJQyEo026A7XKVIoTZ6H8Xn9fhy7qRzUSn2rh8Scw==', 'W2LAVP4ISOJI4YC7UCNIJV2TVWNDWSSW', 'd914e1af-0e28-430b-a824-d2e3e32ab3de', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('bd77d1f7-8eb1-40cc-823a-fa7186c71461', 6, 'Walid@gmail.com', 'WALID@GMAIL.COM', 'walid@gmail.com', 'WALID@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEG4HnB7ZFupjZkSYH3Hyv2uWxjWxi+SP1aErb7UpvpyHjYrPWu8YFtQRiwbcORZlyA==', 'YFWQJ5452XCG2VNE5OTIOGFYPBJVSLYO', 'be7ce359-93da-4a01-a72e-dea35ce559bd', NULL, false, false, NULL, true, 0);
+
+
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('user2af3-dc89-4f3f-adaa-6c136358user', 'User', 'USER', 'auser2b1-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abf2af3-dc89-4f3f-adaa-6c136358e9b0', 'Admin', 'ADMIN', 'a51632b1-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abfbara-dc89-4f3f-adaa-6c136358e9b0', 'Manager', 'MANAGER', 'a516bara-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abftera-dc89-4f3f-adaa-6c136358e9b0', 'Finmgr', 'FINMGR', 'a516tera-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abfsaud-dc89-4f3f-adaa-6c136358e9b0', 'AccPayable', 'ACCPAYABLE', 'a516saud-5957-4d1b-8025-75143dff446a');
+
+
+
+
+
+INSERT INTO public."AspNetUserRoles" ("UserId", "RoleId") VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', '2abf2af3-dc89-4f3f-adaa-6c136358e9b0');
+
+---
+
+
+
+INSERT INTO public."AspNetUserRoles" VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', '2abf2af3-dc89-4f3f-adaa-6c136358e9b0');
+INSERT INTO public."AspNetUserRoles" VALUES ('2f4869b4-1e97-4011-bf98-cfe44553babf', 'user2af3-dc89-4f3f-adaa-6c136358user');
+INSERT INTO public."AspNetUserRoles" VALUES ('897fa80a-0cad-491e-8010-95ea35992b8b', 'user2af3-dc89-4f3f-adaa-6c136358user');
+INSERT INTO public."AspNetUserRoles" VALUES ('1cf0e451-9b40-469c-a235-f703e1d6fb1f', '2abfbara-dc89-4f3f-adaa-6c136358e9b0');
+INSERT INTO public."AspNetUserRoles" VALUES ('c9b95d3c-b95a-46c7-b6bd-6502c1e91d7f', '2abfbara-dc89-4f3f-adaa-6c136358e9b0');
+INSERT INTO public."AspNetUserRoles" VALUES ('bd77d1f7-8eb1-40cc-823a-fa7186c71461', '2abftera-dc89-4f3f-adaa-6c136358e9b0');
+INSERT INTO public."AspNetUserRoles" VALUES ('bd77d1f7-8eb1-40cc-823a-fa7186c71461', '2abfsaud-dc89-4f3f-adaa-6c136358e9b0');
+
+
+SELECT pg_catalog.setval('public."ApprovalGroups_Id_seq"', 3, true);
+SELECT pg_catalog.setval('public."ApprovalLevels_Id_seq"', 5, false);
+SELECT pg_catalog.setval('public."ApprovalRoleMaps_Id_seq"', 8, true);
+SELECT pg_catalog.setval('public."ApprovalStatusTypes_Id_seq"', 6, true);
+SELECT pg_catalog.setval('public."AspNetRoleClaims_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."AspNetUserClaims_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."BusinessAreas_Id_seq"', 3, true);
+SELECT pg_catalog.setval('public."ClaimApprovalStatusTrackers_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."CostCenters_Id_seq"', 4, true);
+SELECT pg_catalog.setval('public."CurrencyTypes_Id_seq"', 5, false);
+SELECT pg_catalog.setval('public."Departments_Id_seq"', 2, true);
+SELECT pg_catalog.setval('public."DisbursementsAndClaimsMasters_Id_seq"', 15, true);
+SELECT pg_catalog.setval('public."EmpCurrentPettyCashBalances_Id_seq"', 6, true);
+SELECT pg_catalog.setval('public."Employees_Id_seq"', 6, true);
+SELECT pg_catalog.setval('public."EmploymentTypes_Id_seq"', 3, false);
+SELECT pg_catalog.setval('public."ExpenseCategories_Id_seq"', 4, true);
+SELECT pg_catalog.setval('public."ExpenseReimburseRequests_Id_seq"', 15, true);
+SELECT pg_catalog.setval('public."ExpenseReimburseStatusTrackers_Id_seq"', 44, true);
+SELECT pg_catalog.setval('public."ExpenseSubClaims_Id_seq"', 20, true);
+SELECT pg_catalog.setval('public."ExpenseTypes_Id_seq"', 5, true);
+SELECT pg_catalog.setval('public."FileDocuments_Id_seq"', 19, true);
+SELECT pg_catalog.setval('public."GeneralLedger_Id_seq"', 5, true);
+SELECT pg_catalog.setval('public."JobRoles_Id_seq"', 9, true);
+SELECT pg_catalog.setval('public."PettyCashRequests_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."ProjectManagements_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Projects_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."RequestTypes_Id_seq"', 4, false);
+SELECT pg_catalog.setval('public."StatusTypes_Id_seq"', 3, false);
+SELECT pg_catalog.setval('public."SubProjects_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."TravelApprovalRequests_Id_seq"', 1, true);
+SELECT pg_catalog.setval('public."TravelApprovalStatusTrackers_Id_seq"', 3, true);
+SELECT pg_catalog.setval('public."WorkTasks_Id_seq"', 1, false);
+
