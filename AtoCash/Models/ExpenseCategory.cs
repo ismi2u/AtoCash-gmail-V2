@@ -22,8 +22,11 @@ namespace AtoCash.Models
         [Column(TypeName = "varchar(150)")]
         public string ExpenseCategoryDesc { get; set; }
 
+        [Required]
+        public bool IsBusinessCategory { get; set; }
 
-  
+
+
         [Required]
         [ForeignKey("StatusTypeId")]
         public virtual StatusType StatusType { get; set; }
@@ -38,6 +41,8 @@ namespace AtoCash.Models
         public int Id { get; set; }
         public string ExpenseCategoryName { get; set; }
         public string ExpenseCategoryDesc { get; set; }
+
+        public bool IsBusinessCategory { get; set; }
         public string StatusType { get; set; }
         public int StatusTypeId { get; set; }
 

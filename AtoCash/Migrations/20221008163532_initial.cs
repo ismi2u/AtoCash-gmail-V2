@@ -372,6 +372,7 @@ namespace AtoCash.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ExpenseCategoryName = table.Column<string>(type: "varchar(50)", nullable: false),
                     ExpenseCategoryDesc = table.Column<string>(type: "varchar(150)", nullable: false),
+                    IsBusinessCategory = table.Column<bool>(type: "boolean", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

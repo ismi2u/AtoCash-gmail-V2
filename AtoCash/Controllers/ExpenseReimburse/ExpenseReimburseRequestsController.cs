@@ -743,6 +743,15 @@ namespace AtoCash.Controllers
                         var approverMailAddress = approver.Email;
                         string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
                         Employee emp = _context.Employees.Find(expenseReimburseRequestDto.EmployeeId);
+
+                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\exp-req-email-template.html";
+                        StreamReader str = new StreamReader(FilePath);
+                        string MailText = str.ReadToEnd();
+                        str.Close();
+
+                        //MailText = MailText.Replace("[username]", request.UserName).Replace("[email]", request.ToEmail);
+
+                        
                         string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expenseReimburseRequest.TotalClaimAmount + "<br/>towards " + expenseReimburseRequest.ExpenseReportTitle;
                         var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
 

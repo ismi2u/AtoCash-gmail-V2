@@ -27,11 +27,11 @@ namespace AtoCash.Controllers
 
         [HttpGet]
         [ActionName("ExpenseCategoriesForDropdown")]
-        public async Task<ActionResult<IEnumerable<ExpenseCategoryVM>>> GetExpenseCategoriesForDropdown()
+        public async Task<ActionResult<IEnumerable<ExpenseCategoryVM>>> GetExpenseCategoriesForDropdown(bool isBussCategory)
         {
             List<ExpenseCategoryVM> ListExpenseCategoryVM = new();
 
-            var expenseCategories = await _context.ExpenseCategories.Where(c => c.StatusTypeId == (int)EStatusType.Active).ToListAsync();
+            var expenseCategories = await _context.ExpenseCategories.Where(c => c.StatusTypeId == (int)EStatusType.Active && c.IsBusinessCategory== isBussCategory).ToListAsync();
             foreach (ExpenseCategory expenseCategory in expenseCategories)
             {
                 ExpenseCategoryVM expenseCategoryVM = new()
@@ -61,6 +61,7 @@ namespace AtoCash.Controllers
                     Id = expenseCategory.Id,
                     ExpenseCategoryName = expenseCategory.ExpenseCategoryName,
                     ExpenseCategoryDesc = expenseCategory.ExpenseCategoryDesc,
+                    IsBusinessCategory = expenseCategory.IsBusinessCategory,
                     StatusTypeId = expenseCategory.StatusTypeId,
                     StatusType = _context.StatusTypes.Find(expenseCategory.StatusTypeId).Status
                 };
@@ -87,6 +88,7 @@ namespace AtoCash.Controllers
                 Id = expenseCategory.Id,
                 ExpenseCategoryName = expenseCategory.ExpenseCategoryName,
                 ExpenseCategoryDesc = expenseCategory.ExpenseCategoryDesc,
+                IsBusinessCategory = expenseCategory.IsBusinessCategory,
                 StatusTypeId = expenseCategory.StatusTypeId,
                 StatusType = _context.StatusTypes.Find(expenseCategory.StatusTypeId).Status
             };
@@ -107,6 +109,7 @@ namespace AtoCash.Controllers
             var expCategory = await _context.ExpenseCategories.FindAsync(id);
 
             expCategory.ExpenseCategoryDesc = expenseCategoryDTO.ExpenseCategoryDesc;
+            expCategory.IsBusinessCategory = expenseCategoryDTO.IsBusinessCategory;
             expCategory.StatusTypeId = expenseCategoryDTO.StatusTypeId;
             _context.ExpenseCategories.Update(expCategory);
 
@@ -139,6 +142,7 @@ namespace AtoCash.Controllers
             ExpenseCategory expenseCategory = new();
             expenseCategory.ExpenseCategoryName = expenseCategoryDTO.ExpenseCategoryName;
             expenseCategory.ExpenseCategoryDesc = expenseCategoryDTO.ExpenseCategoryDesc;
+            expenseCategory.IsBusinessCategory = expenseCategoryDTO.IsBusinessCategory;
             expenseCategory.StatusTypeId = expenseCategoryDTO.StatusTypeId;
             _context.ExpenseCategories.Add(expenseCategory);
             await _context.SaveChangesAsync();

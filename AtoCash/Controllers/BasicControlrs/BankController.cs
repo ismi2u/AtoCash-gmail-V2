@@ -60,6 +60,7 @@ namespace AtoCash.Controllers
                 {
                     Id = Bank.Id,
                     BankName = Bank.BankName,
+                    BankDesc= Bank.BankDesc,
                     StatusTypeId = Bank.StatusTypeId,
                     StatusType = _context.StatusTypes.Find(Bank.StatusTypeId).Status
                 };

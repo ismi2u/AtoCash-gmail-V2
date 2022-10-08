@@ -867,6 +867,9 @@ namespace AtoCash.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)");
 
+                    b.Property<bool>("IsBusinessCategory")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("StatusTypeId")
                         .HasColumnType("integer");
 
