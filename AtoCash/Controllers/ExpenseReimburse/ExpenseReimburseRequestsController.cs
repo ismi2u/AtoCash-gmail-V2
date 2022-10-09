@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using AtoCash.Authentication;
 using System.Net.Http;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Net.Mail;
 
 
 namespace AtoCash.Controllers
@@ -1054,17 +1055,70 @@ namespace AtoCash.Controllers
 
                     if (isFirstApprover)
                     {
-                        var approverMailAddress = approver.Email;
-                        string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
-                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\exp-req-email-template.html";
+
+                        // test email in Html Body
+                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\htmlpage.html";
                         StreamReader str = new StreamReader(FilePath);
                         string MailText = str.ReadToEnd();
                         str.Close();
 
-                        //MailText = MailText.Replace("[username]", request.UserName).Replace("[email]", request.ToEmail);
+                        var builder = new MimeKit.BodyBuilder();
+
+                        builder.HtmlBody = MailText;
+                       
+
+
+                        ////////MailMessage mailMessage = new MailMessage();
+                        ////////mailMessage.From = new MailAddress("atocash@atominosconsulting.com");
+                        ////////mailMessage.To.Add("ismailkhanf@gmail.com");
+                        ////////mailMessage.Subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
+                        //mailMessage.Body = "<b>Sender Name : </b>" + txtName.Text + "<br/>"
+                        //    + "<b>Sender Email : </b>" + txtEmail.Text + "<br/>"
+                        //+ "<b>Comments : </b>" + txtComments.Text;
+
+
+
+                        //mailMessage.Body = builder.HtmlBody;
+                        //////mailMessage.Body = "<b>hello Body message</b>";
+                        //////mailMessage.IsBodyHtml = true;
+
+
+                        //                        SMTP server name smtp-mail.outlook.com
+
+                        //SMTP port 587
+
+                        //SMTP encryption method STARTTLS
+
+                        //SmtpClient smtpClient = new SmtpClient();
+                        //smtpClient.Host = "smtp-mail.outlook.com";
+                        //smtpClient.EnableSsl = true;
+                        //System.Net.NetworkCredential nc = new System.Net.NetworkCredential();
+                        //nc.UserName = "m.i.khan@outlook.com";
+                        //nc.Password = "allahuakbar7";
+                        //smtpClient.UseDefaultCredentials = true;
+                        //smtpClient.Credentials = nc;
+                        //smtpClient.Port = 587;
+                        //smtpClient.Send(mailMessage);
+
+
+                        ////////                    "From": "atocash@atominosconsulting.com",
+                        ////////"DisplayName": "No-Reply-Email",
+                        ////////"SmtpServer": "smtp.gmail.com",
+                        ////////"Port": "465",
+                        ////////"StartTLS": true,
+                        ////////"UserName": "atocash@atominosconsulting.com",
+                        ////////"Password": "Atominos@12345"
+
+
+                        //
+
+
+                        var approverMailAddress ="ismailkhanf@gmail.com";
+                       // var approverMailAddress = approver.Email;
+                        string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
                         Employee emp = _context.Employees.Find(expenseReimburseRequestDto.EmployeeId);
                         string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expenseReimburseRequest.TotalClaimAmount + "<br/>towards " + expenseReimburseRequest.ExpenseReportTitle;
-                        var messagemail = new Message(new string[] { approverMailAddress }, subject, MailText);
+                        var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                         await _emailSender.SendEmailAsync(messagemail);
                     }
