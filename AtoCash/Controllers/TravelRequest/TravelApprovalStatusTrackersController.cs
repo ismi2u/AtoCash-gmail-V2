@@ -10,6 +10,7 @@ using AtoCash.Models;
 using Microsoft.AspNetCore.Authorization;
 using EmailService;
 using AtoCash.Authentication;
+using System.IO;
 
 namespace AtoCash.Controllers
 {
@@ -237,13 +238,26 @@ namespace AtoCash.Controllers
 
                                 //##### 4. Send email to the Approver
                                 //####################################
+
+                                string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\TravelApprNotificationEmail.html";
+                                StreamReader str = new StreamReader(FilePath);
+                                string MailText = str.ReadToEnd();
+                                str.Close();
+
                                 var approverMailAddress = approver.Email;
                                 string subject = "Travel Approval Request " + travelApprovalStatusTracker.TravelApprovalRequestId.ToString();
                                 Employee emp = await _context.Employees.FindAsync(travelApprovalStatusTracker.EmployeeId);
-                                var travelApprReq = _context.TravelApprovalRequests.Find(travelApprovalStatusTracker.TravelApprovalRequestId);
-                                string content = "Travel Request Approval sought by " + emp.GetFullName() + "<br/>for the purpose of " + travelApprReq.TravelPurpose;
-                                var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+                                var travelreq = _context.TravelApprovalRequests.Find(travelApprovalStatusTracker.Id);
 
+                                var builder = new MimeKit.BodyBuilder();
+
+                                MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                                MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                                MailText = MailText.Replace("{Request}", travelreq.TravelStartDate.ToString() + " - " + travelreq.TravelEndDate.ToString() + " (Purpose): " + travelreq.TravelPurpose.ToString());
+                                MailText = MailText.Replace("{RequestNumber}", travelreq.Id.ToString());
+                                builder.HtmlBody = MailText;
+
+                                var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                                 await _emailSender.SendEmailAsync(messagemail);
 

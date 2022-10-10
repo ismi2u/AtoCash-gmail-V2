@@ -10,6 +10,7 @@ using AtoCash.Models;
 using Microsoft.AspNetCore.Authorization;
 using AtoCash.Authentication;
 using EmailService;
+using System.IO;
 
 namespace AtoCash.Controllers
 {
@@ -240,12 +241,27 @@ namespace AtoCash.Controllers
 
                                 //##### 4. Send email to the Approver
                                 //####################################
+
+                                string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
+                                StreamReader str = new StreamReader(FilePath);
+                                string MailText = str.ReadToEnd();
+                                str.Close();
+
                                 var approverMailAddress = approver.Email;
                                 string subject = "Pettycash Request Approval " + claimApprovalStatusTracker.PettyCashRequestId.ToString();
                                 Employee emp = await _context.Employees.FindAsync(claimApprovalStatusTracker.EmployeeId);
                                 var pettycashreq = _context.PettyCashRequests.Find(claimApprovalStatusTracker.PettyCashRequestId);
-                                string content = "Petty Cash Approval sought by " + emp.GetFullName() + "<br/>Cash Request for the amount of " + pettycashreq.PettyClaimAmount + "<br/>towards " + pettycashreq.PettyClaimRequestDesc;
-                                var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+
+                                var builder = new MimeKit.BodyBuilder();
+
+                                MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                                MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                                MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                                MailText = MailText.Replace("{RequestedAmount}", pettycashreq.PettyClaimAmount.ToString());
+                                MailText = MailText.Replace("{RequestNumber}", pettycashreq.Id.ToString());
+                                builder.HtmlBody = MailText;
+
+                                var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                                 await _emailSender.SendEmailAsync(messagemail);
 

@@ -10,6 +10,7 @@ using AtoCash.Models;
 using EmailService;
 using AtoCash.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
 
 namespace AtoCash.Controllers
 {
@@ -337,16 +338,30 @@ namespace AtoCash.Controllers
 
                 if (IsFirstEmail)
                 {
-                    //####################################
+                    string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
+                    StreamReader str = new StreamReader(FilePath);
+                    string MailText = str.ReadToEnd();
+                    str.Close();
+
                     var approver = _context.Employees.Where(e => e.RoleId == claim.RoleId && e.ApprovalGroupId == claim.ApprovalGroupId).FirstOrDefault();
                     var approverMailAddress = approver.Email;
                     string subject = "(Modified) Pettycash Request Approval " + pettyCashRequestDto.Id.ToString();
-                    Employee emp = await _context.Employees.FindAsync(pettyCashRequest.EmployeeId);
+                    Employee emp = _context.Employees.Find(pettyCashRequestDto.EmployeeId);
                     var pettycashreq = _context.PettyCashRequests.Find(pettyCashRequestDto.Id);
-                    string content = "(Modified) Petty Cash Approval sought by " + emp.GetFullName() + "@<br/>Cash Request for the amount of " + pettycashreq.PettyClaimAmount + "@<br/>towards " + pettycashreq.PettyClaimRequestDesc;
-                    var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+
+                    var builder = new MimeKit.BodyBuilder();
+
+                    MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                    MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                    MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                    MailText = MailText.Replace("{RequestedAmount}", pettycashreq.PettyClaimAmount.ToString());
+                    MailText = MailText.Replace("{RequestNumber}", pettycashreq.Id.ToString());
+                    builder.HtmlBody = MailText;
+
+                    var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                     await _emailSender.SendEmailAsync(messagemail);
+
 
                     IsFirstEmail = false;
                 }
@@ -622,14 +637,29 @@ namespace AtoCash.Controllers
                 //##### 4. Send email to the user
                 //####################################
                 #region
+                string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
                 var approverMailAddress = approver.Email;
                 string subject = "Pettycash Request Approval " + pettyCashRequestDto.Id.ToString();
-                Employee emp = await _context.Employees.FindAsync(pettyCashRequestDto.EmployeeId);
+                Employee emp = _context.Employees.Find(pettyCashRequestDto.EmployeeId);
                 var pettycashreq = _context.PettyCashRequests.Find(pettyCashRequestDto.Id);
-                string content = "Petty Cash Approval sought by " + emp.GetFullName() + "/nCash Request for the amount of " + pettycashreq.PettyClaimAmount + "/ntowards " + pettycashreq.PettyClaimRequestDesc;
-                var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+
+                var builder = new MimeKit.BodyBuilder();
+
+                MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                MailText = MailText.Replace("{RequestedAmount}", pettycashreq.PettyClaimAmount.ToString());
+                MailText = MailText.Replace("{RequestNumber}", pettycashreq.Id.ToString());
+                builder.HtmlBody = MailText;
+
+                var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                 await _emailSender.SendEmailAsync(messagemail);
+
                 #endregion
             }
 
@@ -828,14 +858,30 @@ namespace AtoCash.Controllers
                     {
                         //##### 4. Send email to the Approver
                         //####################################
+
+                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
+                        StreamReader str = new StreamReader(FilePath);
+                        string MailText = str.ReadToEnd();
+                        str.Close();
+
                         var approverMailAddress = approver.Email;
                         string subject = "Pettycash Request Approval " + pettyCashRequestDto.Id.ToString();
-                        Employee emp = await _context.Employees.FindAsync(pettyCashRequestDto.EmployeeId);
+                        Employee emp = _context.Employees.Find(pettyCashRequestDto.EmployeeId);
                         var pettycashreq = _context.PettyCashRequests.Find(pettyCashRequestDto.Id);
-                        string content = "Petty Cash Approval sought by " + emp.GetFullName() + "@<br/>Cash Request for the amount of " + pettycashreq.PettyClaimAmount + "@<br/>towards " + pettycashreq.PettyClaimRequestDesc;
-                        var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+
+                        var builder = new MimeKit.BodyBuilder();
+
+                        MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                        MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                        MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                        MailText = MailText.Replace("{RequestedAmount}", pettycashreq.PettyClaimAmount.ToString());
+                        MailText = MailText.Replace("{RequestNumber}", pettycashreq.Id.ToString());
+                        builder.HtmlBody = MailText;
+
+                        var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                         await _emailSender.SendEmailAsync(messagemail);
+
                     }
 
                     //first approver will be added as Pending, other approvers will be with In Approval Queue
@@ -1031,12 +1077,27 @@ namespace AtoCash.Controllers
                     {
                         //##### 4. Send email to the Approver
                         //####################################
+
+                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
+                        StreamReader str = new StreamReader(FilePath);
+                        string MailText = str.ReadToEnd();
+                        str.Close();
+
                         var approverMailAddress = approver.Email;
                         string subject = "Pettycash Request Approval " + pettyCashRequestDto.Id.ToString();
-                        Employee emp = await _context.Employees.FindAsync(pettyCashRequestDto.EmployeeId);
+                        Employee emp = _context.Employees.Find(pettyCashRequestDto.EmployeeId);
                         var pettycashreq = _context.PettyCashRequests.Find(pettyCashRequestDto.Id);
-                        string content = "Petty Cash Approval sought by " + emp.GetFullName() + "@<br/>Cash Request for the amount of " + pettycashreq.PettyClaimAmount + "@<br/>towards " + pettycashreq.PettyClaimRequestDesc;
-                        var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+
+                        var builder = new MimeKit.BodyBuilder();
+
+                        MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                        MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                        MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                        MailText = MailText.Replace("{RequestedAmount}", pettycashreq.PettyClaimAmount.ToString());
+                        MailText = MailText.Replace("{RequestNumber}", pettycashreq.Id.ToString());
+                        builder.HtmlBody = MailText;
+
+                        var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                         await _emailSender.SendEmailAsync(messagemail);
                     }

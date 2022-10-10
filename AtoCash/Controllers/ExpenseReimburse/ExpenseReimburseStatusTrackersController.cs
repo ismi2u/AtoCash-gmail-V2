@@ -10,6 +10,7 @@ using AtoCash.Models;
 using Microsoft.AspNetCore.Authorization;
 using AtoCash.Authentication;
 using EmailService;
+using System.IO;
 
 namespace AtoCash.Controllers.ExpenseReimburse
 {
@@ -416,17 +417,30 @@ namespace AtoCash.Controllers.ExpenseReimburse
                                 //##### 4. Send email to the Approver
                                 //####################################
 
+                                string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\ExpApprNotificationEmail.html";
+                                StreamReader str = new StreamReader(FilePath);
+                                string MailText = str.ReadToEnd();
+                                str.Close();
 
-
-
-                                var approverMailAddress = approver.Email;
                                 var expReimReqt = _context.ExpenseReimburseRequests.Find(expenseReimburseStatusTracker.ExpenseReimburseRequestId);
+                                var approverMailAddress = approver.Email;
                                 string subject = expReimReqt.ExpenseReportTitle + " - #" + expenseReimburseStatusTracker.ExpenseReimburseRequest.Id.ToString();
                                 Employee emp = _context.Employees.Find(expenseReimburseStatusTracker.EmployeeId);
-                                string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expReimReqt.TotalClaimAmount + "<br/>towards " + expReimReqt.ExpenseReportTitle;
-                                var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+                               
+
+                                var builder = new MimeKit.BodyBuilder();
+
+                                MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                                MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                                MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                                MailText = MailText.Replace("{RequestedAmount}", expenseReimburseStatusTracker.TotalClaimAmount.ToString());
+                                MailText = MailText.Replace("{RequestNumber}", expenseReimburseStatusTracker.Id.ToString());
+                                builder.HtmlBody = MailText;
+
+                                var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                                 await _emailSender.SendEmailAsync(messagemail);
+
                                 break;
 
 

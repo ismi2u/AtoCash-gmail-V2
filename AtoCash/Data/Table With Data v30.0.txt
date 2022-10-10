@@ -11,7 +11,7 @@ INSERT INTO public."BusinessAreas" VALUES (3, '11009', 'JB-Andalus Mall', 4, 1);
 
 INSERT INTO public."Departments" VALUES (2, 'BUD	', 'Business Development', 2, 1);
 
-===
+--===
 
 INSERT INTO public."JobRoles" VALUES (2, 'BAS_STORE_EMP', 'Store Employee', true, 10000);
 INSERT INTO public."JobRoles" VALUES (3, 'BAS_STORE_SUPER', 'Store Supervisor', true, 20000);
@@ -64,15 +64,15 @@ INSERT INTO public."ApprovalRoleMaps" VALUES (5, 2, 2, 1);
 INSERT INTO public."ApprovalRoleMaps" VALUES (6, 2, 3, 2);
 INSERT INTO public."ApprovalRoleMaps" VALUES (7, 2, 4, 3);
 INSERT INTO public."ApprovalRoleMaps" VALUES (8, 2, 5, 4);
-==================================
+--==================================
 
----
+-----
 INSERT INTO public."AspNetUsers" VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'atocash@gmail.com', 'ATOCASH@GMAIL.COM', 'atocash@gmail.com', 'ATOCASH@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
-INSERT INTO public."AspNetUsers" VALUES ('2f4869b4-1e97-4011-bf98-cfe44553babf', 2, '11000@gmail.com', '11000@GMAIL.COM', '11000@gmail.com', '11000@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEFcUJKNLQgiPP0+9k8W1I89x/XExO+3ownHsgLt+vkCl4yDT4VtA+xPiPvmHbmvYsA==', 'WORHL4NNAN6XYLLCTMCWMPPUUBTAEUZD', '257de412-bcc6-4f6a-92bf-3362a71876b8', NULL, false, false, NULL, true, 0);
-INSERT INTO public."AspNetUsers" VALUES ('897fa80a-0cad-491e-8010-95ea35992b8b', 3, '11002@gmail.com', '11002@GMAIL.COM', '11002@gmail.com', '11002@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEJCWsSmKmWMIqxtUkiV8jbwdpMcvnr7WbmR41VICqResmPNFXLODR4nUK0YMvfro9w==', 'VWONPC2A5QEMWVRW6SRYRGDSEPCRF2G2', '446b754a-2c35-46b3-ad07-223591bbdbb3', NULL, false, false, NULL, true, 0);
-INSERT INTO public."AspNetUsers" VALUES ('1cf0e451-9b40-469c-a235-f703e1d6fb1f', 4, 'Eslam@gmail.com', 'ESLAM@GMAIL.COM', 'eslam@gmail.com', 'ESLAM@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEDT5OA1avJiRa2ZS70yv2v47++TVW65VPlRVjQVK3YsFGMbZRLLY5Cgl3ldKImy7Mg==', 'HF5PT6MBC3AWQBP2OWBLIADJ55VTIB5F', '246f3e8d-357c-4369-95d5-c28c3bf593b9', NULL, false, false, NULL, true, 0);
-INSERT INTO public."AspNetUsers" VALUES ('c9b95d3c-b95a-46c7-b6bd-6502c1e91d7f', 5, 'Ibrahim@gmail.com', 'IBRAHIM@GMAIL.COM', 'ibrahim@gmail.com', 'IBRAHIM@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEA6w6RReuPGnAMVjAT/KGb+gldJQyEo026A7XKVIoTZ6H8Xn9fhy7qRzUSn2rh8Scw==', 'W2LAVP4ISOJI4YC7UCNIJV2TVWNDWSSW', 'd914e1af-0e28-430b-a824-d2e3e32ab3de', NULL, false, false, NULL, true, 0);
-INSERT INTO public."AspNetUsers" VALUES ('bd77d1f7-8eb1-40cc-823a-fa7186c71461', 6, 'Walid@gmail.com', 'WALID@GMAIL.COM', 'walid@gmail.com', 'WALID@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEG4HnB7ZFupjZkSYH3Hyv2uWxjWxi+SP1aErb7UpvpyHjYrPWu8YFtQRiwbcORZlyA==', 'YFWQJ5452XCG2VNE5OTIOGFYPBJVSLYO', 'be7ce359-93da-4a01-a72e-dea35ce559bd', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('2f4869b4-1e97-4011-bf98-cfe44553babf', 2, 'atocash.11000@gmail.com', 'ATOCASH.11000@GMAIL.COM', 'atocash.11000@gmail.com', 'ATOCASH.11000@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEFcUJKNLQgiPP0+9k8W1I89x/XExO+3ownHsgLt+vkCl4yDT4VtA+xPiPvmHbmvYsA==', 'WORHL4NNAN6XYLLCTMCWMPPUUBTAEUZD', '257de412-bcc6-4f6a-92bf-3362a71876b8', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('897fa80a-0cad-491e-8010-95ea35992b8b', 3, 'atocash.11002@gmail.com', 'ATOCASH.11002@GMAIL.COM', 'atocash.11002@gmail.com', 'ATOCASH.11002@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEJCWsSmKmWMIqxtUkiV8jbwdpMcvnr7WbmR41VICqResmPNFXLODR4nUK0YMvfro9w==', 'VWONPC2A5QEMWVRW6SRYRGDSEPCRF2G2', '446b754a-2c35-46b3-ad07-223591bbdbb3', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('1cf0e451-9b40-469c-a235-f703e1d6fb1f', 4, 'atocash.Eslam@gmail.com', 'ATOCASH.ESLAM@GMAIL.COM', 'atocash.eslam@gmail.com', 'ATOCASH.ESLAM@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEDT5OA1avJiRa2ZS70yv2v47++TVW65VPlRVjQVK3YsFGMbZRLLY5Cgl3ldKImy7Mg==', 'HF5PT6MBC3AWQBP2OWBLIADJ55VTIB5F', '246f3e8d-357c-4369-95d5-c28c3bf593b9', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('c9b95d3c-b95a-46c7-b6bd-6502c1e91d7f', 5, 'atocash.Ibrahim@gmail.com', 'ATOCASH.IBRAHIM@GMAIL.COM', 'atocash.ibrahim@gmail.com', 'ATOCASH.IBRAHIM@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEA6w6RReuPGnAMVjAT/KGb+gldJQyEo026A7XKVIoTZ6H8Xn9fhy7qRzUSn2rh8Scw==', 'W2LAVP4ISOJI4YC7UCNIJV2TVWNDWSSW', 'd914e1af-0e28-430b-a824-d2e3e32ab3de', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('bd77d1f7-8eb1-40cc-823a-fa7186c71461', 6, 'atocash.Walid@gmail.com', 'ATOCASH.WALID@GMAIL.COM', 'atocash.walid@gmail.com', 'ATOCASH.WALID@GMAIL.COM', false, 'AQAAAAEAACcQAAAAEG4HnB7ZFupjZkSYH3Hyv2uWxjWxi+SP1aErb7UpvpyHjYrPWu8YFtQRiwbcORZlyA==', 'YFWQJ5452XCG2VNE5OTIOGFYPBJVSLYO', 'be7ce359-93da-4a01-a72e-dea35ce559bd', NULL, false, false, NULL, true, 0);
 
 
 INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('user2af3-dc89-4f3f-adaa-6c136358user', 'User', 'USER', 'auser2b1-5957-4d1b-8025-75143dff446a');
@@ -115,7 +115,6 @@ SELECT pg_catalog.setval('public."EmpCurrentPettyCashBalances_Id_seq"', 6, true)
 SELECT pg_catalog.setval('public."Employees_Id_seq"', 6, true);
 SELECT pg_catalog.setval('public."EmploymentTypes_Id_seq"', 3, false);
 SELECT pg_catalog.setval('public."ExpenseCategories_Id_seq"', 4, true);
-
 SELECT pg_catalog.setval('public."ExpenseTypes_Id_seq"', 5, true);
 SELECT pg_catalog.setval('public."FileDocuments_Id_seq"', 1, true);
 SELECT pg_catalog.setval('public."GeneralLedger_Id_seq"', 5, true);

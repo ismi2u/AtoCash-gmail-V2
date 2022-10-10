@@ -10,6 +10,7 @@ using AtoCash.Models;
 using EmailService;
 using AtoCash.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
 
 namespace AtoCash.Controllers
 {
@@ -320,15 +321,30 @@ namespace AtoCash.Controllers
 
                 if (IsFirstEmail)
                 {
+                    string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\TravelApprNotificationEmail.html";
+                    StreamReader str = new StreamReader(FilePath);
+                    string MailText = str.ReadToEnd();
+                    str.Close();
+
                     var approver = _context.Employees.Where(e => e.RoleId == travelStatusItem.RoleId && e.ApprovalGroupId == travelStatusItem.ApprovalGroupId).FirstOrDefault();
                     var approverMailAddress = approver.Email;
                     string subject = "(Modified) Travel Approval Request No# " + travelApprovalRequestDTO.Id.ToString();
                     Employee emp = await _context.Employees.FindAsync(travelApprovalRequestDTO.EmployeeId);
-                    var pettycashreq = _context.TravelApprovalRequests.Find(travelApprovalRequestDTO.Id);
-                    string content = "(Modified)Travel Approval Request sought by " + emp.GetFullName() + "<br/>Travel Request Details <br/>Start Date: " + travelApprovalRequestDTO.TravelStartDate + "<br/>End Date: " + travelApprovalRequestDTO.TravelEndDate + "<br/>Travel Purpose: " + travelApprovalRequestDTO.TravelPurpose;
-                    var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+                    var travelreq = _context.TravelApprovalRequests.Find(travelApprovalRequestDTO.Id);
+
+                    var builder = new MimeKit.BodyBuilder();
+
+                    MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                    MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                    MailText = MailText.Replace("{Request}", travelreq.TravelStartDate.ToString() +" - " + travelreq.TravelEndDate.ToString() + " (Purpose): " + travelreq.TravelPurpose.ToString());
+                    MailText = MailText.Replace("{RequestNumber}", travelreq.Id.ToString());
+                    builder.HtmlBody = MailText;
+
+                    var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                     await _emailSender.SendEmailAsync(messagemail);
+
+                  
                     IsFirstEmail = false;
                 }
             }
@@ -559,12 +575,27 @@ namespace AtoCash.Controllers
             {
                 return null;
             }
+            
+         
+            string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\TravelApprNotificationEmail.html";
+            StreamReader str = new StreamReader(FilePath);
+            string MailText = str.ReadToEnd();
+            str.Close();
+
             var approverMailAddress = approver.Email;
             string subject = "Travel Approval Request No# " + travelApprovalRequestDTO.Id.ToString();
             Employee emp = await _context.Employees.FindAsync(travelApprovalRequestDTO.EmployeeId);
-            var pettycashreq = _context.TravelApprovalRequests.Find(travelApprovalRequestDTO.Id);
-            string content = "Travel Approval Request sought by " + emp.GetFullName() + "<br/>Travel Request Details <br/>Start Date: " + travelApprovalRequestDTO.TravelStartDate + "<br/>End Date: " + travelApprovalRequestDTO.TravelEndDate + "<br/>Travel Purpose: " + travelApprovalRequestDTO.TravelPurpose;
-            var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+            var travelreq = _context.TravelApprovalRequests.Find(travelApprovalRequestDTO.Id);
+
+            var builder = new MimeKit.BodyBuilder();
+
+            MailText = MailText.Replace("{Requester}", emp.GetFullName());
+            MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+            MailText = MailText.Replace("{Request}", travelreq.TravelStartDate.ToString() + " - " + travelreq.TravelEndDate.ToString() + " (Purpose): " + travelreq.TravelPurpose.ToString());
+            MailText = MailText.Replace("{RequestNumber}", travelreq.Id.ToString());
+            builder.HtmlBody = MailText;
+
+            var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
             await _emailSender.SendEmailAsync(messagemail);
             #endregion
@@ -713,14 +744,32 @@ namespace AtoCash.Controllers
                     {
                         //##### 4. Send email to the Approver
                         //####################################
+
+
+
+
+                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\TravelApprNotificationEmail.html";
+                        StreamReader str = new StreamReader(FilePath);
+                        string MailText = str.ReadToEnd();
+                        str.Close();
+
                         var approverMailAddress = approver.Email;
                         string subject = "Travel Approval Request No# " + travelApprovalRequestDto.Id.ToString();
                         Employee emp = await _context.Employees.FindAsync(travelApprovalRequestDto.EmployeeId);
-                        var pettycashreq = _context.TravelApprovalRequests.Find(travelApprovalRequestDto.Id);
-                        string content = "Travel Approval Request sought by " + emp.GetFullName() + "<br/>Travel Request Deetails <br/>Start Date: " + travelApprovalRequestDto.TravelStartDate + "<br/>End Date: " + travelApprovalRequestDto.TravelEndDate + "<br/>Travel Purpose: " + travelApprovalRequestDto.TravelPurpose;
-                        var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+                        var travelreq = _context.TravelApprovalRequests.Find(travelApprovalRequestDto.Id);
+
+                        var builder = new MimeKit.BodyBuilder();
+
+                        MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                        MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                        MailText = MailText.Replace("{Request}", travelreq.TravelStartDate.ToString() + " - " + travelreq.TravelEndDate.ToString() + " (Purpose): " + travelreq.TravelPurpose.ToString());
+                        MailText = MailText.Replace("{RequestNumber}", travelreq.Id.ToString());
+                        builder.HtmlBody = MailText;
+
+                        var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                         await _emailSender.SendEmailAsync(messagemail);
+
                     }
 
                     //first approver will be added as Pending, other approvers will be with In Approval Queue

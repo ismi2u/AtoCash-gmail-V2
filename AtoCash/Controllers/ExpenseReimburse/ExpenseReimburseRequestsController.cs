@@ -741,12 +741,25 @@ namespace AtoCash.Controllers
 
                     if (isFirstApprover)
                     {
+                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\ExpApprNotificationEmail.html";
+                        StreamReader str = new StreamReader(FilePath);
+                        string MailText = str.ReadToEnd();
+                        str.Close();
+
                         var approverMailAddress = approver.Email;
                         string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
                         Employee emp = _context.Employees.Find(expenseReimburseRequestDto.EmployeeId);
 
-                        string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expenseReimburseRequest.TotalClaimAmount + "<br/>towards " + expenseReimburseRequest.ExpenseReportTitle;
-                        var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+                        var builder = new MimeKit.BodyBuilder();
+
+                        MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                        MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                        MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                        MailText = MailText.Replace("{RequestedAmount}", expenseReimburseRequest.TotalClaimAmount.ToString());
+                        MailText = MailText.Replace("{RequestNumber}", expenseReimburseRequest.Id.ToString());
+                        builder.HtmlBody = MailText;
+
+                        var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                         await _emailSender.SendEmailAsync(messagemail);
                     }
@@ -1056,68 +1069,24 @@ namespace AtoCash.Controllers
                     if (isFirstApprover)
                     {
 
-                        // test email in Html Body
-                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\htmlpage.html";
+                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\ExpApprNotificationEmail.html";
                         StreamReader str = new StreamReader(FilePath);
                         string MailText = str.ReadToEnd();
                         str.Close();
 
-                        var builder = new MimeKit.BodyBuilder();
-
-                        builder.HtmlBody = MailText;
-                       
-
-
-                        ////////MailMessage mailMessage = new MailMessage();
-                        ////////mailMessage.From = new MailAddress("atocash@atominosconsulting.com");
-                        ////////mailMessage.To.Add("ismailkhanf@gmail.com");
-                        ////////mailMessage.Subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
-                        //mailMessage.Body = "<b>Sender Name : </b>" + txtName.Text + "<br/>"
-                        //    + "<b>Sender Email : </b>" + txtEmail.Text + "<br/>"
-                        //+ "<b>Comments : </b>" + txtComments.Text;
-
-
-
-                        //mailMessage.Body = builder.HtmlBody;
-                        //////mailMessage.Body = "<b>hello Body message</b>";
-                        //////mailMessage.IsBodyHtml = true;
-
-
-                        //                        SMTP server name smtp-mail.outlook.com
-
-                        //SMTP port 587
-
-                        //SMTP encryption method STARTTLS
-
-                        //SmtpClient smtpClient = new SmtpClient();
-                        //smtpClient.Host = "smtp-mail.outlook.com";
-                        //smtpClient.EnableSsl = true;
-                        //System.Net.NetworkCredential nc = new System.Net.NetworkCredential();
-                        //nc.UserName = "m.i.khan@outlook.com";
-                        //nc.Password = "allahuakbar7";
-                        //smtpClient.UseDefaultCredentials = true;
-                        //smtpClient.Credentials = nc;
-                        //smtpClient.Port = 587;
-                        //smtpClient.Send(mailMessage);
-
-
-                        ////////                    "From": "atocash@atominosconsulting.com",
-                        ////////"DisplayName": "No-Reply-Email",
-                        ////////"SmtpServer": "smtp.gmail.com",
-                        ////////"Port": "465",
-                        ////////"StartTLS": true,
-                        ////////"UserName": "atocash@atominosconsulting.com",
-                        ////////"Password": "Atominos@12345"
-
-
-                        //
-
-
-                        var approverMailAddress ="ismailkhanf@gmail.com";
-                       // var approverMailAddress = approver.Email;
+                        var approverMailAddress = approver.Email;
                         string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
                         Employee emp = _context.Employees.Find(expenseReimburseRequestDto.EmployeeId);
-                        string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expenseReimburseRequest.TotalClaimAmount + "<br/>towards " + expenseReimburseRequest.ExpenseReportTitle;
+
+                        var builder = new MimeKit.BodyBuilder();
+
+                        MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                        MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                        MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                        MailText = MailText.Replace("{RequestedAmount}", expenseReimburseRequest.TotalClaimAmount.ToString());
+                        MailText = MailText.Replace("{RequestNumber}", expenseReimburseRequest.Id.ToString());
+                        builder.HtmlBody = MailText;
+
                         var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                         await _emailSender.SendEmailAsync(messagemail);
@@ -1360,13 +1329,30 @@ namespace AtoCash.Controllers
                 {
                     return null;
                 }
+                string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\ExpApprNotificationEmail.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
                 var approverMailAddress = approver.Email;
                 string subject = expenseReimburseRequest.ExpenseReportTitle + " - #" + expenseReimburseRequest.Id.ToString();
                 Employee emp = _context.Employees.Find(expenseReimburseRequestDto.EmployeeId);
-                string content = "Expense Reimbursement request Approval sought by " + emp.GetFullName() + "<br/>for the amount of " + expenseReimburseRequest.TotalClaimAmount + "<br/>towards " + expenseReimburseRequest.ExpenseReportTitle;
-                var messagemail = new Message(new string[] { approverMailAddress }, subject, content);
+
+                var builder = new MimeKit.BodyBuilder();
+
+                MailText = MailText.Replace("{Requester}", emp.GetFullName());
+                MailText = MailText.Replace("{ApproverName}", approver.GetFullName());
+                MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(emp.CurrencyTypeId).CurrencyCode);
+                MailText = MailText.Replace("{RequestedAmount}", expenseReimburseRequest.TotalClaimAmount.ToString());
+                MailText = MailText.Replace("{RequestNumber}", expenseReimburseRequest.Id.ToString());
+                builder.HtmlBody = MailText;
+
+                var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                 await _emailSender.SendEmailAsync(messagemail);
+
+
+
 
                 //repeat for each approver
             }
