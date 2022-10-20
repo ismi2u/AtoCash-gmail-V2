@@ -76,7 +76,7 @@ namespace AtoCash.Data
 
 
             builder.Entity<Bank>().HasData(
-          new Bank { Id = 1,  BankName = "Standard Chartered",   BankDesc = "Private Ltd Bank", StatusTypeId =1});
+          new Bank { Id = 1, BankName = "Standard Chartered", BankDesc = "Private Ltd Bank", StatusTypeId = 1 });
 
             builder.Entity<Employee>().HasData(
                      new Employee
@@ -113,7 +113,7 @@ namespace AtoCash.Data
 
             builder.Entity<EmpCurrentPettyCashBalance>().HasData(
                      new EmpCurrentPettyCashBalance { Id = 1, EmployeeId = 1, CurBalance = 0, CashOnHand = 0, UpdatedOn = Convert.ToDateTime("06/12/2022") });
-                    
+
 
             builder.Entity<ApprovalStatusType>().HasData(
                     new ApprovalStatusType { Id = 1, Status = "Initiating", StatusDesc = "Request Initiated" },
@@ -124,13 +124,17 @@ namespace AtoCash.Data
                     new ApprovalStatusType { Id = 6, Status = "Settled", StatusDesc = "Request is Settled" });
 
             builder.Entity<RequestType>().HasData(
-                new RequestType { Id = 1,  RequestName = "Petty Cash Request",  RequestTypeDesc = "Petty Cash Request"},
+                new RequestType { Id = 1, RequestName = "Petty Cash Request", RequestTypeDesc = "Petty Cash Request" },
                  new RequestType { Id = 2, RequestName = "Department Expense Reimbursement", RequestTypeDesc = "Department Expense Reimbursement" },
                   new RequestType { Id = 3, RequestName = "Store Expense Reimbursement", RequestTypeDesc = "Store Expense Reimbursement" }
                 );
 
 
-    }
+            builder.Entity<VATRate>().HasData(
+         new VATRate { Id = 1, VATPercentage = 15 }
+         ); ;
+
+        }
 
         public DbSet<Employee> Employees { get; set; }
 
@@ -175,6 +179,8 @@ namespace AtoCash.Data
         public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
 
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
+
+        public DbSet<VATRate> VATRates { get; set; }
 
         public DbSet<ApprovalLevel> ApprovalLevels { get; set; }
 

@@ -11,6 +11,7 @@ using EmailService;
 using AtoCash.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace AtoCash.Controllers
 {
@@ -23,11 +24,13 @@ namespace AtoCash.Controllers
     {
         private readonly AtoCashDbContext _context;
         private readonly IEmailSender _emailSender;
+        private readonly ILogger<PettyCashRequestsController> _logger;
 
-        public PettyCashRequestsController(AtoCashDbContext context, IEmailSender emailSender)
+        public PettyCashRequestsController(AtoCashDbContext context, IEmailSender emailSender, ILogger<PettyCashRequestsController> logger)
         {
             this._context = context;
             this._emailSender = emailSender;
+            _logger = logger;
         }
 
 
@@ -41,6 +44,10 @@ namespace AtoCash.Controllers
             //var claimApprovalStatusTracker = await _context.ClaimApprovalStatusTrackers.FindAsync(1);
 
             var pettyCashRequests = await _context.PettyCashRequests.ToListAsync();
+            if(pettyCashRequests == null)
+            {
+                _logger.LogError("GetPettyCashRequests is null");
+            }
 
             foreach (PettyCashRequest pettyCashRequest in pettyCashRequests)
             {
@@ -84,6 +91,7 @@ namespace AtoCash.Controllers
 
             if (pettyCashRequest == null)
             {
+                _logger.LogError("GetPettyCashRequests: disbAndClaim is null for id:" + id);
                 return Conflict(new RespStatus { Status = "Failure", Message = "GetPettyCashRequest Id is Invalid!" });
             }
             PettyCashRequestDTO pettyCashRequestDTO = new();
@@ -127,6 +135,7 @@ namespace AtoCash.Controllers
 
             if (employee == null)
             {
+                _logger.LogError("GetPettyCashRequestRaisedForEmployee: Employee is null for id:" + id);
                 return Conflict(new RespStatus { Status = "Failure", Message = "Employee Id is Invalid!" });
             }
 
@@ -338,16 +347,23 @@ namespace AtoCash.Controllers
 
                 if (IsFirstEmail)
                 {
-                    string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
-                    StreamReader str = new StreamReader(FilePath);
-                    string MailText = str.ReadToEnd();
-                    str.Close();
-
                     var approver = _context.Employees.Where(e => e.RoleId == claim.RoleId && e.ApprovalGroupId == claim.ApprovalGroupId).FirstOrDefault();
                     var approverMailAddress = approver.Email;
                     string subject = "(Modified) Pettycash Request Approval " + pettyCashRequestDto.Id.ToString();
                     Employee emp = _context.Employees.Find(pettyCashRequestDto.EmployeeId);
                     var pettycashreq = _context.PettyCashRequests.Find(pettyCashRequestDto.Id);
+
+                    _logger.LogInformation(approver.GetFullName() + "Email Start");
+
+                    string[] paths = { Directory.GetCurrentDirectory(), "EmailTemplate", "PettyCashApprNotificationEmail.html" };
+                    string FilePath = Path.Combine(paths);
+                    _logger.LogInformation("Email template path " + FilePath);
+                    StreamReader str = new StreamReader(FilePath);
+                    string MailText = str.ReadToEnd();
+                    str.Close();
+
+
+
 
                     var builder = new MimeKit.BodyBuilder();
 
@@ -361,7 +377,7 @@ namespace AtoCash.Controllers
                     var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                     await _emailSender.SendEmailAsync(messagemail);
-
+                    _logger.LogInformation(approver.GetFullName() + "Email Sent");
 
                     IsFirstEmail = false;
                 }
@@ -379,14 +395,19 @@ namespace AtoCash.Controllers
             disburseMasterRecord.RecordDate = DateTime.Now;
             disburseMasterRecord.ClaimAmount = pettyCashRequestDto.PettyClaimAmount;
 
+          
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                throw;
+                _logger.LogError(ex, "DisbursementsAndClaimsMasters update failed ");
             }
+            _logger.LogInformation("DisbursementsAndClaimsMaster table update complete");
+            _logger.LogInformation("Petty Cash Request updated successfully");
+
+
 
             return Ok(new RespStatus { Status = "Success", Message = "Request Updated!" });
         }
@@ -396,7 +417,7 @@ namespace AtoCash.Controllers
         [ActionName("PostPettyCashRequest")]
         public async Task<ActionResult<PettyCashRequest>> PostPettyCashRequest(PettyCashRequestDTO pettyCashRequestDto)
         {
-
+            
             /*!!=========================================
                Check Eligibility for Cash Disbursement
              .==========================================*/
@@ -484,25 +505,29 @@ namespace AtoCash.Controllers
 
 
         //NO HTTPACTION HERE. Void method just to add data to database table
-        private async Task ProcessPettyCashRequestClaim(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
+        private async Task<int> ProcessPettyCashRequestClaim(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
         {
+
+            int SuccessResult;
 
             if (pettyCashRequestDto.ProjectId != null)
             {
                 //Goes to Option 1 (Project)
-                await Task.Run(() => ProjectCashRequest(pettyCashRequestDto, empCurAvailBal));
+                SuccessResult = await Task.Run(() => ProjectCashRequest(pettyCashRequestDto, empCurAvailBal));
             }
             else if (pettyCashRequestDto.BusinessAreaId != null)
             {
-                //Goes to Option 1 (Project)
-                await Task.Run(() => BusinessAreaCashRequest(pettyCashRequestDto, empCurAvailBal));
+                //Goes to Option 1 (Business Area)
+                SuccessResult = await Task.Run(() => BusinessAreaCashRequest(pettyCashRequestDto, empCurAvailBal));
             }
             else
             {
                 //Goes to Option 2 (Department)
-                await Task.Run(() => DepartmentCashRequest(pettyCashRequestDto, empCurAvailBal));
+                SuccessResult = await Task.Run(() => DepartmentCashRequest(pettyCashRequestDto, empCurAvailBal));
             }
 
+
+            return SuccessResult;
         }
 
 
@@ -511,7 +536,7 @@ namespace AtoCash.Controllers
         /// </summary>
         /// <param name="pettyCashRequestDto"></param>
         /// <param name="empCurAvailBal"></param>
-        private async Task<IActionResult> ProjectCashRequest(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
+        private async Task<int> ProjectCashRequest(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
         {
 
             //### 1. If Employee Eligible for Cash Claim enter a record and reduce the available amount for next claim
@@ -521,6 +546,17 @@ namespace AtoCash.Controllers
             int projManagerid = _context.Projects.Find(pettyCashRequestDto.ProjectId).ProjectManagerId;
 
             var approver = _context.Employees.Find(projManagerid);
+
+
+            if (approver != null)
+            {
+                _logger.LogInformation("Project Manager defined, no issues");
+            }
+            else
+            {
+                _logger.LogError("Project Manager is not Assigned");
+                return 1;
+            }
             ////
             int empid = pettyCashRequestDto.EmployeeId;
             Double empReqAmount = pettyCashRequestDto.PettyClaimAmount;
@@ -529,7 +565,7 @@ namespace AtoCash.Controllers
 
             if (pettyCashRequestDto.PettyClaimAmount > maxCashAllowedForRole)
             {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Advance Amount is not eligibile" });
+                return 1;
             }
 
             var curPettyCashBal = _context.EmpCurrentPettyCashBalances.Where(x => x.EmployeeId == empid).FirstOrDefault();
@@ -539,7 +575,15 @@ namespace AtoCash.Controllers
             curPettyCashBal.UpdatedOn = DateTime.Now;
             _context.Update(curPettyCashBal);
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Project: PettyCashRequests");
+            }
+            
             #endregion
 
             //##### 2. Adding entry to PettyCashRequest table for record
@@ -560,7 +604,14 @@ namespace AtoCash.Controllers
 
             };
             _context.PettyCashRequests.Add(pcrq);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Project: PettyCashRequests");
+            }
 
             pettyCashRequestDto.Id = pcrq.Id;
             #endregion
@@ -637,7 +688,11 @@ namespace AtoCash.Controllers
                 //##### 4. Send email to the user
                 //####################################
                 #region
-                string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
+                _logger.LogInformation ("Project: PettyCash Email Start");
+
+                string[] paths = { Directory.GetCurrentDirectory(), "EmailTemplate", "PettyCashApprNotificationEmail.html" };
+                string FilePath = Path.Combine(paths);
+                _logger.LogInformation("Email template path " + FilePath);
                 StreamReader str = new StreamReader(FilePath);
                 string MailText = str.ReadToEnd();
                 str.Close();
@@ -659,7 +714,7 @@ namespace AtoCash.Controllers
                 var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                 await _emailSender.SendEmailAsync(messagemail);
-
+                _logger.LogInformation("Project: PettyCash Email Sent");
                 #endregion
             }
 
@@ -667,7 +722,7 @@ namespace AtoCash.Controllers
 
             //##### 5. Adding a entry in DisbursementsAndClaimsMaster table for records
             #region
-
+            _logger.LogInformation("Project: Disbursement table insert start");
             DisbursementsAndClaimsMaster disbursementsAndClaimsMaster = new();
 
             disbursementsAndClaimsMaster.EmployeeId = pettyCashRequestDto.EmployeeId;
@@ -696,8 +751,8 @@ namespace AtoCash.Controllers
                 string error = ex.Message;
             }
             #endregion
-
-            return Ok(new RespStatus { Status = "Success", Message = "Advance Request Created!" });
+            _logger.LogInformation("Project: Disbursement table insert Completed");
+            return 1;
         }
 
         /// <summary>
@@ -705,7 +760,7 @@ namespace AtoCash.Controllers
         /// </summary>
         /// <param name="pettyCashRequestDto"></param>
         /// <param name="empCurAvailBal"></param>
-        private async Task DepartmentCashRequest(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
+        private async Task<int> DepartmentCashRequest(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
         {
             //### 1. If Employee Eligible for Cash Claim enter a record and reduce the available amount for next claim
             #region
@@ -720,7 +775,7 @@ namespace AtoCash.Controllers
 
             Double empReqAmount = pettyCashRequestDto.PettyClaimAmount;
 
-
+            _logger.LogInformation("Department: pettyCashRequestDto balance check Start");
 
 
             var curPettyCashBal = _context.EmpCurrentPettyCashBalances.Where(x => x.EmployeeId == reqEmpid).FirstOrDefault();
@@ -732,9 +787,19 @@ namespace AtoCash.Controllers
             curPettyCashBal.EmployeeId = reqEmpid;
             curPettyCashBal.UpdatedOn = DateTime.Now;
             _context.Update(curPettyCashBal);
-            await _context.SaveChangesAsync();
-            #endregion
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Department: pettyCashRequestDto balance check completed");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Department: pettyCashRequestDto balance check failed");
+                
+            }
 
+            #endregion
+            _logger.LogInformation( "Department: pettyCashRequest insert start");
             //##### 2. Adding entry to PettyCashRequest table for record
             #region
             var pcrq = new PettyCashRequest()
@@ -754,8 +819,18 @@ namespace AtoCash.Controllers
             };
             _context.PettyCashRequests.Add(pcrq);
 
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Department: pettyCashRequest insert success");
+            }
+            catch (Exception ex)
+            {
 
-            await _context.SaveChangesAsync();
+                _logger.LogError(ex, "Department: pettyCashRequest insert failed");
+            }
+
+           
 
             //get the saved record Id
             pettyCashRequestDto.Id = pcrq.Id;
@@ -780,7 +855,7 @@ namespace AtoCash.Controllers
                                 .Where(a => a.ApprovalGroupId == reqApprGroupId)
                                 .OrderBy(o => o.ApprovalLevel.Level).ToList();
             bool isFirstApprover = true;
-
+            _logger.LogInformation("Department: pettyCashRequest status tracker insert start");
             if (isSelfApprovedRequest)
             {
 
@@ -804,8 +879,20 @@ namespace AtoCash.Controllers
                 _context.ClaimApprovalStatusTrackers.Add(claimAppStatusTrack);
                 pcrq.ApprovalStatusTypeId = (int)EApprovalStatus.Approved;
                 pcrq.Comments = "Approved";
+              
+
                 _context.PettyCashRequests.Update(pcrq);
-               await  _context.SaveChangesAsync();
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("Department: pettyCashRequest status tracker insert start");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("Department: pettyCashRequest status tracker insert failed");
+                }
+              
             }
             else
             {
@@ -825,7 +912,6 @@ namespace AtoCash.Controllers
                     {
                         continue;
                     }
-
 
 
                     ClaimApprovalStatusTracker claimAppStatusTrack = new()
@@ -858,8 +944,11 @@ namespace AtoCash.Controllers
                     {
                         //##### 4. Send email to the Approver
                         //####################################
+                        _logger.LogInformation(approver.GetFullName() + "Email Start");
 
-                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
+                        string[] paths = { Directory.GetCurrentDirectory(), "EmailTemplate", "PettyCashApprNotificationEmail.html" };
+                        string FilePath = Path.Combine(paths);
+                        _logger.LogInformation("Email template path " + FilePath);
                         StreamReader str = new StreamReader(FilePath);
                         string MailText = str.ReadToEnd();
                         str.Close();
@@ -881,6 +970,7 @@ namespace AtoCash.Controllers
                         var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                         await _emailSender.SendEmailAsync(messagemail);
+                        _logger.LogInformation(approver.GetFullName() + "Email Sent");
 
                     }
 
@@ -921,14 +1011,15 @@ namespace AtoCash.Controllers
                 throw;
             }
             #endregion
-
+            return 0;
         }
 
-        private async Task BusinessAreaCashRequest(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
+        private async Task<int> BusinessAreaCashRequest(PettyCashRequestDTO pettyCashRequestDto, Double empCurAvailBal)
         {
             //### 1. If Employee Eligible for Cash Claim enter a record and reduce the available amount for next claim
             #region
 
+            _logger.LogInformation("BusinessAreaCashRequest - Start");
             int reqEmpid = pettyCashRequestDto.EmployeeId;
             Employee reqEmp = _context.Employees.Find(reqEmpid);
             int reqApprGroupId = reqEmp.BusinessAreaApprovalGroupId;
@@ -951,11 +1042,24 @@ namespace AtoCash.Controllers
             curPettyCashBal.EmployeeId = reqEmpid;
             curPettyCashBal.UpdatedOn = DateTime.Now;
             _context.Update(curPettyCashBal);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("BusinessAreaCashRequest Balance check - Start");
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex,"BusinessAreaCashRequest Balance check - failed");
+            }
+
             #endregion
 
             //##### 2. Adding entry to PettyCashRequest table for record
             #region
+
+            _logger.LogInformation("BusinessAreaCash Request insert Start");
             var pcrq = new PettyCashRequest()
             {
                 EmployeeId = reqEmpid,
@@ -973,8 +1077,17 @@ namespace AtoCash.Controllers
             };
             _context.PettyCashRequests.Add(pcrq);
 
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("BusinessAreaCash Request insert complete");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BusinessAreaCash Request insert failed");
+            }
 
-            await _context.SaveChangesAsync();
+            
 
             //get the saved record Id
             pettyCashRequestDto.Id = pcrq.Id;
@@ -1002,6 +1115,7 @@ namespace AtoCash.Controllers
 
             if (isSelfApprovedRequest)
             {
+                _logger.LogInformation("BusinessAreaCash Request Status tracker insert start");
 
                 ClaimApprovalStatusTracker claimAppStatusTrack = new()
                 {
@@ -1024,10 +1138,21 @@ namespace AtoCash.Controllers
                 pcrq.ApprovalStatusTypeId = (int)EApprovalStatus.Approved;
                 pcrq.Comments = "Approved";
                 _context.PettyCashRequests.Update(pcrq);
-                await _context.SaveChangesAsync();
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("BusinessAreaCash Request Status tracker insert complete");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "BusinessAreaCash Request Status tracker insert failed");
+                }
+                
             }
             else
-            {
+            { 
+                _logger.LogInformation("BusinessAreaCash Request Status tracker insert start");
                 foreach (ApprovalRoleMap ApprMap in getEmpClaimApproversAllLevels)
                 {
 
@@ -1045,7 +1170,7 @@ namespace AtoCash.Controllers
                         continue;
                     }
 
-
+                   
 
                     ClaimApprovalStatusTracker claimAppStatusTrack = new()
                     {
@@ -1069,16 +1194,29 @@ namespace AtoCash.Controllers
 
                     _context.ClaimApprovalStatusTrackers.Add(claimAppStatusTrack);
 
-                    await _context.SaveChangesAsync();
 
-
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogInformation("BusinessAreaCash Request Status tracker insert failed");
+                    }
+                   
+    
 
                     if (isFirstApprover)
                     {
                         //##### 4. Send email to the Approver
                         //####################################
+                        //string[] paths = {@"d:\archives", "2001", "media", "images"};
 
-                        string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\PettyCashApprNotificationEmail.html";
+                        _logger.LogInformation(approver.GetFullName() + "Email Start");
+
+                        string[] paths = { Directory.GetCurrentDirectory(), "EmailTemplate", "PettyCashApprNotificationEmail.html" };
+                        string FilePath = Path.Combine(paths);
+                        _logger.LogInformation("Email template path " + FilePath);
                         StreamReader str = new StreamReader(FilePath);
                         string MailText = str.ReadToEnd();
                         str.Close();
@@ -1100,6 +1238,8 @@ namespace AtoCash.Controllers
                         var messagemail = new Message(new string[] { approverMailAddress }, subject, builder.HtmlBody);
 
                         await _emailSender.SendEmailAsync(messagemail);
+
+                        _logger.LogInformation(approver.GetFullName() + "Email Sent");
                     }
 
                     //first approver will be added as Pending, other approvers will be with In Approval Queue
@@ -1111,6 +1251,9 @@ namespace AtoCash.Controllers
 
             //##### STEP 5. Adding a SINGLE entry in DisbursementsAndClaimsMaster table for records
             #region
+
+            _logger.LogInformation("DisbursementsAndClaimsMaster Insert start");
+
             DisbursementsAndClaimsMaster disbursementsAndClaimsMaster = new();
 
             disbursementsAndClaimsMaster.EmployeeId = reqEmpid;
@@ -1133,13 +1276,14 @@ namespace AtoCash.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("DisbursementsAndClaimsMaster Insert completed");
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-                throw;
+                _logger.LogError("DisbursementsAndClaimsMaster Insert failed");
             }
             #endregion
-
+            return 0;
         }
 
         private void AddEmpCurrentPettyCashBalanceForEmployee(int id)

@@ -9,6 +9,7 @@ using AtoCash.Data;
 using AtoCash.Models;
 using Microsoft.AspNetCore.Authorization;
 using AtoCash.Authentication;
+using Microsoft.Extensions.Logging;
 
 namespace AtoCash.Controllers.ExpenseReimburse
 {
@@ -18,10 +19,11 @@ namespace AtoCash.Controllers.ExpenseReimburse
     public class ExpenseSubClaimsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
-
-        public ExpenseSubClaimsController(AtoCashDbContext context)
+        private readonly ILogger<ExpenseSubClaimsController> _logger;
+        public ExpenseSubClaimsController(AtoCashDbContext context,  ILogger<ExpenseSubClaimsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/ExpenseSubClaims
@@ -29,7 +31,11 @@ namespace AtoCash.Controllers.ExpenseReimburse
         public async Task<ActionResult<IEnumerable<ExpenseSubClaimDTO>>> GetExpenseSubClaims()
         {
            List<ExpenseSubClaim> expenseSubClaims = await _context.ExpenseSubClaims.ToListAsync();
-
+            if(expenseSubClaims == null)
+            {
+                _logger.LogInformation("Expense Sub claims is empty");
+            }
+           
 
             List<ExpenseSubClaimDTO> expenseSubClaimDTOs = new();
 
@@ -87,9 +93,10 @@ namespace AtoCash.Controllers.ExpenseReimburse
         public async Task<ActionResult<ExpenseSubClaimDTO>> GetExpenseSubClaim(int id)
         {
             var expenseSubClaim = await _context.ExpenseSubClaims.FindAsync(id);
-
+          
             if (expenseSubClaim == null)
             {
+                _logger.LogError("Expense Sub claim ID is null Id:" + id);
                 return Conflict(new RespStatus { Status = "Failure", Message = "Expense Id is not Valid!" });
             }
 
@@ -146,6 +153,7 @@ namespace AtoCash.Controllers.ExpenseReimburse
         {
             if (id == 0)
             {
+                _logger.LogError("Expense Sub claims is null for Expense Reimb Id:" + id);
                 return Conflict(new RespStatus { Status = "Failure", Message = "Expense Id is not Valid!" });
             }
 
@@ -204,61 +212,61 @@ namespace AtoCash.Controllers.ExpenseReimburse
         }
         // PUT: api/ExpenseSubClaims/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutExpenseSubClaim(int id, ExpenseSubClaim expenseSubClaim)
-        {
-            if (id != expenseSubClaim.Id)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutExpenseSubClaim(int id, ExpenseSubClaim expenseSubClaim)
+        //{
+        //    if (id != expenseSubClaim.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(expenseSubClaim).State = EntityState.Modified;
+        //    _context.Entry(expenseSubClaim).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ExpenseSubClaimExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ExpenseSubClaimExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return Ok(new RespStatus { Status = "Success", Message = "Expense Approval Updated!" });
-        }
+        //    return Ok(new RespStatus { Status = "Success", Message = "Expense Approval Updated!" });
+        //}
 
-        // POST: api/ExpenseSubClaims
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ExpenseSubClaim>> PostExpenseSubClaim(ExpenseSubClaim expenseSubClaim)
-        {
-            _context.ExpenseSubClaims.Add(expenseSubClaim);
-            await _context.SaveChangesAsync();
+        //// POST: api/ExpenseSubClaims
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<ExpenseSubClaim>> PostExpenseSubClaim(ExpenseSubClaim expenseSubClaim)
+        //{
+        //    _context.ExpenseSubClaims.Add(expenseSubClaim);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetExpenseSubClaim", new { id = expenseSubClaim.Id }, expenseSubClaim);
-        }
+        //    return CreatedAtAction("GetExpenseSubClaim", new { id = expenseSubClaim.Id }, expenseSubClaim);
+        //}
 
-        // DELETE: api/ExpenseSubClaims/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteExpenseSubClaim(int id)
-        {
-            var expenseSubClaim = await _context.ExpenseSubClaims.FindAsync(id);
-            if (expenseSubClaim == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/ExpenseSubClaims/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteExpenseSubClaim(int id)
+        //{
+        //    var expenseSubClaim = await _context.ExpenseSubClaims.FindAsync(id);
+        //    if (expenseSubClaim == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.ExpenseSubClaims.Remove(expenseSubClaim);
-            await _context.SaveChangesAsync();
+        //    _context.ExpenseSubClaims.Remove(expenseSubClaim);
+        //    await _context.SaveChangesAsync();
 
-            return Ok(new RespStatus { Status = "Success", Message = "Expsense Sub Claim Deleted!" });
-        }
+        //    return Ok(new RespStatus { Status = "Success", Message = "Expsense Sub Claim Deleted!" });
+        //}
 
         private bool ExpenseSubClaimExists(int id)
         {

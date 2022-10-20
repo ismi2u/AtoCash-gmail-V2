@@ -35,7 +35,6 @@ namespace AtoCash.Models
         public string BankAccount { get; set; }
 
 
-        [Required]
         [Column(TypeName = "varchar(30)")]
         public string IBAN { get; set; }
 

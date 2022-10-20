@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Serilog;
 using System.Threading.Tasks;
 
 
@@ -56,6 +57,7 @@ namespace AtoCash
 
             services.AddSwaggerDocumentation();
 
+
             //services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
             //.AddEntityFrameworkStores<AtoCashDbContext>()
 
@@ -74,7 +76,7 @@ namespace AtoCash
                     ValidateIssuerSigningKey = true,
 
 
-                    ValidIssuer ="https://localhost:5001",
+                    ValidIssuer = "https://localhost:5001",
                     ValidAudience = "https://localhost:5001",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySecretKey12323232"))
                 };
@@ -85,15 +87,16 @@ namespace AtoCash
             //      builder.AllowAnyOrigin()
             //               .AllowAnyHeader()
             //               .AllowAnyMethod();
-                        //  }
+            //  }
             //  ));
             services.AddControllers();
             services.AddCors(options =>
-               options.AddPolicy("myCorsPolicy", builder => {
+               options.AddPolicy("myCorsPolicy", builder =>
+               {
                    builder.AllowAnyOrigin()
                             .AllowAnyHeader()
                             .AllowAnyMethod();
-                   }
+               }
                ));
             //email service
             var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
@@ -106,10 +109,10 @@ namespace AtoCash
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;
-               o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
-                });
-            
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AtoCash", Version = "v1" });
@@ -126,7 +129,7 @@ namespace AtoCash
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AtoCash v1"));
             }
             app.UseStaticFiles();
-      
+
 
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -138,10 +141,11 @@ namespace AtoCash
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, @"Reportdocs")),
                 RequestPath = "/app/Reportdocs"
             });
-
-            app.UseHttpsRedirection();
+             app.UseHttpsRedirection();
             app.UseCors("myCorsPolicy");
             app.UseRouting();
+
+           
             //app.UseForwardedHeaders(new ForwardedHeadersOptions
             //{
             //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto

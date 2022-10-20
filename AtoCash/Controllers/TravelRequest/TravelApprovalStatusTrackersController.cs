@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using EmailService;
 using AtoCash.Authentication;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace AtoCash.Controllers
 {
@@ -21,12 +22,14 @@ namespace AtoCash.Controllers
     {
         private readonly AtoCashDbContext _context;
         private readonly IEmailSender _emailSender;
+        private readonly ILogger<TravelApprovalStatusTrackersController> _logger;
 
 
-        public TravelApprovalStatusTrackersController(AtoCashDbContext context, IEmailSender emailSender)
+        public TravelApprovalStatusTrackersController(AtoCashDbContext context, IEmailSender emailSender, ILogger<TravelApprovalStatusTrackersController> logger)
         {
             _context = context;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
 
@@ -238,9 +241,10 @@ namespace AtoCash.Controllers
 
                                 //##### 4. Send email to the Approver
                                 //####################################
-
-                                string FilePath = Directory.GetCurrentDirectory() + "\\HTMLEmailTemplate\\TravelApprNotificationEmail.html";
+                                string[] paths = { Directory.GetCurrentDirectory(), "EmailTemplate", "TravelApprNotificationEmail.html" };
+                                string FilePath = Path.Combine(paths);
                                 StreamReader str = new StreamReader(FilePath);
+                                _logger.LogInformation("Email template path " + FilePath);
                                 string MailText = str.ReadToEnd();
                                 str.Close();
 

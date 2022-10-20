@@ -27,6 +27,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.6" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+    <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
 
@@ -37,5 +43,11 @@
   <ItemGroup>
     <Folder Include="Reportdocs\" />
   </ItemGroup>
+  
+  <ItemGroup> 
+  <Content Include="EmailTemplate\**"> 
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+  </Content> 
+</ItemGroup>
 
 </Project>

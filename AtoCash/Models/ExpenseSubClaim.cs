@@ -60,6 +60,12 @@ namespace AtoCash.Models
         [Column(TypeName = "varchar(50)")]
         public string InvoiceNo { get; set; }
 
+
+        [Required]
+
+        public bool IsVAT { get; set; }
+
+
         [Required]
 
         public float Tax { get; set; }
@@ -129,6 +135,7 @@ namespace AtoCash.Models
         public DateTime? ExpEndDate { get; set; }
         public int? ExpNoOfDays { get; set; }
 
+        public bool IsVAT { get; set; }
         public string TaxNo { get; set; }
         public int ExpenseReimburseReqId { get; set; }
         public Double ExpenseReimbClaimAmount { get; set; }
