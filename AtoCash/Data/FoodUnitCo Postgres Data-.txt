@@ -378,9 +378,9 @@ CREATE TABLE IF NOT EXISTS public."Employees"
     "DepartmentId" integer NOT NULL,
     "RoleId" integer NOT NULL,
     "ApprovalGroupId" integer NOT NULL,
-    "BusinessAreaApprovalGroupId" integer NOT NULL,
-    "BusinessAreaRoleId" integer NOT NULL,
-    "BusinessAreaId" integer NOT NULL,
+    "BusinessAreaApprovalGroupId" integer NULL,
+    "BusinessAreaRoleId" integer NULL,
+    "BusinessAreaId" integer NULL,
     "CurrencyTypeId" integer NOT NULL,
     "StatusTypeId" integer NOT NULL
 )

@@ -1,0 +1,177 @@
+-- Table: public.StatusTypes
+	
+INSERT INTO public."StatusTypes"("Id", "Status") VALUES	(1, 'Active');
+INSERT INTO public."StatusTypes"("Id", "Status") VALUES	(2, 'Inactive');
+
+
+
+SELECT pg_catalog.setval('public."StatusTypes_Id_seq"', 2, false);
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+-- Table: public.EmploymentTypes
+
+INSERT INTO public."EmploymentTypes" VALUES (1, 'FULL-TIME-EMP', 'Full Time Employee');
+INSERT INTO public."EmploymentTypes" VALUES (2, 'PART-TIME-EMP', 'Part Time Employee');
+
+SELECT pg_catalog.setval('public."EmploymentTypes_Id_seq"', 2, false);
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.CurrencyTypes
+
+	
+INSERT INTO public."CurrencyTypes" VALUES (1, 'SAR', 'Saudi Riyal', 'SAUDI', 1);
+
+SELECT pg_catalog.setval('public."CurrencyTypes_Id_seq"', 1, false);
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.ApprovalLevels
+
+INSERT INTO public."ApprovalLevels"	VALUES (1, 1, 'Level 1');
+INSERT INTO public."ApprovalLevels"	VALUES (2, 2, 'Level 2');
+INSERT INTO public."ApprovalLevels"	VALUES (3, 3, 'Level 3');
+INSERT INTO public."ApprovalLevels"	VALUES (4, 4, 'Level 4');
+
+SELECT pg_catalog.setval('public."ApprovalLevels_Id_seq"', 4, false);
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.ApprovalStatusTypes
+
+INSERT INTO public."ApprovalStatusTypes" VALUES (1, 'Initiating', 'Request Initiated');
+INSERT INTO public."ApprovalStatusTypes" VALUES (2, 'Pending', 'Awaiting Approval');
+INSERT INTO public."ApprovalStatusTypes" VALUES (3, 'In Review', 'Request is in progress');
+INSERT INTO public."ApprovalStatusTypes" VALUES (4, 'Approved', 'Request Approved');
+INSERT INTO public."ApprovalStatusTypes" VALUES (5, 'Rejected', 'Request is Rejected');
+INSERT INTO public."ApprovalStatusTypes" VALUES (6, 'Settled', 'Request is Settled');
+
+SELECT pg_catalog.setval('public."ApprovalStatusTypes_Id_seq"', 6, true);
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+-- Table: public.CostCenters
+
+INSERT INTO public."CostCenters"(
+	"Id", "CostCenterCode", "CostCenterDesc", "StatusTypeId")
+	VALUES (1, 'ADM', 'Administration', 1);
+	
+	SELECT pg_catalog.setval('public."CostCenters_Id_seq"', 2, true);
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+-- Table: public.Departments
+	
+INSERT INTO public."Departments"(
+	"Id", "DeptCode", "DeptName", "CostCenterId", "StatusTypeId")
+	VALUES (1, 'ADM', 'Administration', 1, 1);	
+	
+SELECT pg_catalog.setval('public."Departments_Id_seq"', 1, true);
+
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+-- Table: public.JobRoles
+	
+INSERT INTO public."JobRoles"(
+	"Id", "RoleCode", "RoleName", "IsStoreRole", "MaxPettyCashAllowed")
+	VALUES (1, 'SETUP-ROLE', 'SETUP-ROLE', false, 100000);
+	
+SELECT pg_catalog.setval('public."JobRoles_Id_seq"', 1, true);
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+-- Table: public.BusinessAreas
+	
+--INSERT INTO public."BusinessAreas"("Id", "BusinessAreaCode", "BusinessAreaName", "CostCenterId", "StatusTypeId") VALUES (1, 'SETUP-BUSSAREA', 'SETUP-BUSSAREA', 1, 1);
+	
+--SELECT pg_catalog.setval('public."BusinessAreas_Id_seq"', 1, true);
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.ApprovalGroups
+	
+	INSERT INTO public."ApprovalGroups"(
+	"Id", "ApprovalGroupCode", "ApprovalGroupDesc")
+	VALUES (1, 'SETUP-ADMIN', 'SETUP-ADMIN');
+	
+SELECT pg_catalog.setval('public."ApprovalGroups_Id_seq"', 1, true);
+	
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+-- Table: public.Banks
+
+-- DROP TABLE IF EXISTS public."Banks";
+	
+INSERT INTO public."Banks"(
+	"Id", "BankName", "BankDesc", "StatusTypeId")
+	VALUES (1, 'Standard Chartered', 'Standard Chartered', 1);
+
+SELECT pg_catalog.setval('public."Banks_Id_seq"', 1, false);
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.Employees
+
+INSERT INTO public."Employees" (
+	"Id", "FirstName", "MiddleName", "LastName", "EmpCode", "BankAccount", "IBAN", "BankCardNo", "NationalID", "PassportNo", "TaxNumber", "Nationality", "DOB", "DOJ", "Gender", "Email", "MobileNumber", "BankId", "EmploymentTypeId", "DepartmentId", "RoleId", "ApprovalGroupId", "BusinessAreaApprovalGroupId", "BusinessAreaRoleId", "BusinessAreaId", "CurrencyTypeId", "StatusTypeId")
+	          VALUES (1, 'atocash admin', NULL, 'E-11000', 'E-11000', '235453565636',  'AD1400080001001234567890', '3453564667678854', '3249094', 'ZT445666', '343423123532423', 'Saudi', '2021-09-08 11:33:30.165', '2022-09-27 11:34:43.152', 'male', 'atocash@gmail.com', '24245435',1, 1, 1, 1, 1, null, null, null, 1, 1);
+
+SELECT pg_catalog.setval('public."Employees_Id_seq"', 1, true);
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.EmpCurrentPettyCashBalances
+
+INSERT INTO public."EmpCurrentPettyCashBalances" ("Id", "EmployeeId", "CurBalance", "CashOnHand", "UpdatedOn") 
+ VALUES (1, 1, 20000, 0, '2022-09-28 11:39:19.125081');
+ 
+SELECT pg_catalog.setval('public."EmpCurrentPettyCashBalances_Id_seq"', 1, true);
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+-- Table: public.RequestTypes
+	
+INSERT INTO public."RequestTypes" VALUES (1, 'Petty Cash Request', 'Petty Cash Request');
+INSERT INTO public."RequestTypes" VALUES (2, 'Department Expense Reimbursement', 'All Department based expense reimbursement claims');
+INSERT INTO public."RequestTypes" VALUES (3, 'Store Expense Reimbursement', 'All Store based expense reimbursement claims');
+
+SELECT pg_catalog.setval('public."RequestTypes_Id_seq"', 3, false);
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+-- Table: public.VATRates
+	
+	INSERT INTO public."VATRates"(
+	"Id", "VATPercentage")
+	VALUES (1, 15);
+	
+SELECT pg_catalog.setval('public."Projects_Id_seq"', 1, false);
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<< IDENTITY FRAMEWORK >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-----------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.AspNetUsers
+
+INSERT INTO public."AspNetUsers" VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', 1, 'atocash@gmail.com', 'ATOCASH@GMAIL.COM', 'atocash@gmail.com', 'ATOCASH@GMAIL.COM', false, 'AQAAAAEAACcQAAAAECt3xghizZE3rl6HJgnV85qAS0myEyzpMOksTN/oF0AL8ajtdMQZAywbHNVjVl2iGA==', 'BS7UMGFJ3AFJYU3NQHZITORPHIIAAMMC', '21068d4a-aab2-4402-8321-6e5eea58fc08', NULL, false, false, NULL, true, 0);
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.AspNetRoles
+
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('user2af3-dc89-4f3f-adaa-6c136358user', 'User', 'USER', 'auser2b1-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abfbara-dc89-4f3f-adaa-6c136358e9b0', 'Manager', 'MANAGER', 'a516bara-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abftera-dc89-4f3f-adaa-6c136358e9b0', 'Finmgr', 'FINMGR', 'a516tera-5957-4d1b-8025-75143dff446a');
+INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abfsaud-dc89-4f3f-adaa-6c136358e9b0', 'AccPayable', 'ACCPAYABLE', 'a516saud-5957-4d1b-8025-75143dff446a');
+ INSERT INTO public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") VALUES ('2abf2af3-dc89-4f3f-adaa-6c136358e9b0', 'Admin', 'ADMIN', 'a51632b1-5957-4d1b-8025-75143dff446a');
+
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-- Table: public.AspNetUserRoles
+
+--{ ONLY ADMIN ROLE ASSIGNED TO THE FIRST EMPLOYEE}
+INSERT INTO public."AspNetUserRoles" VALUES ('d57cc679-f137-4eaf-bc55-339687ca8d89', '2abf2af3-dc89-4f3f-adaa-6c136358e9b0');
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+
+
+
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<| | | | | | | | | | | | | |>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<< ALL OTHER EMPTY TABLES >>>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<| | | | | | | | | | | | | |>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+	
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+-----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
+	
