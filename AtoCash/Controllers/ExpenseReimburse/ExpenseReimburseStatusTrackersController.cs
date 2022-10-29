@@ -17,7 +17,7 @@ namespace AtoCash.Controllers.ExpenseReimburse
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseReimburseStatusTrackersController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -155,8 +155,8 @@ namespace AtoCash.Controllers.ExpenseReimburse
             Employee apprEmp = _context.Employees.Find(id);
             int jobRoleid = apprEmp.RoleId;
             int apprGroupId = apprEmp.ApprovalGroupId;
-            int BARoleid = apprEmp.BusinessAreaRoleId;
-            int BAApprovalGroupId = apprEmp.BusinessAreaApprovalGroupId;
+            int BARoleid = (int)apprEmp.BusinessAreaRoleId;
+            int BAApprovalGroupId = (int)apprEmp.BusinessAreaApprovalGroupId;
 
             if (jobRoleid == 0)
             {

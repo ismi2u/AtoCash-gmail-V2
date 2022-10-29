@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+ // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class BankController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -95,7 +95,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/Bank/5
         [HttpPut("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutBank(int id, BankDTO BankDTO)
         {
             if (id != BankDTO.Id)
@@ -128,7 +128,7 @@ namespace AtoCash.Controllers
         // POST: api/Bank
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<Bank>> PostBank(BankDTO BankDTO)
         {
             var bank = _context.Banks.Where(e => e.BankName == BankDTO.BankName).FirstOrDefault();
@@ -149,7 +149,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/Bank/5
         [HttpDelete("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteBank(int id)
         {
 

@@ -18,7 +18,7 @@ namespace AtoCash.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
-  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+ // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
 
     public class PettyCashRequestsController : ControllerBase
     {
@@ -131,7 +131,7 @@ namespace AtoCash.Controllers
         {
             var employee = await _context.Employees.FindAsync(id);
             int roleId = employee.RoleId;
-            int BARoleId = employee.BusinessAreaRoleId;
+            int BARoleId = (int)employee.BusinessAreaRoleId;
 
             if (employee == null)
             {
@@ -140,7 +140,18 @@ namespace AtoCash.Controllers
             }
 
             //get the employee's approval level for comparison with approver level  to decide "ShowEditDelete" bool
-            int reqEmpApprLevelId = _context.ApprovalRoleMaps.Where(a => a.RoleId == roleId || a.RoleId == BARoleId).FirstOrDefault().ApprovalLevelId;
+            int reqEmpApprLevelId = 0;
+            try
+            {
+                reqEmpApprLevelId = _context.ApprovalRoleMaps.Where(a => a.RoleId == roleId || a.RoleId == BARoleId).FirstOrDefault().ApprovalLevelId;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Employee reqEmpApprLevelId is null for Employee id: " + id);
+                return Conflict(new RespStatus { Status = "Failure", Message = "Employee Approval Level not defined!" });
+            }
+            
             int reqEmpApprLevel = _context.ApprovalLevels.Find(reqEmpApprLevelId).Level;
 
             var pettyCashRequests = await _context.PettyCashRequests.Where(p => p.EmployeeId == id).ToListAsync();
@@ -1022,7 +1033,7 @@ namespace AtoCash.Controllers
             _logger.LogInformation("BusinessAreaCashRequest - Start");
             int reqEmpid = pettyCashRequestDto.EmployeeId;
             Employee reqEmp = _context.Employees.Find(reqEmpid);
-            int reqApprGroupId = reqEmp.BusinessAreaApprovalGroupId;
+            int reqApprGroupId = (int)reqEmp.BusinessAreaApprovalGroupId;
             int reqRoleId = reqEmp.RoleId;
             int maxApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).ToList().Select(x => x.ApprovalLevel).Max(a => a.Level);
             int reqApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId && a.RoleId == reqRoleId).Select(x => x.ApprovalLevel).FirstOrDefault().Level;

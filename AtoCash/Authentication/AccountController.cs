@@ -68,7 +68,7 @@ namespace AtoCash.Authentication
         // GET: api/<AccountController>
         [HttpPost]
         [ActionName("Register")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             //check if employee-id is already registered
@@ -95,10 +95,10 @@ namespace AtoCash.Authentication
             MailAddress mailAddress = new(model.Email);
             
             //MODIFY HOST DOMAIN NAME HERE => CURRENTLY only GMAIL and MAILINATOR
-            if ( mailAddress.Host.ToUpper() != Constants.EmailDomain.ToUpper())
-            {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Use company mail address!" });
-            }
+            //if ( mailAddress.Host.ToUpper() != Constants.EmailDomain.ToUpper())
+            //{
+            //    return Conflict(new RespStatus { Status = "Failure", Message = "Use company mail address!" });
+            //}
             //Creating a IdentityUser object
             var user = new ApplicationUser { 
                 EmployeeId = model.EmployeeId,

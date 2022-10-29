@@ -1,0 +1,323 @@
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name _;
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+}
+server {
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+    server_name foodunitco.atocashuat.tk www.foodunitco.atocashuat.tk; # managed by Certbot
+
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/foodunitco.atocashuat.tk/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/foodunitco.atocashuat.tk/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}server {
+    if ($host = www.foodunitco.atocashuat.tk) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = foodunitco.atocashuat.tk) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name foodunitco.atocashuat.tk www.foodunitco.atocashuat.tk;
+    return 404; # managed by Certbot
+
+
+
+
+}server {
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+    server_name www.foodunitco.atocashdev.ml foodunitco.atocashdev.ml; # managed by Certbot
+
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/foodunitco.atocashdev.ml-0001/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/foodunitco.atocashdev.ml-0001/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}server {
+    if ($host = www.foodunitco.atocashdev.ml) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = foodunitco.atocashdev.ml) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name www.foodunitco.atocashdev.ml foodunitco.atocashdev.ml;
+    return 404; # managed by Certbot
+
+
+
+
+}server {
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+    server_name www.foodunitco.atocashdev.tk foodunitco.atocashdev.tk; # managed by Certbot
+
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/foodunitco.atocashdev.tk/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/foodunitco.atocashdev.tk/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}server {
+    if ($host = www.foodunitco.atocashdev.tk) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = foodunitco.atocashdev.tk) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name www.foodunitco.atocashdev.tk foodunitco.atocashdev.tk;
+    return 404; # managed by Certbot
+        index index.html index.htm index.nginx-debian.html;
+    server_name www.foodunitcoserver.atocashuat.tk foodunitcoserver.atocashuat.tk; # managed by Certbot
+
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/foodunitcoserver.atocashuat.tk/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/foodunitcoserver.atocashuat.tk/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}server {
+    if ($host = www.foodunitcoserver.atocashuat.tk) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = foodunitcoserver.atocashuat.tk) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name www.foodunitcoserver.atocashuat.tk foodunitcoserver.atocashuat.tk;
+    return 404; # managed by Certbot
+
+
+
+}server {
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+    server_name www.foodunitcoserver.atocashdev.ml foodunitcoserver.atocashdev.ml; # managed by Certbot
+
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/foodunitcoserver.atocashdev.ml/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/foodunitcoserver.atocashdev.ml/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}server {
+    if ($host = www.foodunitcoserver.atocashdev.ml) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = foodunitcoserver.atocashdev.ml) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name www.foodunitcoserver.atocashdev.ml foodunitcoserver.atocashdev.ml;
+    return 404; # managed by Certbot
+
+
+
+
+}server {
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+    server_name www.foodunitcoserver.atocashdev.tk foodunitcoserver.atocashdev.tk; # managed by Certbot
+
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/foodunitcoserver.atocashdev.tk/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/foodunitcoserver.atocashdev.tk/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}server {
+    if ($host = www.foodunitcoserver.atocashdev.tk) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+
+
+
+}server {
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+
+    if ($host = foodunitcoserver.atocashdev.tk) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name www.foodunitcoserver.atocashdev.tk foodunitcoserver.atocashdev.tk;
+    return 404; # managed by Certbot
+
+
+
+
+}server {
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+    server_name atocash.com www.atocash.com; # managed by Certbot
+
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/atocash.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/atocash.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}server {
+    if ($host = www.atocash.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = atocash.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name atocash.com www.atocash.com;
+    return 404; # managed by Certbot
+
+
+
+
+}

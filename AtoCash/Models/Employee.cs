@@ -98,18 +98,18 @@ namespace AtoCash.Models
         public int ApprovalGroupId { get; set; }
 
 
-  
-        [ForeignKey("BusinessAreaApprovalGroupId")]
-        public virtual ApprovalGroup BusinessAreaApprovalGroup { get; set; }
-        public int BusinessAreaApprovalGroupId { get; set; }
 
-        [ForeignKey("BusinessAreaRoleId")]
-        public virtual JobRole BusinessAreaRole { get; set; }
-        public int BusinessAreaRoleId { get; set; }
+        //[ForeignKey("BusinessAreaApprovalGroupId")]
+        //public virtual ApprovalGroup BusinessAreaApprovalGroup { get; set; }
+        public int? BusinessAreaApprovalGroupId { get; set; }
+
+       //[ForeignKey("BusinessAreaRoleId")]
+       //public virtual JobRole BusinessAreaRole { get; set; }
+        public int? BusinessAreaRoleId { get; set; }
 
 
-        [ForeignKey("BusinessAreaId")]
-        public virtual BusinessArea BusinessArea { get; set; }
+        //[ForeignKey("BusinessAreaId")]
+        //public virtual BusinessArea BusinessArea { get; set; }
         public int BusinessAreaId { get; set; }
 
 

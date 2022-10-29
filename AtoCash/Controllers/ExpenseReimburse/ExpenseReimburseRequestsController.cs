@@ -22,7 +22,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseReimburseRequestsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -213,9 +213,20 @@ namespace AtoCash.Controllers
             //get the employee's approval level for comparison with approver level  to decide "ShowEditDelete" bool
 
             int empRoleId = employee.RoleId;
-            int empBARoleId = employee.BusinessAreaRoleId;
+            int empBARoleId = (int)employee.BusinessAreaRoleId;
             var approvalRoleMap = _context.ApprovalRoleMaps.Where(a => a.RoleId == empRoleId || a.RoleId == empBARoleId).FirstOrDefault();
-            int reqEmpApprLevelId = approvalRoleMap.ApprovalLevelId;
+            int reqEmpApprLevelId = 0;
+            try
+            {
+                reqEmpApprLevelId = approvalRoleMap.ApprovalLevelId;
+               
+            }
+            catch( Exception ex)
+            {
+                _logger.LogError("Employee reqEmpApprLevelId is null for Employee id: " + id);
+                return Conflict(new RespStatus { Status = "Failure", Message = "Employee Approval Level not defined!" });
+            }
+
             int reqEmpApprLevel = _context.ApprovalLevels.Find(reqEmpApprLevelId).Level;
 
             var expenseReimbRequests = await _context.ExpenseReimburseRequests.Where(p => p.EmployeeId == id).ToListAsync();
@@ -598,7 +609,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ExpenseReimburseRequests/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteExpenseReimburseRequest(int id)
         {
             var expenseReimburseRequest = await _context.ExpenseReimburseRequests.FindAsync(id);
@@ -968,6 +979,7 @@ namespace AtoCash.Controllers
                     _logger.LogInformation("DisbursementsAndClaimsMaster table insert complete");
                     _logger.LogInformation("Department Request Created successfully");
 
+                    await AtoCashDbContextTransaction.CommitAsync();
                     return 0;
                 }
                 ///
@@ -994,8 +1006,8 @@ namespace AtoCash.Controllers
             #region
             int reqEmpid = expenseReimburseRequestDto.EmployeeId;
             Employee reqEmp = _context.Employees.Find(reqEmpid);
-            int reqBAApprGroupId = reqEmp.BusinessAreaApprovalGroupId;// here the approval group shoulbe be based on Business Area
-            int reqRoleId = reqEmp.BusinessAreaRoleId;
+            int reqBAApprGroupId = (int)reqEmp.BusinessAreaApprovalGroupId;// here the approval group shoulbe be based on Business Area
+            int reqRoleId = (int)reqEmp.BusinessAreaRoleId;
             int costCenterId = _context.BusinessAreas.Find(reqEmp.BusinessAreaId).CostCenterId;
 
             //if Approval Role Map list is null
@@ -1120,7 +1132,15 @@ namespace AtoCash.Controllers
 
                 exp.TotalClaimAmount = dblTotalClaimAmount;
                 _context.ExpenseReimburseRequests.Update(exp);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "TotalClaimAmount update failed");
+                    return 1;
+                }
 
                 _logger.LogInformation("Sub Claims Table records inserted");
 
@@ -1134,7 +1154,7 @@ namespace AtoCash.Controllers
                 }
                 //////////////////////////////////////////////////////////////////////////////////////////
                 //var test = _context.ApprovalRoleMaps.Include(a => a.ApprovalLevel).ToList().OrderBy(o => o.ApprovalLevel.Level);
-                int reqApprovGroupId = _context.Employees.Find(reqEmpid).BusinessAreaApprovalGroupId;
+                int reqApprovGroupId = (int)_context.Employees.Find(reqEmpid).BusinessAreaApprovalGroupId;
                 var getEmpClaimApproversAllLevels = _context.ApprovalRoleMaps.Include(a => a.ApprovalLevel).Where(a => a.ApprovalGroupId == reqApprovGroupId).OrderBy(o => o.ApprovalLevel.Level).ToList();
 
                 var ReqEmpRoleId = _context.Employees.Where(e => e.Id == reqEmpid).FirstOrDefault().BusinessAreaRoleId;
@@ -1153,7 +1173,7 @@ namespace AtoCash.Controllers
                         ExpReimReqDate = DateTime.Now,
                         IsBusinessAreaReq = true,
                         DepartmentId = null,
-                        BusinessAreaId = expenseReimburseRequestDto.BusinessAreaId,
+                        BusinessAreaId = reqEmp.BusinessAreaId,
                         BAApprovalGroupId = reqEmp.BusinessAreaApprovalGroupId,
                         BARoleId = reqEmp.BusinessAreaRoleId,
                         ProjectId = null, //Approver Project Id
@@ -1168,7 +1188,15 @@ namespace AtoCash.Controllers
                     expenseReimburseRequest.ApprovalStatusTypeId = (int)EApprovalStatus.Approved;
                     expenseReimburseRequest.Comments = "Approved";
                     _context.ExpenseReimburseRequests.Update(expenseReimburseRequest);
-                    await _context.SaveChangesAsync();
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Self approved ExpenseReimburseRequests update failed");
+                        return 1;
+                    }
 
                     _logger.LogInformation("Self Approved:Expense table Updated with Approved Status");
                 }
@@ -1330,7 +1358,7 @@ namespace AtoCash.Controllers
                     }
                     _logger.LogInformation("DisbursementsAndClaimsMaster table insert complete");
                     _logger.LogInformation("Business Area Request Created successfully");
-
+                    await AtoCashDbContextTransaction.CommitAsync();
                     return 0;
                 }
                 ///

@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+ // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ProjectManagementController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -169,7 +169,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/ProjectManagement/5
         [HttpPut("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutProjectManagement(int id, ProjectManagementDTO projectManagementDto)
         {
             if (id != projectManagementDto.Id)
@@ -201,7 +201,7 @@ namespace AtoCash.Controllers
 
         // POST: api/ProjectManagement
         [HttpPost]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<ProjectManagement>> PostProjectManagement(ProjectManagementDTO projectManagementDTO)
         {
 
@@ -228,7 +228,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ProjectManagement/5
         [HttpDelete("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteProjectManagement(int id)
         {
             var projectManagement = await _context.ProjectManagements.FindAsync(id);

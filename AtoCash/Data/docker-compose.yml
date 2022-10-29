@@ -6,7 +6,7 @@ services:
     container_name: dbserver
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Pa55word2019!123
+      - SA_PASSWORD=Pa55word2019@123
     ports:
       - "1433:1433"
     volumes:

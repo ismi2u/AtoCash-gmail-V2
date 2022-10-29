@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+ // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ApprovalGroupsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -69,7 +69,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/ApprovalGroups/5
         [HttpPut("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutApprovalGroup(int id, ApprovalGroupDTO approvalGroupDto)
         {
             if (id != approvalGroupDto.Id)
@@ -99,7 +99,7 @@ namespace AtoCash.Controllers
         // POST: api/ApprovalGroups
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<ApprovalGroup>> PostApprovalGroup(ApprovalGroup approvalGroup)
         {
             var aprGrpCode = _context.ApprovalGroups.Where(a => a.ApprovalGroupCode == approvalGroup.ApprovalGroupCode).FirstOrDefault();
@@ -116,7 +116,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ApprovalGroups/5
         [HttpDelete("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteApprovalGroup(int id)
         {
             var approvalGroup = await _context.ApprovalGroups.FindAsync(id);

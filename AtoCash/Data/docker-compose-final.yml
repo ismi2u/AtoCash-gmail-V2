@@ -1,15 +1,26 @@
 version: '3.4'
 
 services:
+
+  atocashang:
+    image: habeeb22did/atocashangularv2:latest
+    container_name: angularapp
+    ports:
+      - "8080:80"
+    volumes:
+      - angulardatavol:/usr/share/nginx/html
+    networks:
+      mynetwork:
+
   postgresdata:
-    image: postgres
+    image: "postgres"
     container_name: dbserver
     environment:
       - POSTGRES_PASSWORD=Pa55word2019@123
     ports:
-      - "54322:5432"
+      - "5432:5432"
     volumes:
-      - atocashdatavol:/var/opt/postgres/data
+      - atocashdatavol:/var/lib/postgresql/data
     networks:
       mynetwork:
 
@@ -19,16 +30,15 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=atominos@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=Pa55word2019@123
+    volumes:
+      - pgadmindatavol:/var/lib/pgadmin/data
     ports:
       - "5050:80"
     networks:
       mynetwork:
-      
+
   atocash:
-    image: ismi2u/atocash-gmail:latest
-    build:
-      context: .
-      dockerfile: AtoCash/Dockerfile
+    image: ismi2u/atocashdev:latest
     command: tail -f /dev/null
     container_name: appserver
     tty: true
@@ -48,7 +58,8 @@ volumes:
     atocashappvol:
     atocashrptvol:
     angulardatavol:
-    
+    pgadmindatavol:
+
 networks:
     mynetwork:
         driver: bridge

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AtoCash.Migrations
 {
-    public partial class initial : Migration
+    public partial class initwithoutBA : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -159,6 +159,19 @@ namespace AtoCash.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StatusTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VATRates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    VATPercentage = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VATRates", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -509,7 +522,7 @@ namespace AtoCash.Migrations
                     LastName = table.Column<string>(type: "varchar(100)", nullable: false),
                     EmpCode = table.Column<string>(type: "varchar(30)", nullable: false),
                     BankAccount = table.Column<string>(type: "varchar(30)", nullable: false),
-                    IBAN = table.Column<string>(type: "varchar(30)", nullable: false),
+                    IBAN = table.Column<string>(type: "varchar(30)", nullable: true),
                     BankCardNo = table.Column<string>(type: "varchar(50)", nullable: true),
                     NationalID = table.Column<string>(type: "text", nullable: true),
                     PassportNo = table.Column<string>(type: "varchar(20)", nullable: true),
@@ -525,8 +538,8 @@ namespace AtoCash.Migrations
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
                     RoleId = table.Column<int>(type: "integer", nullable: false),
                     ApprovalGroupId = table.Column<int>(type: "integer", nullable: false),
-                    BusinessAreaApprovalGroupId = table.Column<int>(type: "integer", nullable: false),
-                    BusinessAreaRoleId = table.Column<int>(type: "integer", nullable: false),
+                    BusinessAreaApprovalGroupId = table.Column<int>(type: "integer", nullable: true),
+                    BusinessAreaRoleId = table.Column<int>(type: "integer", nullable: true),
                     BusinessAreaId = table.Column<int>(type: "integer", nullable: false),
                     CurrencyTypeId = table.Column<int>(type: "integer", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
@@ -541,23 +554,11 @@ namespace AtoCash.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Employees_ApprovalGroups_BusinessAreaApprovalGroupId",
-                        column: x => x.BusinessAreaApprovalGroupId,
-                        principalTable: "ApprovalGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Employees_Banks_BankId",
                         column: x => x.BankId,
                         principalTable: "Banks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Employees_BusinessAreas_BusinessAreaId",
-                        column: x => x.BusinessAreaId,
-                        principalTable: "BusinessAreas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employees_CurrencyTypes_CurrencyTypeId",
                         column: x => x.CurrencyTypeId,
@@ -574,12 +575,6 @@ namespace AtoCash.Migrations
                         name: "FK_Employees_EmploymentTypes_EmploymentTypeId",
                         column: x => x.EmploymentTypeId,
                         principalTable: "EmploymentTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Employees_JobRoles_BusinessAreaRoleId",
-                        column: x => x.BusinessAreaRoleId,
-                        principalTable: "JobRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1088,6 +1083,7 @@ namespace AtoCash.Migrations
                     ExpenseReimbClaimAmount = table.Column<double>(type: "double precision", nullable: false),
                     DocumentIDs = table.Column<string>(type: "text", nullable: true),
                     InvoiceNo = table.Column<string>(type: "varchar(50)", nullable: false),
+                    IsVAT = table.Column<bool>(type: "boolean", nullable: false),
                     Tax = table.Column<float>(type: "real", nullable: false),
                     TaxAmount = table.Column<double>(type: "double precision", nullable: false),
                     InvoiceDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -1448,109 +1444,6 @@ namespace AtoCash.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.InsertData(
-                table: "ApprovalGroups",
-                columns: new[] { "Id", "ApprovalGroupCode", "ApprovalGroupDesc" },
-                values: new object[] { 1, "SETUP-ADMIN", "SETUP-ADMIN" });
-
-            migrationBuilder.InsertData(
-                table: "ApprovalLevels",
-                columns: new[] { "Id", "Level", "LevelDesc" },
-                values: new object[,]
-                {
-                    { 1, 1, "Level 1" },
-                    { 2, 2, "Level 2" },
-                    { 3, 3, "Level 3" },
-                    { 4, 4, "Level 4" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ApprovalStatusTypes",
-                columns: new[] { "Id", "Status", "StatusDesc" },
-                values: new object[,]
-                {
-                    { 6, "Settled", "Request is Settled" },
-                    { 4, "Approved", "Request Approved" },
-                    { 5, "Rejected", "Request is Rejected" },
-                    { 2, "Pending", "Awaiting Approval" },
-                    { 1, "Initiating", "Request Initiated" },
-                    { 3, "In Review", "Request is in progress" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "EmploymentTypes",
-                columns: new[] { "Id", "EmpJobTypeCode", "EmpJobTypeDesc" },
-                values: new object[,]
-                {
-                    { 1, "FT01", "Full Time Employee" },
-                    { 2, "PT01", "Part Time Employee" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "JobRoles",
-                columns: new[] { "Id", "IsStoreRole", "MaxPettyCashAllowed", "RoleCode", "RoleName" },
-                values: new object[] { 1, false, 0.0, "SETUP-ROLE", "SETUP-ROLE" });
-
-            migrationBuilder.InsertData(
-                table: "RequestTypes",
-                columns: new[] { "Id", "RequestName", "RequestTypeDesc" },
-                values: new object[,]
-                {
-                    { 1, "Petty Cash Request", "Petty Cash Request" },
-                    { 2, "Department Expense Reimbursement", "Department Expense Reimbursement" },
-                    { 3, "Store Expense Reimbursement", "Store Expense Reimbursement" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "StatusTypes",
-                columns: new[] { "Id", "Status" },
-                values: new object[,]
-                {
-                    { 1, "Active" },
-                    { 2, "Inactive" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Banks",
-                columns: new[] { "Id", "BankDesc", "BankName", "StatusTypeId" },
-                values: new object[] { 1, "Private Ltd Bank", "Standard Chartered", 1 });
-
-            migrationBuilder.InsertData(
-                table: "CostCenters",
-                columns: new[] { "Id", "CostCenterCode", "CostCenterDesc", "StatusTypeId" },
-                values: new object[] { 1, "ADM", "Administration", 1 });
-
-            migrationBuilder.InsertData(
-                table: "CurrencyTypes",
-                columns: new[] { "Id", "Country", "CurrencyCode", "CurrencyName", "StatusTypeId" },
-                values: new object[,]
-                {
-                    { 1, "Saudi", "SAR", "Saudi Riyal", 1 },
-                    { 2, "Emirian", "AED", "UAE", 1 },
-                    { 3, "Indian", "INR", "Indian Rupees", 1 },
-                    { 4, "Canadian", "CAD", "Canadian Dollar", 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "BusinessAreas",
-                columns: new[] { "Id", "BusinessAreaCode", "BusinessAreaName", "CostCenterId", "StatusTypeId" },
-                values: new object[] { 1, "SETUP-BUSSAREA", "SETUP-BUSSAREA", 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "Departments",
-                columns: new[] { "Id", "CostCenterId", "DeptCode", "DeptName", "StatusTypeId" },
-                values: new object[] { 1, 1, "ADM", "Administration", 1 });
-
-            migrationBuilder.InsertData(
-                table: "Employees",
-                columns: new[] { "Id", "ApprovalGroupId", "BankAccount", "BankCardNo", "BankId", "BusinessAreaApprovalGroupId", "BusinessAreaId", "BusinessAreaRoleId", "CurrencyTypeId", "DOB", "DOJ", "DepartmentId", "Email", "EmpCode", "EmploymentTypeId", "FirstName", "Gender", "IBAN", "LastName", "MiddleName", "MobileNumber", "NationalID", "Nationality", "PassportNo", "RoleId", "StatusTypeId", "TaxNumber" },
-                values: new object[] { 1, 1, "1234567890", "1234222222001234", 1, 1, 1, 1, 3, new DateTime(2000, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "atocash@gmail.com", "EMP000", 1, "Atominos", "Male", "AD1400080001001234567890", "Admin", "AtoCash", "1234533325", "AAAAAAAAAA", "Indian", "AAAAAAA", 1, 1, "1234512345" });
-
-            migrationBuilder.InsertData(
-                table: "EmpCurrentPettyCashBalances",
-                columns: new[] { "Id", "CashOnHand", "CurBalance", "EmployeeId", "UpdatedOn" },
-                values: new object[] { 1, 0.0, 0.0, 1, new DateTime(2022, 12, 6, 0, 0, 0, 0, DateTimeKind.Unspecified) });
-
             migrationBuilder.CreateIndex(
                 name: "IX_ApprovalRoleMaps_ApprovalGroupId",
                 table: "ApprovalRoleMaps",
@@ -1762,21 +1655,6 @@ namespace AtoCash.Migrations
                 name: "IX_Employees_BankId",
                 table: "Employees",
                 column: "BankId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_BusinessAreaApprovalGroupId",
-                table: "Employees",
-                column: "BusinessAreaApprovalGroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_BusinessAreaId",
-                table: "Employees",
-                column: "BusinessAreaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_BusinessAreaRoleId",
-                table: "Employees",
-                column: "BusinessAreaRoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_CurrencyTypeId",
@@ -2209,6 +2087,9 @@ namespace AtoCash.Migrations
                 name: "TravelApprovalStatusTrackers");
 
             migrationBuilder.DropTable(
+                name: "VATRates");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -2231,6 +2112,9 @@ namespace AtoCash.Migrations
 
             migrationBuilder.DropTable(
                 name: "TravelApprovalRequests");
+
+            migrationBuilder.DropTable(
+                name: "BusinessAreas");
 
             migrationBuilder.DropTable(
                 name: "ExpenseCategories");
@@ -2258,9 +2142,6 @@ namespace AtoCash.Migrations
 
             migrationBuilder.DropTable(
                 name: "Banks");
-
-            migrationBuilder.DropTable(
-                name: "BusinessAreas");
 
             migrationBuilder.DropTable(
                 name: "CurrencyTypes");

@@ -15,7 +15,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
+   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
     public class EmployeesController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -100,7 +100,7 @@ namespace AtoCash.Controllers
                 employeeDTO.EmpCode = employee.EmpCode;
                 employeeDTO.IBAN = employee.IBAN;
                 employeeDTO.BankId = employee.BankId;
-                employeeDTO.BankName= _context.Banks.Find(employee.BankId).BankName;
+                employeeDTO.BankName = _context.Banks.Find(employee.BankId).BankName;
                 employeeDTO.BankAccount = employee.BankAccount;
                 employeeDTO.BankCardNo = employee.BankCardNo;
                 employeeDTO.NationalID = employee.NationalID;
@@ -178,7 +178,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/Employees/5
         [HttpPut("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutEmployee(int id, EmployeeDTO employeeDto)
         {
             if (id != employeeDto.Id)
@@ -285,7 +285,7 @@ namespace AtoCash.Controllers
 
         // POST: api/Employees
         [HttpPost]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<Employee>> PostEmployee(EmployeeDTO employeeDto)
         {
 
@@ -361,7 +361,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
-      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);

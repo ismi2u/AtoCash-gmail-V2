@@ -141,7 +141,17 @@ namespace AtoCash.Controllers
             }
 
             //get the employee's approval level for comparison with approver level  to decide "ShowEditDelete" bool
-            int reqEmpApprLevelId = _context.ApprovalRoleMaps.Where(a => a.RoleId == roleid).FirstOrDefault().ApprovalLevelId;
+            int reqEmpApprLevelId = 0;
+            try
+            {
+                reqEmpApprLevelId = _context.ApprovalRoleMaps.Where(a => a.RoleId == roleid).FirstOrDefault().ApprovalLevelId;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Employee reqEmpApprLevelId is null for Employee id: " + id);
+                return Conflict(new RespStatus { Status = "Failure", Message = "Employee Approval Level not defined!" });
+            }
             int reqEmpApprLevel = _context.ApprovalLevels.Find(reqEmpApprLevelId).Level;
 
 
