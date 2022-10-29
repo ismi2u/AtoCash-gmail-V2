@@ -1006,8 +1006,8 @@ namespace AtoCash.Controllers
             #region
             int reqEmpid = expenseReimburseRequestDto.EmployeeId;
             Employee reqEmp = _context.Employees.Find(reqEmpid);
-            int reqBAApprGroupId = (int)reqEmp.BusinessAreaApprovalGroupId;// here the approval group shoulbe be based on Business Area
-            int reqRoleId = (int)reqEmp.BusinessAreaRoleId;
+            int reqBAApprGroupId = reqEmp.BusinessAreaApprovalGroupId ?? 0;// here the approval group shoulbe be based on Business Area
+            int reqRoleId = reqEmp.BusinessAreaRoleId ?? 0;
             int costCenterId = _context.BusinessAreas.Find(reqEmp.BusinessAreaId).CostCenterId;
 
             //if Approval Role Map list is null

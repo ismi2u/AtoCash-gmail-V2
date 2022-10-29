@@ -466,7 +466,7 @@ CREATE INDEX IF NOT EXISTS "IX_Employees_StatusTypeId"
 
 INSERT INTO public."Employees" (
 	"Id", "FirstName", "MiddleName", "LastName", "EmpCode", "BankAccount", "IBAN", "BankCardNo", "NationalID", "PassportNo", "TaxNumber", "Nationality", "DOB", "DOJ", "Gender", "Email", "MobileNumber", "BankId", "EmploymentTypeId", "DepartmentId", "RoleId", "ApprovalGroupId", "BusinessAreaApprovalGroupId", "BusinessAreaRoleId", "BusinessAreaId", "CurrencyTypeId", "StatusTypeId")
-	          VALUES (1, 'atocash admin', NULL, 'E-11000', 'E-11000', '235453565636',  'AD1400080001001234567890', '3453564667678854', '3249094', 'ZT445666', '343423123532423', 'Saudi', '2021-09-08 11:33:30.165', '2022-09-27 11:34:43.152', 'male', 'atocash@gmail.com', '24245435',1, 1, 1, 1, 1, 0, 0, 0, 1, 1);
+	          VALUES (1, 'atocash admin', NULL, 'E-11000', 'E-11000', '235453565636',  'AD1400080001001234567890', '3453564667678854', '3249094', 'ZT445666', '343423123532423', 'Saudi', '2021-09-08 11:33:30.165', '2022-09-27 11:34:43.152', 'male', 'atocash@gmail.com', '24245435',1, 1, 1, 1, 1, null, null, null, 1, 1);
 	
 -----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------------------
 -- Table: public.EmpCurrentPettyCashBalances

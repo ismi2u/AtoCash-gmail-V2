@@ -155,8 +155,8 @@ namespace AtoCash.Controllers.ExpenseReimburse
             Employee apprEmp = _context.Employees.Find(id);
             int jobRoleid = apprEmp.RoleId;
             int apprGroupId = apprEmp.ApprovalGroupId;
-            int BARoleid = (int)apprEmp.BusinessAreaRoleId;
-            int BAApprovalGroupId = (int)apprEmp.BusinessAreaApprovalGroupId;
+            int BARoleid = apprEmp.BusinessAreaRoleId ?? 0;
+            int BAApprovalGroupId = apprEmp.BusinessAreaApprovalGroupId ?? 0;
 
             if (jobRoleid == 0)
             {

@@ -167,9 +167,9 @@ namespace AtoCash.Controllers
             employeeDTO.RoleId = employee.RoleId;
             employeeDTO.CurrencyTypeId = (int)employee.CurrencyTypeId;
             employeeDTO.ApprovalGroupId = (int)employee.ApprovalGroupId;
-            employeeDTO.BusinessAreaApprovalGroupId = (int)employee.BusinessAreaApprovalGroupId;
-            employeeDTO.BusinessAreaRoleId = (int)employee.BusinessAreaRoleId;
-            employeeDTO.BusinessAreaId = (int)employee.BusinessAreaId;
+            employeeDTO.BusinessAreaApprovalGroupId = employee.BusinessAreaApprovalGroupId ?? 0 ;
+            employeeDTO.BusinessAreaRoleId = employee.BusinessAreaRoleId ?? 0;
+            employeeDTO.BusinessAreaId = employee.BusinessAreaId ?? 0;
             employeeDTO.StatusTypeId = (int)employee.StatusTypeId;
 
 
