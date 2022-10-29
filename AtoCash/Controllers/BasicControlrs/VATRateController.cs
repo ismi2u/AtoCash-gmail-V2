@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
- // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class VATRateController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -38,7 +38,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/Bank/5
         [HttpPut("{id}")]
-     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutVATRate(int id, VATRate VATRate)
         {
             if (id != VATRate.Id)

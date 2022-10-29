@@ -17,7 +17,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
- // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User, Manager")]
+  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User, Manager")]
     public class ClaimApprovalStatusTrackersController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -114,7 +114,7 @@ namespace AtoCash.Controllers
         // PUT: api/ClaimApprovalStatusTrackers/5
 
         [HttpPut]
-     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager")]
+      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager")]
         public async Task<IActionResult> PutClaimApprovalStatusTracker(List<ClaimApprovalStatusTrackerDTO> ListClaimApprovalStatusTrackerDto)
         {
 
@@ -398,7 +398,7 @@ namespace AtoCash.Controllers
         // POST: api/ClaimApprovalStatusTrackers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
+      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
         public async Task<ActionResult<ClaimApprovalStatusTracker>> PostClaimApprovalStatusTracker(ClaimApprovalStatusTrackerDTO claimApprovalStatusTrackerDto)
         {
             ClaimApprovalStatusTracker claimApprovalStatusTracker = new()
@@ -424,7 +424,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ClaimApprovalStatusTrackers/5
         [HttpDelete("{id}")]
-     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteClaimApprovalStatusTracker(int id)
         {
             var claimApprovalStatusTracker = await _context.ClaimApprovalStatusTrackers.FindAsync(id);

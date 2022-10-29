@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
- // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
+  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, Manager, User")]
     public class SubProjectsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -125,7 +125,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/SubProjects/5
         [HttpPut("{id}")]
-     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> PutSubProject(int id, SubProjectDTO subProjectDto)
         {
             if (id != subProjectDto.Id)
@@ -156,7 +156,7 @@ namespace AtoCash.Controllers
 
         // POST: api/SubProjects
         [HttpPost]
-     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<ActionResult<SubProject>> PostSubProject(SubProjectDTO subProjectDto)
         {
             var subproject = _context.SubProjects.Where(c => c.SubProjectName == subProjectDto.SubProjectName).FirstOrDefault();
@@ -180,7 +180,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/SubProjects/5
         [HttpDelete("{id}")]
-     // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+      [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteSubProject(int id)
         {
             var wrktask = _context.WorkTasks.Where(w => w.SubProjectId == id).FirstOrDefault();

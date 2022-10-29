@@ -23,7 +23,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
- // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User, AccPayable")]
+  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User, AccPayable")]
     public class ReportsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;

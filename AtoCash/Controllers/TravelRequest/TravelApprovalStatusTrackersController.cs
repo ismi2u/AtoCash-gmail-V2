@@ -17,7 +17,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
- // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User, Manager")]
+  [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User, Manager")]
     public class TravelApprovalStatusTrackersController : ControllerBase
     {
         private readonly AtoCashDbContext _context;

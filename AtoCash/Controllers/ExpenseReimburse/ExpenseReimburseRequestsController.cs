@@ -22,7 +22,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseReimburseRequestsController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -609,7 +609,7 @@ namespace AtoCash.Controllers
 
         // DELETE: api/ExpenseReimburseRequests/5
         [HttpDelete("{id}")]
-       // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
+        [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr")]
         public async Task<IActionResult> DeleteExpenseReimburseRequest(int id)
         {
             var expenseReimburseRequest = await _context.ExpenseReimburseRequests.FindAsync(id);

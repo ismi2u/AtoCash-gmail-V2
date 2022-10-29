@@ -538,7 +538,7 @@ namespace AtoCash.Migrations
                     b.Property<int?>("BusinessAreaApprovalGroupId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("BusinessAreaId")
+                    b.Property<int?>("BusinessAreaId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("BusinessAreaRoleId")

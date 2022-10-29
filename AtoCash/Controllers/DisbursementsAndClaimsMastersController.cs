@@ -14,7 +14,7 @@ namespace AtoCash.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
- // [Authorize(Roles = "Admin, Finmgr, AccPayable, User")]
+  [Authorize(Roles = "Admin, Finmgr, AccPayable, User")]
     public class DisbursementsAndClaimsMastersController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
@@ -127,7 +127,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/DisbursementsAndClaimsMasters/5
         [HttpPut("{id}")]
-     // [Authorize(Roles = "AccPayable")] // Only AccountPayables clerk can upated DisbursementsAndClaimsMaster
+      [Authorize(Roles = "AccPayable")] // Only AccountPayables clerk can upated DisbursementsAndClaimsMaster
         public async Task<IActionResult> PutDisbursementsAndClaimsMaster(int id, DisbursementsAndClaimsMasterDTO disbursementsAndClaimsMasterDTO)
         {
             if (id != disbursementsAndClaimsMasterDTO.Id)

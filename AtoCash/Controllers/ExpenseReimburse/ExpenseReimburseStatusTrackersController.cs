@@ -17,7 +17,7 @@ namespace AtoCash.Controllers.ExpenseReimburse
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-   // [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
+    [Authorize(Roles = "AtominosAdmin, Admin, Manager, Finmgr, User")]
     public class ExpenseReimburseStatusTrackersController : ControllerBase
     {
         private readonly AtoCashDbContext _context;

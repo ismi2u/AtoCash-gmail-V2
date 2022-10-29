@@ -110,7 +110,7 @@ namespace AtoCash.Models
 
         //[ForeignKey("BusinessAreaId")]
         //public virtual BusinessArea BusinessArea { get; set; }
-        public int BusinessAreaId { get; set; }
+        public int? BusinessAreaId { get; set; }
 
 
 

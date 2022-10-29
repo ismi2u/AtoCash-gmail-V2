@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AtoCash.Migrations
 {
-    public partial class initwithoutBA : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -540,7 +540,7 @@ namespace AtoCash.Migrations
                     ApprovalGroupId = table.Column<int>(type: "integer", nullable: false),
                     BusinessAreaApprovalGroupId = table.Column<int>(type: "integer", nullable: true),
                     BusinessAreaRoleId = table.Column<int>(type: "integer", nullable: true),
-                    BusinessAreaId = table.Column<int>(type: "integer", nullable: false),
+                    BusinessAreaId = table.Column<int>(type: "integer", nullable: true),
                     CurrencyTypeId = table.Column<int>(type: "integer", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },

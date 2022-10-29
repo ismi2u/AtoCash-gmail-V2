@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtoCash.Migrations
 {
     [DbContext(typeof(AtoCashDbContext))]
-    [Migration("20221029052209_initwithoutBA")]
-    partial class initwithoutBA
+    [Migration("20221029070513_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -540,7 +540,7 @@ namespace AtoCash.Migrations
                     b.Property<int?>("BusinessAreaApprovalGroupId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("BusinessAreaId")
+                    b.Property<int?>("BusinessAreaId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("BusinessAreaRoleId")
