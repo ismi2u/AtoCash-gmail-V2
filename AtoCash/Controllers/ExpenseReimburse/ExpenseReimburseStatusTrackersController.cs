@@ -370,7 +370,7 @@ namespace AtoCash.Controllers.ExpenseReimburse
                             }
                             else
                             {
-                                //final approver hence update PettyCashRequest
+                                //final approver hence tally against PettyCashRequest
 
                                 if (expenseReimburseStatusTracker.IsBusinessAreaReq == true)
                                 {
@@ -411,23 +411,56 @@ namespace AtoCash.Controllers.ExpenseReimburse
                                 double RoleLimitAmt = _context.JobRoles.Find(_context.Employees.Find(expenseReimburseRequest.EmployeeId).RoleId).MaxPettyCashAllowed;
                                 EmpCurrentPettyCashBalance empCurrentPettyCashBalance = _context.EmpCurrentPettyCashBalances.Where(e => e.EmployeeId == expenseReimburseRequest.EmployeeId).FirstOrDefault();
                                 double empCurPettyBal = empCurrentPettyCashBalance.CurBalance;
+                                double empCashOnHand = empCurrentPettyCashBalance.CashOnHand;
 
-                                //logic goes here
+                                //Do we credit to wallet when pending cash request are still Un-Approved state (which could be rejected)
 
-                                if (expenseReimAmt + empCurPettyBal >= RoleLimitAmt) // claiming amount is greater than replishable amount
+                                double pendingTotalPettCashRequestAmount = _context.PettyCashRequests.Where(p => p.EmployeeId == expenseReimburseRequest.EmployeeId && p.ApprovalStatusTypeId == (int)EApprovalStatus.Pending).Select(s => s.PettyClaimAmount).Sum();
+
+
+                                //re-coding logic xxx - xxx
+                                // if (expenseReimAmt + empCurPettyBal >= RoleLimitAmt) // claiming amount is greater than replishable amount
+                                // {
+                                //disbAndClaimItem.AmountToWallet = RoleLimitAmt - empCurPettyBal;
+                                // disbAndClaimItem.AmountToCredit = expenseReimAmt - (RoleLimitAmt - empCurPettyBal);
+                                //   }
+                                //  else
+                                //   {
+                                //fully credit to Wallet - Zero amount to bank amount
+                                // disbAndClaimItem.AmountToWallet = expenseReimAmt;
+                                // disbAndClaimItem.AmountToCredit = 0;
+                                //   }
+
+                                if (empCashOnHand >= expenseReimAmt)
                                 {
-                                    disbAndClaimItem.AmountToWallet = RoleLimitAmt - empCurPettyBal;
-                                    disbAndClaimItem.AmountToCredit = expenseReimAmt - (RoleLimitAmt - empCurPettyBal);
-                                }
-                                else
-                                {
-                                    //fully credit to Wallet - Zero amount to bank amount
-                                    disbAndClaimItem.AmountToWallet = expenseReimAmt;
                                     disbAndClaimItem.AmountToCredit = 0;
+                                    disbAndClaimItem.AmountToWallet = expenseReimAmt;
+
+                                    //empCurrentPettyCashBalance.CashOnHand = empCurrentPettyCashBalance.CashOnHand - expenseReimAmt;
+                                    //.CurBalance = empCurrentPettyCashBalance.CurBalance + expenseReimAmt;
                                 }
+                                else if (empCashOnHand > 0)
+                                {
+                                    disbAndClaimItem.AmountToCredit = expenseReimAmt - empCashOnHand;
+                                    disbAndClaimItem.AmountToWallet = empCashOnHand;
+
+                                    //should not update the empCurrentPettyCashBalance as it may be rejected 
+                                    //empCurrentPettyCashBalance.CashOnHand = empCurrentPettyCashBalance.CashOnHand - (expenseReimAmt - empCashOnHand);
+                                   // empCurrentPettyCashBalance.CurBalance = empCurrentPettyCashBalance.CurBalance + (expenseReimAmt - empCashOnHand);
+                                }
+                                else //all other scenarios
+                                {
+                                    disbAndClaimItem.AmountToCredit = expenseReimAmt;
+                                    disbAndClaimItem.AmountToWallet = 0;
+
+                                }
+
 
 
                                 disbAndClaimItem.ApprovalStatusId = (int)EApprovalStatus.Approved;
+
+                                empCurrentPettyCashBalance.UpdatedOn = DateTime.Now;
+                                //_context.EmpCurrentPettyCashBalances.Update(empCurrentPettyCashBalance);
                                 _context.Update(disbAndClaimItem);
 
 

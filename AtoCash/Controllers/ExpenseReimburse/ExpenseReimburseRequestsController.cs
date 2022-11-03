@@ -72,9 +72,8 @@ namespace AtoCash.Controllers
                         CurrencyTypeId = expenseReimbRequest.CurrencyTypeId,
                         TotalClaimAmount = expenseReimbRequest.TotalClaimAmount,
 
-
                         DepartmentId = expenseReimbRequest.IsBusinessAreaReq == false ? expenseReimbRequest.DepartmentId : null,
-                        DepartmentName = expenseReimbRequest.IsBusinessAreaReq == false ? expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null : null,
+                        DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptCode + ":" + _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null,
 
                         BusinessAreaId = expenseReimbRequest.BusinessAreaId,
                         BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null,
@@ -213,18 +212,18 @@ namespace AtoCash.Controllers
             //get the employee's approval level for comparison with approver level  to decide "ShowEditDelete" bool
 
             int empRoleId = employee.RoleId;
-            int empBARoleId = (int)employee.BusinessAreaRoleId;
+            int empBARoleId = employee.BusinessAreaRoleId ?? 0;
             var approvalRoleMap = _context.ApprovalRoleMaps.Where(a => a.RoleId == empRoleId || a.RoleId == empBARoleId).FirstOrDefault();
             int reqEmpApprLevelId = 0;
             try
             {
                 reqEmpApprLevelId = approvalRoleMap.ApprovalLevelId;
-               
+
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("Employee reqEmpApprLevelId is null for Employee id: " + id);
-                return Conflict(new RespStatus { Status = "Failure", Message = "Employee Approval Level not defined!" });
+                return Ok(new RespStatus { Status = "Failure", Message = "Employee Approval Level not defined!" });
             }
 
             int reqEmpApprLevel = _context.ApprovalLevels.Find(reqEmpApprLevelId).Level;
@@ -255,10 +254,10 @@ namespace AtoCash.Controllers
                         if (expenseReimbRequest.IsBusinessAreaReq == false)
                         {
                             expenseReimburseRequestDTO.DepartmentId = expenseReimbRequest.DepartmentId;
-                            expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null;
+                            expenseReimburseRequestDTO.DepartmentName = expenseReimbRequest.DepartmentId != null ? _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptCode + ":" + _context.Departments.Find(expenseReimbRequest.DepartmentId).DeptName : null;
                         }
                         expenseReimburseRequestDTO.BusinessAreaId = expenseReimbRequest.BusinessAreaId;
-                        expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
+                        expenseReimburseRequestDTO.BusinessArea = expenseReimbRequest.BusinessAreaId != null ? _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(expenseReimbRequest.BusinessAreaId).BusinessAreaName : null;
 
 
                         expenseReimburseRequestDTO.ProjectId = expenseReimbRequest.ProjectId;
@@ -280,9 +279,9 @@ namespace AtoCash.Controllers
                              t.ApprovalStatusTypeId == (int)EApprovalStatus.Pending &&
                              t.ExpenseReimburseRequestId == expenseReimbRequest.Id).Select(s => s.ApprovalLevel.Level).FirstOrDefault();
 
-                       //set the bookean flat to TRUE if No approver has yet approved the Request else FALSE
-                       //expenseReimburseRequestDTO.ShowEditDelete = reqEmpApprLevel + 1 == NextApproverInPending ? true : false;
-                       expenseReimburseRequestDTO.ShowEditDelete = (reqEmpApprLevel + 1 == NextApproverInPending) && false;
+                        //set the bookean flat to TRUE if No approver has yet approved the Request else FALSE
+                        //expenseReimburseRequestDTO.ShowEditDelete = reqEmpApprLevel + 1 == NextApproverInPending ? true : false;
+                        expenseReimburseRequestDTO.ShowEditDelete = (reqEmpApprLevel + 1 == NextApproverInPending) && false;
 
                         ListExpenseReimburseRequestDTO.Add(expenseReimburseRequestDTO);
 
@@ -413,7 +412,7 @@ namespace AtoCash.Controllers
 
             List<FileDocumentDTO> fileDocumentDTOs = new();
 
-         
+
             foreach (IFormFile document in Documents)
             {
                 //Store the file to the contentrootpath/images =>
@@ -578,7 +577,7 @@ namespace AtoCash.Controllers
             if (expenseReimburseRequestDto.ProjectId != null)
             {
                 //Goes to Option 1 (Project)
-                SuccessResult =   await Task.Run(() => ProjectBasedExpReimRequest(expenseReimburseRequestDto));
+                SuccessResult = await Task.Run(() => ProjectBasedExpReimRequest(expenseReimburseRequestDto));
             }
             else if (expenseReimburseRequestDto.IsBusinessAreaReq == true)
             {
@@ -591,7 +590,7 @@ namespace AtoCash.Controllers
                 SuccessResult = await Task.Run(() => DepartmentBasedExpReimRequest(expenseReimburseRequestDto));
             }
 
-            if(SuccessResult == 0)
+            if (SuccessResult == 0)
             {
                 _logger.LogInformation("PostExpenseReimburseRequest - Process completed");
 
@@ -603,7 +602,7 @@ namespace AtoCash.Controllers
 
                 return BadRequest(new RespStatus { Status = "Failure", Message = "Expense Reimburse Request creation failed!" });
             }
-           
+
         }
 
 
@@ -721,11 +720,11 @@ namespace AtoCash.Controllers
 
                 //assign values
                 _logger.LogInformation("Sub Claims section started");
-              
+
                 foreach (ExpenseSubClaimDTO expenseSubClaimDto in expenseReimburseRequestDto.ExpenseSubClaims)
                 {
                     ExpenseSubClaim expenseSubClaim = new();
-                  
+
 
                     //get expensereimburserequestId from the saved record and then use here for sub-claims
                     expenseSubClaim.ExpenseReimburseRequestId = expenseReimburseRequest.Id;
@@ -1008,6 +1007,13 @@ namespace AtoCash.Controllers
             Employee reqEmp = _context.Employees.Find(reqEmpid);
             int reqBAApprGroupId = reqEmp.BusinessAreaApprovalGroupId ?? 0;// here the approval group shoulbe be based on Business Area
             int reqRoleId = reqEmp.BusinessAreaRoleId ?? 0;
+            if (reqBAApprGroupId == 0 || reqRoleId == 0 || reqEmp.BusinessAreaId == 0)
+            {
+                _logger.LogError("Business Area Approval group not defined for employee " + reqEmp.GetFullName());
+
+                return 1;
+            }
+
             int costCenterId = _context.BusinessAreas.Find(reqEmp.BusinessAreaId).CostCenterId;
 
             //if Approval Role Map list is null
@@ -1075,7 +1081,7 @@ namespace AtoCash.Controllers
                 await _context.SaveChangesAsync();
 
                 _logger.LogInformation("Exp Reimb Table inserted successfully");
-                
+
                 //assign values
 
                 _logger.LogInformation("Sub Claims section started");
@@ -1549,8 +1555,8 @@ namespace AtoCash.Controllers
                 {
                     _logger.LogInformation("Not Self approved - Project Manager is Approver");
                     _logger.LogInformation(approver.GetFullName() + " Status Tracker started");
-                   
-                    
+
+
                     ExpenseReimburseStatusTracker expenseReimburseStatusTracker = new()
                     {
                         EmployeeId = expenseReimburseRequestDto.EmployeeId,
@@ -1585,7 +1591,7 @@ namespace AtoCash.Controllers
                         return 1;
                     }
 
-                   
+
                     //##### 5. Send email to the Approver
                     //####################################
                     if (isSelfApprovedRequest)
@@ -1713,7 +1719,7 @@ namespace AtoCash.Controllers
 
                 _logger.LogInformation("DisbursementsAndClaimsMaster approve/reject updated");
 
-              
+
                 await AtoCashDbContextTransaction.CommitAsync();
             }
             return 0;

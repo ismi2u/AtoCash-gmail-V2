@@ -42,14 +42,7 @@ namespace AtoCash
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //        "ConnectionStrings": {
-            //            "AzureCloudGmailServer": "Server=atocashdev.tk;Port=5432;Database=AtoCashDB;User Id=postgres;Password=Pa55word2019@123;Pooling=true;Timeout=300; CommandTimeout=300",
-            //"GoogleCloudAtominosServer": "Server=35.200.228.204;Port=5432;Database=AtoCashDB;User Id=postgres;Password=Pa55word2019@123;Pooling=true;",
-            //"PostgreSQLConnectionString": "Server=localhost;Port=5432;Database=AtoCashDB;User Id=postgres;Password=Pa55word2019@123;Pooling=true;",
-            //"PostgreSQLInLocalAppInContainer": "Server=host.docker.internal;Port=5432;Database=AtoCashDB;User Id=postgres;Password=Pa55word2019@123;Pooling=true;",
-            //"WithinContainerPostGreSQL": "Server=postgresdata;Port=5432;Database=AtoCashDB;User Id=postgres;Password=Pa55word2019@123;Pooling=true;Timeout=300; CommandTimeout=300"
-
-
+        
             //FUCOAzurePostgresSQLServer (or) AzureCloudGmailServer
             services.AddDbContextPool<AtoCashDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("AzureCloudGmailServer")));
 

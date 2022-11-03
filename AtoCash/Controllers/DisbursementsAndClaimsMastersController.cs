@@ -9,19 +9,27 @@ using AtoCash.Data;
 using AtoCash.Models;
 using Microsoft.AspNetCore.Authorization;
 using AtoCash.Authentication;
+using System.IO;
+using Microsoft.Extensions.Logging;
+using EmailService;
+using System.Net.Mail;
 
 namespace AtoCash.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-  [Authorize(Roles = "Admin, Finmgr, AccPayable, User")]
+    [Authorize(Roles = "Admin, Finmgr, AccPayable, User")]
     public class DisbursementsAndClaimsMastersController : ControllerBase
     {
         private readonly AtoCashDbContext _context;
+        private readonly ILogger<PettyCashRequestsController> _logger;
+        private readonly IEmailSender _emailSender;
 
-        public DisbursementsAndClaimsMastersController(AtoCashDbContext context)
+        public DisbursementsAndClaimsMastersController(AtoCashDbContext context, ILogger<PettyCashRequestsController> logger, IEmailSender emailSender)
         {
             _context = context;
+            _logger = logger;
+            _emailSender = emailSender;
         }
 
         // GET: api/DisbursementsAndClaimsMasters
@@ -30,7 +38,7 @@ namespace AtoCash.Controllers
         {
             List<DisbursementsAndClaimsMasterDTO> ListDisbursementsAndClaimsMasterDTO = new();
 
-            var disbursementsAndClaimsMasters = await _context.DisbursementsAndClaimsMasters.Where(d=> d.RequestTypeId== (int)ERequestType.ExpenseReim && d.IsSettledAmountCredited == false).ToListAsync();
+            var disbursementsAndClaimsMasters = await _context.DisbursementsAndClaimsMasters.Where(d => d.RequestTypeId == (int)ERequestType.ExpenseReim && d.IsSettledAmountCredited == false).ToListAsync();
 
             foreach (DisbursementsAndClaimsMaster disbursementsAndClaimsMaster in disbursementsAndClaimsMasters)
             {
@@ -41,7 +49,7 @@ namespace AtoCash.Controllers
                 disbursementsAndClaimsMasterDTO.EmployeeName = _context.Employees.Find(disbursementsAndClaimsMaster.EmployeeId).GetFullName();
                 disbursementsAndClaimsMasterDTO.ExpenseReimburseReqId = disbursementsAndClaimsMaster.ExpenseReimburseReqId;
                 disbursementsAndClaimsMasterDTO.DepartmentId = disbursementsAndClaimsMaster.DepartmentId;
-                disbursementsAndClaimsMasterDTO.DepartmentName = disbursementsAndClaimsMaster.DepartmentId != null? _context.Departments.Find(disbursementsAndClaimsMaster.DepartmentId).DeptName : string.Empty;
+                disbursementsAndClaimsMasterDTO.DepartmentName = disbursementsAndClaimsMaster.DepartmentId != null ? _context.Departments.Find(disbursementsAndClaimsMaster.DepartmentId).DeptName : string.Empty;
                 disbursementsAndClaimsMasterDTO.ProjectId = disbursementsAndClaimsMaster.ProjectId;
                 disbursementsAndClaimsMasterDTO.ProjectName = disbursementsAndClaimsMaster.ProjectId != null ? _context.Projects.Find(disbursementsAndClaimsMaster.ProjectId).ProjectName : string.Empty;
                 disbursementsAndClaimsMasterDTO.SubProjectId = disbursementsAndClaimsMaster.SubProjectId;
@@ -74,7 +82,7 @@ namespace AtoCash.Controllers
 
 
 
-        
+
 
         // GET: api/DisbursementsAndClaimsMasters/5
         [HttpGet("{id}")]
@@ -127,7 +135,7 @@ namespace AtoCash.Controllers
 
         // PUT: api/DisbursementsAndClaimsMasters/5
         [HttpPut("{id}")]
-      [Authorize(Roles = "AccPayable")] // Only AccountPayables clerk can upated DisbursementsAndClaimsMaster
+        [Authorize(Roles = "AccPayable")] // Only AccountPayables clerk can upated DisbursementsAndClaimsMaster
         public async Task<IActionResult> PutDisbursementsAndClaimsMaster(int id, DisbursementsAndClaimsMasterDTO disbursementsAndClaimsMasterDTO)
         {
             if (id != disbursementsAndClaimsMasterDTO.Id)
@@ -135,58 +143,113 @@ namespace AtoCash.Controllers
                 return Conflict(new RespStatus { Status = "Failure", Message = "Id state is invalid" });
             }
 
-            var disbursementsAndClaimsMaster = await _context.DisbursementsAndClaimsMasters.FindAsync(id);
-
-            //check the Credit To Wallet and Credit to Bank details to adjust for CashOnhand in EmpCurrentPettyCashBalance.CashOnHand
-            double RoleMaxLimit = _context.JobRoles.Find(_context.Employees.Find(disbursementsAndClaimsMaster.EmployeeId).RoleId).MaxPettyCashAllowed;
-
-            double CreditToWallet = disbursementsAndClaimsMaster.AmountToWallet ?? 0;
-            EmpCurrentPettyCashBalance empPettyCashBal = await _context.EmpCurrentPettyCashBalances.FindAsync(disbursementsAndClaimsMaster.EmployeeId);
-
-            //if PettyCash Request then update the CashOnHand in EmpPettyCash Balances table
-
-            if(disbursementsAndClaimsMaster.PettyCashRequestId != null )
-            { 
-                empPettyCashBal.CashOnHand = empPettyCashBal.CashOnHand + disbursementsAndClaimsMaster.AmountToCredit ?? 0;
-                //empPettyCashBal.CurBalance = empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand;
-                //empPettyCashBal.CurBalance = (empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand) >= 0 ? (empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand) : RoleMaxLimit;
-            }
-            else
+            using (var AtoCashDbContextTransaction = _context.Database.BeginTransaction())
             {
-                empPettyCashBal.CashOnHand = (empPettyCashBal.CashOnHand - CreditToWallet) >= 0 ? empPettyCashBal.CashOnHand - CreditToWallet : 0;
-                empPettyCashBal.CurBalance = (empPettyCashBal.CurBalance + (disbursementsAndClaimsMaster.AmountToWallet ?? 0)) < RoleMaxLimit ? (empPettyCashBal.CurBalance + (disbursementsAndClaimsMaster.AmountToWallet ?? 0)) : RoleMaxLimit;
+                var disbursementsAndClaimsMaster = await _context.DisbursementsAndClaimsMasters.FindAsync(id);
+
+                //check the Credit To Wallet and Credit to Bank details to adjust for CashOnhand in EmpCurrentPettyCashBalance.CashOnHand
+                double RoleMaxLimit = _context.JobRoles.Find(_context.Employees.Find(disbursementsAndClaimsMaster.EmployeeId).RoleId).MaxPettyCashAllowed;
+
+                double CreditToWallet = disbursementsAndClaimsMaster.AmountToWallet ?? 0;
+                EmpCurrentPettyCashBalance empPettyCashBal = await _context.EmpCurrentPettyCashBalances.FindAsync(disbursementsAndClaimsMaster.EmployeeId);
+
+                //if PettyCash Request then update the CashOnHand in EmpPettyCash Balances table
+
+                if (disbursementsAndClaimsMaster.PettyCashRequestId != null)
+                {
+                    empPettyCashBal.CashOnHand = empPettyCashBal.CashOnHand + disbursementsAndClaimsMaster.AmountToCredit ?? 0;
+                    //empPettyCashBal.CurBalance = empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand;
+                    //empPettyCashBal.CurBalance = (empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand) >= 0 ? (empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand) : RoleMaxLimit;
+                }
+                else
+                {
+
+                    empPettyCashBal.CashOnHand = (empPettyCashBal.CashOnHand - CreditToWallet) >= 0 ? empPettyCashBal.CashOnHand - CreditToWallet : 0;
+                    empPettyCashBal.CurBalance = (empPettyCashBal.CurBalance + (disbursementsAndClaimsMaster.AmountToWallet ?? 0)) < RoleMaxLimit ? (empPettyCashBal.CurBalance + (disbursementsAndClaimsMaster.AmountToWallet ?? 0)) : RoleMaxLimit;
+
+                    //curbalance cannot be more than the RoleMax lime for cash requests
+                    if (empPettyCashBal.CurBalance > RoleMaxLimit)
+                    {
+                        empPettyCashBal.CurBalance = RoleMaxLimit;
+                    }
+                }
+
+
+
+                _context.Update(empPettyCashBal);
+
+
+
+
+
+                disbursementsAndClaimsMaster.IsSettledAmountCredited = disbursementsAndClaimsMasterDTO.IsSettledAmountCredited;
+                disbursementsAndClaimsMaster.SettledDate = DateTime.Now;
+                disbursementsAndClaimsMaster.SettlementComment = disbursementsAndClaimsMasterDTO.SettlementComment;
+                disbursementsAndClaimsMaster.SettlementAccount = disbursementsAndClaimsMasterDTO.SettlementAccount;
+                disbursementsAndClaimsMaster.SettlementBankCard = disbursementsAndClaimsMasterDTO.SettlementBankCard;
+                disbursementsAndClaimsMaster.AdditionalData = disbursementsAndClaimsMasterDTO.AdditionalData;
+
+                _context.DisbursementsAndClaimsMasters.Update(disbursementsAndClaimsMaster);
+                //_context.Entry(disbursementsAndClaimsMasterDTO).State = EntityState.Modified;
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+
+
+                /// Email to requester start
+                /// 
+                Employee requester = _context.Employees.Find(disbursementsAndClaimsMaster.EmployeeId);
+
+                var requesterMailAddress = requester.Email;
+
+                _logger.LogInformation(requester.GetFullName() + "Settlement Email Start");
+
+                string[] paths = { Directory.GetCurrentDirectory(), "EmailTemplate", "ClaimApprovedandSettled.html" };
+                string FilePath = Path.Combine(paths);
+                _logger.LogInformation("Email template path " + FilePath);
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
+
+                var requestId = 0;
+                if (disbursementsAndClaimsMaster.PettyCashRequestId != 0)
+                {
+                    requestId = disbursementsAndClaimsMaster.PettyCashRequestId ?? 0;
+                }
+                else
+                {
+                    requestId = disbursementsAndClaimsMaster.ExpenseReimburseReqId ?? 0;
+                }
+
+
+                string subject = "Claim request is processed and settled for Request No: " + requestId;
+
+                var builder = new MimeKit.BodyBuilder();
+
+                MailText = MailText.Replace("{Requester}", requester.GetFullName());
+                MailText = MailText.Replace("{Currency}", _context.CurrencyTypes.Find(requester.CurrencyTypeId).CurrencyCode);
+                MailText = MailText.Replace("{RequestedAmount}", disbursementsAndClaimsMaster.AmountToWallet.ToString() + " + " + disbursementsAndClaimsMaster.AmountToCredit.ToString());
+                MailText = MailText.Replace("{RequestNumber}", requestId.ToString());
+                builder.HtmlBody = MailText;
+
+                var messagemail = new Message(new string[] { requesterMailAddress }, subject, builder.HtmlBody);
+
+                await _emailSender.SendEmailAsync(messagemail);
+                _logger.LogInformation(requester.GetFullName() + "Settlement Email Sent");
+
+
+                await AtoCashDbContextTransaction.CommitAsync();
             }
-            
-
-           
-            _context.Update(empPettyCashBal);
-
-
-
-
-
-            disbursementsAndClaimsMaster.IsSettledAmountCredited = disbursementsAndClaimsMasterDTO.IsSettledAmountCredited;
-            disbursementsAndClaimsMaster.SettledDate = DateTime.Now;
-            disbursementsAndClaimsMaster.SettlementComment = disbursementsAndClaimsMasterDTO.SettlementComment;
-            disbursementsAndClaimsMaster.SettlementAccount = disbursementsAndClaimsMasterDTO.SettlementAccount;
-            disbursementsAndClaimsMaster.SettlementBankCard = disbursementsAndClaimsMasterDTO.SettlementBankCard;
-            disbursementsAndClaimsMaster.AdditionalData = disbursementsAndClaimsMasterDTO.AdditionalData;
-
-            _context.DisbursementsAndClaimsMasters.Update(disbursementsAndClaimsMaster);
-            //_context.Entry(disbursementsAndClaimsMasterDTO).State = EntityState.Modified;
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-
             return Ok(new RespStatus { Status = "Success", Message = "Accounts Payable Entry Updated!" });
         }
 
-       
+
 
     }
 }

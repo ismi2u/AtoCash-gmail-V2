@@ -28,6 +28,7 @@ namespace AtoCash.Controllers
         {
             _context = context;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         // GET: api/ClaimApprovalStatusTrackers
