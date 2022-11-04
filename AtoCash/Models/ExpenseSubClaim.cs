@@ -57,7 +57,7 @@ namespace AtoCash.Models
 
 
         [Required]
-        [Column(TypeName = "varchar(50)")]
+        [Column(TypeName = "varchar(100)")]
         public string InvoiceNo { get; set; }
 
 
@@ -77,11 +77,11 @@ namespace AtoCash.Models
         public DateTime InvoiceDate { get; set; }  
         
         [Required]
-        [Column(TypeName = "varchar(50)")]
+        [Column(TypeName = "varchar(150)")]
         public string Vendor { get; set; } 
         
         [Required]
-        [Column(TypeName = "varchar(20)")]
+        [Column(TypeName = "varchar(100)")]
         public string Location { get; set; }
 
         [Required]

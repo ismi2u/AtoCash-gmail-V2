@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AtoCash.Migrations
 {
     [DbContext(typeof(AtoCashDbContext))]
-    [Migration("20221029075209_initial")]
+    [Migration("20221104135243_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,11 +97,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("ApprovalGroupCode")
                         .IsRequired()
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(120)");
 
                     b.Property<string>("ApprovalGroupDesc")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(250)");
 
                     b.HasKey("Id");
 
@@ -162,10 +162,10 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar(25)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("StatusDesc")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(250)");
 
                     b.HasKey("Id");
 
@@ -181,11 +181,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("BankDesc")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<string>("BankName")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<int>("StatusTypeId")
                         .HasColumnType("integer");
@@ -206,11 +206,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("BusinessAreaCode")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("BusinessAreaName")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<int>("CostCenterId")
                         .HasColumnType("integer");
@@ -311,11 +311,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("CostCenterCode")
                         .IsRequired()
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("CostCenterDesc")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<int>("StatusTypeId")
                         .HasColumnType("integer");
@@ -336,7 +336,7 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("CurrencyCode")
                         .IsRequired()
@@ -368,11 +368,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("DeptCode")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("DeptName")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<int>("StatusTypeId")
                         .HasColumnType("integer");
@@ -454,7 +454,7 @@ namespace AtoCash.Migrations
                         .HasColumnType("varchar(150)");
 
                     b.Property<string>("SettlementComment")
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<int?>("SubProjectId")
                         .HasColumnType("integer");
@@ -582,7 +582,7 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("MiddleName")
                         .HasColumnType("varchar(100)");
@@ -660,7 +660,7 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("ExpenseCategoryName")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<bool>("IsBusinessCategory")
                         .HasColumnType("boolean");
@@ -908,7 +908,7 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("InvoiceNo")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("IsBusinessAreaReq")
                         .HasColumnType("boolean");
@@ -918,7 +918,7 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int?>("ProjectId")
                         .HasColumnType("integer");
@@ -937,7 +937,7 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("Vendor")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<int?>("WorkTaskId")
                         .HasColumnType("integer");
@@ -979,11 +979,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("ExpenseTypeDesc")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<string>("ExpenseTypeName")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<int>("GeneralLedgerId")
                         .HasColumnType("integer");
@@ -1035,7 +1035,7 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("GeneralLedgerAccountNo")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("StatusTypeId")
                         .HasColumnType("integer");
@@ -1062,11 +1062,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("RoleCode")
                         .IsRequired()
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
@@ -1159,14 +1159,14 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("ProjectDesc")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<int>("ProjectManagerId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
-                        .HasColumnType("varchar(25)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("StatusTypeId")
                         .HasColumnType("integer");
@@ -1213,11 +1213,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("RequestName")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("RequestTypeDesc")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(250)");
 
                     b.HasKey("Id");
 
@@ -1252,11 +1252,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("SubProjectDesc")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<string>("SubProjectName")
                         .IsRequired()
-                        .HasColumnType("varchar(25)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
@@ -1439,11 +1439,11 @@ namespace AtoCash.Migrations
 
                     b.Property<string>("TaskDesc")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<string>("TaskName")
                         .IsRequired()
-                        .HasColumnType("varchar(25)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 

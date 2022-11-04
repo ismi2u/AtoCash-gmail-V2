@@ -25,7 +25,7 @@ namespace AtoCash.Models
         public string CurrencyName { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(100)")]
+        [Column(TypeName = "varchar(150)")]
         public string Country { get; set; }
 
         [Required]

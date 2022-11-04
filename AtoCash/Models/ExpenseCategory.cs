@@ -15,7 +15,7 @@ namespace AtoCash.Models
         public int Id { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(50)")]
+        [Column(TypeName = "varchar(150)")]
         public string ExpenseCategoryName { get; set; }
 
         [Required]

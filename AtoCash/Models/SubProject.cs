@@ -20,11 +20,11 @@ namespace AtoCash.Models
         public int ProjectId { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(25)")]
+        [Column(TypeName = "varchar(100)")]
         public string SubProjectName { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(200)")]
+        [Column(TypeName = "varchar(250)")]
         public string SubProjectDesc { get; set; }
     }
 

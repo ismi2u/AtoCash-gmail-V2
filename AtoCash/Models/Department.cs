@@ -14,10 +14,10 @@ namespace AtoCash.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
-        [Column(TypeName = "varchar(50)")]
+        [Column(TypeName = "varchar(150)")]
         public string DeptCode { get; set; }
         [Required]
-        [Column(TypeName = "varchar(150)")]
+        [Column(TypeName = "varchar(250)")]
         public string DeptName { get; set; }
 
         [Required]

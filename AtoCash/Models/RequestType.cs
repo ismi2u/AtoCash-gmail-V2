@@ -14,11 +14,11 @@ namespace AtoCash.Models
         public int Id { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(50)")]
+        [Column(TypeName = "varchar(100)")]
         public string RequestName { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(150)")]
+        [Column(TypeName = "varchar(250)")]
         public string RequestTypeDesc { get; set; }
     }
 

@@ -14,8 +14,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ApprovalGroupCode = table.Column<string>(type: "varchar(20)", nullable: false),
-                    ApprovalGroupDesc = table.Column<string>(type: "varchar(150)", nullable: false)
+                    ApprovalGroupCode = table.Column<string>(type: "varchar(120)", nullable: false),
+                    ApprovalGroupDesc = table.Column<string>(type: "varchar(250)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,8 +42,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Status = table.Column<string>(type: "varchar(25)", nullable: false),
-                    StatusDesc = table.Column<string>(type: "varchar(100)", nullable: true)
+                    Status = table.Column<string>(type: "varchar(100)", nullable: false),
+                    StatusDesc = table.Column<string>(type: "varchar(250)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -124,8 +124,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleCode = table.Column<string>(type: "varchar(20)", nullable: false),
-                    RoleName = table.Column<string>(type: "varchar(50)", nullable: false),
+                    RoleCode = table.Column<string>(type: "varchar(100)", nullable: false),
+                    RoleName = table.Column<string>(type: "varchar(100)", nullable: false),
                     IsStoreRole = table.Column<bool>(type: "boolean", nullable: false),
                     MaxPettyCashAllowed = table.Column<double>(type: "double precision", nullable: false)
                 },
@@ -140,8 +140,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RequestName = table.Column<string>(type: "varchar(50)", nullable: false),
-                    RequestTypeDesc = table.Column<string>(type: "varchar(150)", nullable: false)
+                    RequestName = table.Column<string>(type: "varchar(100)", nullable: false),
+                    RequestTypeDesc = table.Column<string>(type: "varchar(250)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -319,8 +319,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BankName = table.Column<string>(type: "varchar(50)", nullable: false),
-                    BankDesc = table.Column<string>(type: "varchar(150)", nullable: false),
+                    BankName = table.Column<string>(type: "varchar(150)", nullable: false),
+                    BankDesc = table.Column<string>(type: "varchar(250)", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -340,8 +340,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CostCenterCode = table.Column<string>(type: "varchar(20)", nullable: false),
-                    CostCenterDesc = table.Column<string>(type: "varchar(150)", nullable: false),
+                    CostCenterCode = table.Column<string>(type: "varchar(150)", nullable: false),
+                    CostCenterDesc = table.Column<string>(type: "varchar(250)", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -363,7 +363,7 @@ namespace AtoCash.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CurrencyCode = table.Column<string>(type: "varchar(3)", nullable: false),
                     CurrencyName = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Country = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Country = table.Column<string>(type: "varchar(150)", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -383,7 +383,7 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ExpenseCategoryName = table.Column<string>(type: "varchar(50)", nullable: false),
+                    ExpenseCategoryName = table.Column<string>(type: "varchar(150)", nullable: false),
                     ExpenseCategoryDesc = table.Column<string>(type: "varchar(150)", nullable: false),
                     IsBusinessCategory = table.Column<bool>(type: "boolean", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
@@ -405,7 +405,7 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    GeneralLedgerAccountNo = table.Column<string>(type: "varchar(50)", nullable: false),
+                    GeneralLedgerAccountNo = table.Column<string>(type: "varchar(100)", nullable: false),
                     GeneralLedgerAccountName = table.Column<string>(type: "varchar(150)", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -426,8 +426,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BusinessAreaCode = table.Column<string>(type: "varchar(50)", nullable: false),
-                    BusinessAreaName = table.Column<string>(type: "varchar(150)", nullable: false),
+                    BusinessAreaCode = table.Column<string>(type: "varchar(150)", nullable: false),
+                    BusinessAreaName = table.Column<string>(type: "varchar(250)", nullable: false),
                     CostCenterId = table.Column<int>(type: "integer", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -454,8 +454,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DeptCode = table.Column<string>(type: "varchar(50)", nullable: false),
-                    DeptName = table.Column<string>(type: "varchar(150)", nullable: false),
+                    DeptCode = table.Column<string>(type: "varchar(150)", nullable: false),
+                    DeptName = table.Column<string>(type: "varchar(250)", nullable: false),
                     CostCenterId = table.Column<int>(type: "integer", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -482,8 +482,8 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ExpenseTypeName = table.Column<string>(type: "varchar(50)", nullable: false),
-                    ExpenseTypeDesc = table.Column<string>(type: "varchar(150)", nullable: false),
+                    ExpenseTypeName = table.Column<string>(type: "varchar(150)", nullable: false),
+                    ExpenseTypeDesc = table.Column<string>(type: "varchar(250)", nullable: false),
                     ExpenseCategoryId = table.Column<int>(type: "integer", nullable: false),
                     GeneralLedgerId = table.Column<int>(type: "integer", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
@@ -519,7 +519,7 @@ namespace AtoCash.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FirstName = table.Column<string>(type: "varchar(200)", nullable: false),
                     MiddleName = table.Column<string>(type: "varchar(100)", nullable: true),
-                    LastName = table.Column<string>(type: "varchar(100)", nullable: false),
+                    LastName = table.Column<string>(type: "varchar(150)", nullable: false),
                     EmpCode = table.Column<string>(type: "varchar(30)", nullable: false),
                     BankAccount = table.Column<string>(type: "varchar(30)", nullable: false),
                     IBAN = table.Column<string>(type: "varchar(30)", nullable: true),
@@ -619,10 +619,10 @@ namespace AtoCash.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProjectName = table.Column<string>(type: "varchar(25)", nullable: false),
+                    ProjectName = table.Column<string>(type: "varchar(100)", nullable: false),
                     CostCenterId = table.Column<int>(type: "integer", nullable: false),
                     ProjectManagerId = table.Column<int>(type: "integer", nullable: false),
-                    ProjectDesc = table.Column<string>(type: "varchar(200)", nullable: false),
+                    ProjectDesc = table.Column<string>(type: "varchar(250)", nullable: false),
                     StatusTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -681,8 +681,8 @@ namespace AtoCash.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ProjectId = table.Column<int>(type: "integer", nullable: false),
-                    SubProjectName = table.Column<string>(type: "varchar(25)", nullable: false),
-                    SubProjectDesc = table.Column<string>(type: "varchar(200)", nullable: false)
+                    SubProjectName = table.Column<string>(type: "varchar(100)", nullable: false),
+                    SubProjectDesc = table.Column<string>(type: "varchar(250)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -702,8 +702,8 @@ namespace AtoCash.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     SubProjectId = table.Column<int>(type: "integer", nullable: false),
-                    TaskName = table.Column<string>(type: "varchar(25)", nullable: false),
-                    TaskDesc = table.Column<string>(type: "varchar(200)", nullable: false)
+                    TaskName = table.Column<string>(type: "varchar(100)", nullable: false),
+                    TaskDesc = table.Column<string>(type: "varchar(250)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1082,13 +1082,13 @@ namespace AtoCash.Migrations
                     EmployeeId = table.Column<int>(type: "integer", nullable: false),
                     ExpenseReimbClaimAmount = table.Column<double>(type: "double precision", nullable: false),
                     DocumentIDs = table.Column<string>(type: "text", nullable: true),
-                    InvoiceNo = table.Column<string>(type: "varchar(50)", nullable: false),
+                    InvoiceNo = table.Column<string>(type: "varchar(100)", nullable: false),
                     IsVAT = table.Column<bool>(type: "boolean", nullable: false),
                     Tax = table.Column<float>(type: "real", nullable: false),
                     TaxAmount = table.Column<double>(type: "double precision", nullable: false),
                     InvoiceDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Vendor = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Location = table.Column<string>(type: "varchar(20)", nullable: false),
+                    Vendor = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Location = table.Column<string>(type: "varchar(100)", nullable: false),
                     Description = table.Column<string>(type: "varchar(250)", nullable: false),
                     IsBusinessAreaReq = table.Column<bool>(type: "boolean", nullable: false),
                     BusinessAreaId = table.Column<int>(type: "integer", nullable: true),
@@ -1272,7 +1272,7 @@ namespace AtoCash.Migrations
                     AmountToCredit = table.Column<double>(type: "double precision", nullable: true),
                     IsSettledAmountCredited = table.Column<bool>(type: "boolean", nullable: true),
                     SettledDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    SettlementComment = table.Column<string>(type: "varchar(150)", nullable: true),
+                    SettlementComment = table.Column<string>(type: "varchar(250)", nullable: true),
                     SettlementAccount = table.Column<string>(type: "varchar(150)", nullable: true),
                     SettlementBankCard = table.Column<string>(type: "varchar(150)", nullable: true),
                     AdditionalData = table.Column<string>(type: "varchar(150)", nullable: true),

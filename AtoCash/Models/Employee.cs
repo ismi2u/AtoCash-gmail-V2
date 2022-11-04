@@ -23,7 +23,7 @@ namespace AtoCash.Models
         public string MiddleName { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(100)")]
+        [Column(TypeName = "varchar(150)")]
         public string LastName { get; set; }
 
         [Required]

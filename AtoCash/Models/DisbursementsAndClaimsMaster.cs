@@ -81,7 +81,7 @@ namespace AtoCash.Models
         public bool? IsSettledAmountCredited { get; set; }
         public DateTime? SettledDate { get; set; }
 
-        [Column(TypeName = "varchar(150)")]
+        [Column(TypeName = "varchar(250)")]
         public string SettlementComment { get; set; }
         [Column(TypeName = "varchar(150)")]
         public string SettlementAccount { get; set; }
