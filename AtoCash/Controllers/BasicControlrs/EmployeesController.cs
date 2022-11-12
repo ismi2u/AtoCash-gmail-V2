@@ -222,15 +222,15 @@ namespace AtoCash.Controllers
             employee.DOJ = employeeDto.DOJ;
             employee.Gender = employeeDto.Gender;
 
-            MailAddress mailAddress = new(employeeDto.Email);
-            if (mailAddress.Host.ToUpper() != Constants.EmailDomain.ToUpper())
-            {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Use company mail address!" });
-            }
-            else
-            {
-                employee.Email = employeeDto.Email;
-            }
+            //MailAddress mailAddress = new(employeeDto.Email);
+            //if (mailAddress.Host.ToUpper() != Constants.EmailDomain.ToUpper())
+            //{
+            //    return Conflict(new RespStatus { Status = "Failure", Message = "Use company mail address!" });
+            //}
+            //else
+            //{
+            //    employee.Email = employeeDto.Email;
+            //}
 
             employee.Email = employeeDto.Email;
             employee.MobileNumber = employeeDto.MobileNumber;
@@ -330,14 +330,15 @@ namespace AtoCash.Controllers
             };
 
             MailAddress mailAddress = new(employeeDto.Email);
-            if (mailAddress.Host.ToUpper() != Constants.EmailDomain.ToUpper())
-            {
-                return Conflict(new RespStatus { Status = "Failure", Message = "Use company mail address!" });
-            }
-            else
-            {
-                employee.Email = employeeDto.Email;
-            }
+            //if (mailAddress.Host.ToUpper() != Constants.EmailDomain.ToUpper())
+            //{
+            //    return Conflict(new RespStatus { Status = "Failure", Message = "Use company mail address!" });
+            //}
+            //else
+            //{
+            //    employee.Email = employeeDto.Email;
+            //}
+            employee.Email = employeeDto.Email;
 
 
             _context.Employees.Add(employee);
@@ -348,6 +349,7 @@ namespace AtoCash.Controllers
             Double empPettyCashAmountEligible = _context.JobRoles.Find(employee.RoleId).MaxPettyCashAllowed;
             _context.EmpCurrentPettyCashBalances.Add(new EmpCurrentPettyCashBalance()
             {
+               
                 EmployeeId = employee.Id,
                 CurBalance = empPettyCashAmountEligible,
                 CashOnHand = 0,

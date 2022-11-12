@@ -44,7 +44,7 @@ namespace AtoCash
         {
         
             //FUCOAzurePostgresSQLServer (or) AzureCloudGmailServer
-            services.AddDbContextPool<AtoCashDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("AzureCloudGmailServer")));
+            services.AddDbContextPool<AtoCashDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("FUCOAzurePostgresSQLServer")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AtoCashDbContext>()

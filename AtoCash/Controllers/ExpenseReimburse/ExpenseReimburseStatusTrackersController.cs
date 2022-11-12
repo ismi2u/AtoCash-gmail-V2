@@ -166,13 +166,21 @@ namespace AtoCash.Controllers.ExpenseReimburse
 
             var expenseReimburseStatusTrackers = _context.ExpenseReimburseStatusTrackers
                                 .Where(r =>
-                                    (r.JobRoleId == jobRoleid || r.JobRoleId == BARoleid) &&
-                                    (r.ApprovalGroupId == apprGroupId || r.ApprovalGroupId == BAApprovalGroupId) &&
-                                    r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending
-                                    && r.ProjManagerId == null
+                                    (r.JobRoleId == jobRoleid  && r.ApprovalGroupId == apprGroupId  && r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending &&  r.ProjManagerId == null && r.IsBusinessAreaReq == false)
 
-                                    || r.ProjManagerId == id &&
-                                    r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending).ToList();
+                                    || (r.BARoleId == BARoleid && r.BAApprovalGroupId == BAApprovalGroupId && r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending && r.ProjManagerId == null)
+
+                                    || (r.ProjManagerId == id && r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending)
+                                    ).ToList();
+
+
+            //(r.JobRoleId == jobRoleid && r.ApprovalGroupId == apprGroupId && r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending && r.ProjManagerId == null)
+
+            //                      || (r.BARoleId == BARoleid && r.BAApprovalGroupId == BAApprovalGroupId && r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending && r.ProjManagerId == null)
+
+            //                      || (r.ProjManagerId == id && r.ApprovalStatusTypeId == (int)EApprovalStatus.Pending)
+            //                        ).ToList();
+
 
             List<ExpenseReimburseStatusTrackerDTO> ListExpenseReimburseStatusTrackerDTO = new();
 
@@ -537,6 +545,8 @@ namespace AtoCash.Controllers.ExpenseReimburse
 
                         //if nothing else then just update the approval status
                         expenseReimburseStatusTracker.ApprovalStatusTypeId = expenseReimburseStatusTrackerDto.ApprovalStatusTypeId;
+
+                        _context.ExpenseReimburseStatusTrackers.Update(expenseReimburseStatusTracker);
 
                         //If no expenseReimburseStatusTrackers are in pending for the Expense request then update the ExpenseReimburse request table
 

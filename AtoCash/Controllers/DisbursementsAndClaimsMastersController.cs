@@ -151,12 +151,14 @@ namespace AtoCash.Controllers
                 double RoleMaxLimit = _context.JobRoles.Find(_context.Employees.Find(disbursementsAndClaimsMaster.EmployeeId).RoleId).MaxPettyCashAllowed;
 
                 double CreditToWallet = disbursementsAndClaimsMaster.AmountToWallet ?? 0;
-                EmpCurrentPettyCashBalance empPettyCashBal = await _context.EmpCurrentPettyCashBalances.FindAsync(disbursementsAndClaimsMaster.EmployeeId);
+                EmpCurrentPettyCashBalance empPettyCashBal = _context.EmpCurrentPettyCashBalances.Where(e => e.EmployeeId == disbursementsAndClaimsMaster.EmployeeId).FirstOrDefault();
 
                 //if PettyCash Request then update the CashOnHand in EmpPettyCash Balances table
 
+
                 if (disbursementsAndClaimsMaster.PettyCashRequestId != null)
                 {
+                    
                     empPettyCashBal.CashOnHand = empPettyCashBal.CashOnHand + disbursementsAndClaimsMaster.AmountToCredit ?? 0;
                     //empPettyCashBal.CurBalance = empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand;
                     //empPettyCashBal.CurBalance = (empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand) >= 0 ? (empPettyCashBal.CurBalance - empPettyCashBal.CashOnHand) : RoleMaxLimit;

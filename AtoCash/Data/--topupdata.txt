@@ -1,0 +1,41 @@
+INSERT INTO public."ApprovalGroups" VALUES (402, 'STOREAPPRGROUP001', 'STOREAPPRGROUP001');
+
+INSERT INTO public."JobRoles" VALUES (102, 'STOR-EMP-ROLE-001', 'Store employee ', true, 10000);
+INSERT INTO public."JobRoles" VALUES (103, 'STOR-EMP-MGR', 'Chennai Stores Manager', true, 20000);
+INSERT INTO public."JobRoles" VALUES (104, 'STOR-EMP-OPSMGR', 'OPERS Manager', true, 50000);
+INSERT INTO public."JobRoles" VALUES (105, 'STOR-EMP-FINMGR', 'Chennai FIN Manager', true, 10000);
+
+
+INSERT INTO public."Employees" VALUES (10004, 'Opsmgr', 'ISMAIL', 'KHAN', '500010', '235453565636', 'AD1400080001001234567713', '2345679900999999', 'AAAAAAAAAA', 'E1908788', NULL, 'Antiguans', '2022-11-01 19:58:32.698', '2022-11-15 19:58:32.737', 'male', 'test3@signsa.com', '08297333329', 301, 1, 1001, 101, 401, 402, 104, 106, 1, 1);
+INSERT INTO public."Employees" VALUES (10003, 'Testtwo', 'ISMAIL', 'Mgr', '500009', '1234567890', 'AD1400080001001234567713', '3453564667678854', 'AAAAAAAAAA', 'ZT445666', '12345567789', 'Albanian', '2022-10-31 19:57:07.195', '2022-11-16 19:57:07.218', 'male', 'testtwo@signsa.com', '+918297333325', 301, 1, 1005, 101, 401, 402, 103, 104, 1, 1);
+INSERT INTO public."Employees" VALUES (10005, 'Finmgr', 'ISMAIL', 'KHAN', '500011', '1234567890', 'AD1400080001001234567890', '7979879798797989', '3249094', 'EMP00020002', NULL, 'Angolan', '2022-11-13 20:00:18.911', '2022-11-14 20:00:18.947', 'male', 'finmgr@signsa.com', '08297333330', 301, 1, 1007, 101, 401, 402, 105, 104, 1, 1);
+INSERT INTO public."Employees" VALUES (10002, 'Testone', 'ISMAIL', 'Baseemp', '500008', '1234567890', 'AD1400080001001234567890', '5656678888888899', 'AADH001243', 'E1908787', '12989899', 'Angolan', '2022-11-06 19:54:49.789', '2022-11-08 19:54:49.808', 'male', 'testone@signsa.com', '08297333328', 301, 1, 1003, 101, 401, 402, 102, 105, 1, 1);
+
+
+INSERT INTO public."AspNetUsers" VALUES ('69d5442b-c1ef-47c5-8ddf-064607f20d50', 10002, 'Testone@signsa.com', 'TESTONE@SIGNSA.COM', 'testone@signsa.com', 'TESTONE@SIGNSA.COM', false, 'AQAAAAEAACcQAAAAEAt3cUcKPXCl/FBJdMRBd/P9Ksu8fVxUEzUQ/5oWvinxNibY+kHX9kTvHPt1IlsBCg==', 'LQBRZ2I6GTWVK6SNHMTLUI2WFWTLJVEU', 'f1fa8ad7-44d6-4f64-aba6-7f2780455727', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('0471eb22-3bbb-4919-a8c2-cee4e7e9ff14', 10003, 'Testtwo@signsa.com', 'TESTTWO@SIGNSA.COM', 'testtwo@signsa.com', 'TESTTWO@SIGNSA.COM', false, 'AQAAAAEAACcQAAAAEJ5bFADSxjedkPGL2gkZ8rvB0syZC+kzmx5VKB1yMrJvcnuMn50qvSKoYT4yxudwhQ==', 'UALF7LUN2NPRMC5MZWCUJJMKARKFABML', '07ee3c3e-0341-44cc-a459-ca7f14dee736', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('3a4bea09-957b-405b-ab14-11e604d07abe', 10004, 'Test3@signsa.com', 'TEST3@SIGNSA.COM', 'test3@signsa.com', 'TEST3@SIGNSA.COM', false, 'AQAAAAEAACcQAAAAEIk/xsxHltS28G3ECyBhsWotirA/V77xOYzdWO9LhaJm3eP3PVcXzAUb7oSVp9NxlA==', '2E3C7DQ5ZEI3AOLTN2K5L4AKAY6QJFQU', '48b7ca61-187e-4bdd-bae0-dfa679d993a1', NULL, false, false, NULL, true, 0);
+INSERT INTO public."AspNetUsers" VALUES ('53c51cbc-80ff-4742-ae2b-5f7619e3f020', 10005, 'Finmgr@signsa.com', 'FINMGR@SIGNSA.COM', 'finmgr@signsa.com', 'FINMGR@SIGNSA.COM', false, 'AQAAAAEAACcQAAAAEDhj5p4EL9xz29CvblHJXRcsjGeBDITZIaZiI3lmN47qG8uZfo4H9o+D7zdWDTZMQw==', '4WGIC6TFBQDOFKX65NRUFSWIZGBEY7BR', '4ae73829-4be6-4afc-893a-a7e37b5e449b', NULL, false, false, NULL, true, 0);
+
+
+
+INSERT INTO public."AspNetUserRoles" VALUES ('69d5442b-c1ef-47c5-8ddf-064607f20d50', 'user2af3-dc89-4f3f-adaa-6c136358user');
+INSERT INTO public."AspNetUserRoles" VALUES ('0471eb22-3bbb-4919-a8c2-cee4e7e9ff14', 'user2af3-dc89-4f3f-adaa-6c136358user');
+INSERT INTO public."AspNetUserRoles" VALUES ('0471eb22-3bbb-4919-a8c2-cee4e7e9ff14', '2abfbara-dc89-4f3f-adaa-6c136358e9b0');
+INSERT INTO public."AspNetUserRoles" VALUES ('3a4bea09-957b-405b-ab14-11e604d07abe', 'user2af3-dc89-4f3f-adaa-6c136358user');
+INSERT INTO public."AspNetUserRoles" VALUES ('3a4bea09-957b-405b-ab14-11e604d07abe', '2abfbara-dc89-4f3f-adaa-6c136358e9b0');
+INSERT INTO public."AspNetUserRoles" VALUES ('53c51cbc-80ff-4742-ae2b-5f7619e3f020', 'user2af3-dc89-4f3f-adaa-6c136358user');
+INSERT INTO public."AspNetUserRoles" VALUES ('53c51cbc-80ff-4742-ae2b-5f7619e3f020', '2abftera-dc89-4f3f-adaa-6c136358e9b0');
+INSERT INTO public."AspNetUserRoles" VALUES ('53c51cbc-80ff-4742-ae2b-5f7619e3f020', '2abfsaud-dc89-4f3f-adaa-6c136358e9b0');
+
+
+INSERT INTO public."ApprovalRoleMaps" VALUES (501, 402, 102, 1);
+INSERT INTO public."ApprovalRoleMaps" VALUES (502, 402, 103, 2);
+INSERT INTO public."ApprovalRoleMaps" VALUES (503, 402, 104, 3);
+INSERT INTO public."ApprovalRoleMaps" VALUES (504, 402, 105, 4);
+
+
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (102, 10002, 100000, 0, '2022-11-08 01:27:02.184422');
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (103, 10003, 100000, 0, '2022-11-08 01:28:24.176189');
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (104, 10004, 100000, 0, '2022-11-08 01:29:58.223222');
+INSERT INTO public."EmpCurrentPettyCashBalances" VALUES (105, 10005, 100000, 0, '2022-11-08 01:31:12.039738');
