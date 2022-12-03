@@ -13,6 +13,10 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using EmailService;
 using System.Net.Mail;
+using System.Net.Http;
+using System.Net.Http.Json;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace AtoCash.Controllers
 {
@@ -133,9 +137,128 @@ namespace AtoCash.Controllers
             return Ok(disbursementsAndClaimsMasterDTO);
         }
 
-        // PUT: api/DisbursementsAndClaimsMasters/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "AccPayable")] // Only AccountPayables clerk can upated DisbursementsAndClaimsMaster
+        [Authorize(Roles = "AccPayable")] // Only AccountPayables clerk can upate DisbursementsAndClaimsMaster
+        public async Task<IActionResult> SettleAccountsSAP( int[] accPayableSettleClaimIds)
+        {
+            string SAPApiPostUrl = "https://localhost:44324/api/Reservation";
+
+            if (accPayableSettleClaimIds != null)
+            {
+               // List<PostSAPAPIData> postSAPAPIData = new List<PostSAPAPIData>();
+
+                foreach (var SettleClaimId in accPayableSettleClaimIds)
+                {
+                    PostSAPAPIData postSAPApiData = new PostSAPAPIData();
+
+                    var disbclaim = await _context.DisbursementsAndClaimsMasters.FindAsync(SettleClaimId);
+                    var employee = await _context.Employees.FindAsync(disbclaim.EmployeeId);
+                   //var expReimb = disbclaim.RequestTypeId == 1 ? true : false;
+
+                    postSAPApiData.ClaimId = SettleClaimId;
+                    postSAPApiData.EmployeeName = employee.GetFullName();
+                    postSAPApiData.EmployeeCode= employee.EmpCode;
+                    postSAPApiData.Department = disbclaim.DepartmentId != null ? _context.Departments.Find(disbclaim.DepartmentId).DeptName : null;
+                    postSAPApiData.BusinessArea = disbclaim.BusinessAreaId != null ? _context.BusinessAreas.Find(disbclaim.BusinessAreaId).BusinessAreaCode + ":" + _context.BusinessAreas.Find(disbclaim.BusinessAreaId).BusinessAreaName : null; 
+                    postSAPApiData.Project = disbclaim.ProjectId != null ? _context.Projects.Find(disbclaim.ProjectId).ProjectName : null;
+                    postSAPApiData.RequestDate = disbclaim.RecordDate;
+                    postSAPApiData.ClaimAmount = disbclaim.ClaimAmount;
+                    postSAPApiData.AmountToWallet = disbclaim.AmountToWallet;
+                    postSAPApiData.AmountToBank= disbclaim.AmountToCredit;
+                    postSAPApiData.Status = _context.ApprovalStatusTypes.Find(disbclaim.ApprovalStatusId).Status;
+                    postSAPApiData.Action = "To be Settled, and Amount Credited to Bank";
+                    postSAPApiData.IsCashAdvanceRequest = disbclaim.RequestTypeId == 1 ? true: false; //1- Petty cash req, 2- Exp Reimburse
+
+
+                    List<PostSubClaimItems> ListPostSubClaimItem = new List<PostSubClaimItems>();
+                    if (postSAPApiData.IsCashAdvanceRequest == false)
+                    {
+                      var expReimbReq =   _context.ExpenseReimburseRequests.Find(disbclaim.ExpenseReimburseReqId);
+                        List<ExpenseSubClaim> expenseSubClaims = _context.ExpenseSubClaims.Where(e=> e.ExpenseReimburseRequestId == disbclaim.ExpenseReimburseReqId).ToList();
+
+                        foreach(var expenseSubClaim in expenseSubClaims)
+                        {
+                            PostSubClaimItems postSubClaimItem = new PostSubClaimItems();
+
+                            var exptype = await _context.ExpenseTypes.FindAsync(expenseSubClaim.ExpenseTypeId);
+                            postSubClaimItem.SubClaimId = expenseSubClaim.Id;
+                            postSubClaimItem.CostCentre = _context.CostCenters.Find(expenseSubClaim.CostCenterId).CostCenterCode;
+                            postSubClaimItem.GeneralLedger = _context.GeneralLedger.Find(exptype.GeneralLedgerId).GeneralLedgerAccountNo;
+                            postSubClaimItem.SubClaimAmount = expenseSubClaim.ExpenseReimbClaimAmount;
+                            postSubClaimItem.InvoiceNo = expenseSubClaim.InvoiceNo;
+                            postSubClaimItem.InvoiceDate = expenseSubClaim.InvoiceDate;
+                            postSubClaimItem.Vendor = expenseSubClaim.Vendor;
+                            postSubClaimItem.ExpenseType = exptype.ExpenseTypeName;
+
+                            ListPostSubClaimItem.Add(postSubClaimItem);
+                        }
+                        
+                    }
+
+                    postSAPApiData.SubClaimItems = ListPostSubClaimItem;
+
+
+                }
+
+                PostSAPAPIData postSAPAPIdata = new PostSAPAPIData();
+
+                var jsonString = JsonConvert.SerializeObject(postSAPAPIdata);
+                var SAPAPIDataContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+                using (var AtoCashDbContextTransaction = _context.Database.BeginTransaction())
+                {
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        using (var response = await httpClient.PostAsync(SAPApiPostUrl, SAPAPIDataContent))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                           var ResponseRetunSAPApiData = JsonConvert.DeserializeObject<ResponseSAPApiData>(apiResponse);
+
+
+                            //if (ResponseRetunSAPApiData.StatusCode == System.Net.HttpStatusCode.OK)
+                            //{
+                            //    TempData["Profile"] = JsonConvert.SerializeObject(user);
+                            //    return RedirectToAction("Index");
+                            //}
+                            //else if (Response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                            //{
+                            //    ModelState.Clear();
+                            //    ModelState.AddModelError("Username", "Username Already Exist");
+                            //    return View();
+                            //}
+                        }
+                    }
+
+
+
+
+
+
+
+                    await AtoCashDbContextTransaction.CommitAsync();
+                }
+
+                    return Ok(new RespStatus { Status = "Failure", Message = "SettleAccountsSAP is null!" });
+            }
+            else
+            {
+                _logger.LogInformation("List of SettleAccountsSAP ids are null!");
+                return Ok(new RespStatus { Status = "Failure", Message = "SettleAccountsSAP is null!" });
+            }
+            RequestSettleClaims requestSettleClaims = new();
+
+
+
+            
+
+
+        }
+
+
+            // PUT: api/DisbursementsAndClaimsMasters/5
+            [HttpPut("{id}")]
+        [Authorize(Roles = "AccPayable")] // Only AccountPayables clerk can upate DisbursementsAndClaimsMaster
         public async Task<IActionResult> PutDisbursementsAndClaimsMaster(int id, DisbursementsAndClaimsMasterDTO disbursementsAndClaimsMasterDTO)
         {
             if (id != disbursementsAndClaimsMasterDTO.Id)

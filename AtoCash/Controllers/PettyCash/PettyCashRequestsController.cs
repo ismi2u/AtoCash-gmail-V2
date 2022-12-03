@@ -428,32 +428,48 @@ namespace AtoCash.Controllers
         [ActionName("PostPettyCashRequest")]
         public async Task<ActionResult<PettyCashRequest>> PostPettyCashRequest(PettyCashRequestDTO pettyCashRequestDto)
         {
+            int SuccessResult;
+
+            if (pettyCashRequestDto == null)
+            {
+                _logger.LogError("PostPettyCashRequestDto - null request data");
+                return Conflict(new RespStatus { Status = "Failure", Message = "PettyCash Request invalid!" });
+            }
 
             /*!!=========================================
                Check Eligibility for Cash Disbursement
              .==========================================*/
 
             Double empCurAvailBal = GetEmpCurrentAvailablePettyCashBalance(pettyCashRequestDto);
-            Double empCurMaxLimit= GetEmpCurrentMaxCashBorrowLimit(pettyCashRequestDto);
+            Double empCurMaxLimit = GetEmpCurrentMaxCashBorrowLimit(pettyCashRequestDto);
             //Check any pending pettycash requests for employee, if then total them all to find the amount eligible
 
             double pendingPettCashRequestAmounts = _context.PettyCashRequests.Where(p => p.EmployeeId == pettyCashRequestDto.EmployeeId && p.ApprovalStatusTypeId == (int)EApprovalStatus.Pending).Select(s => s.PettyClaimAmount).Sum();
 
-            if(pendingPettCashRequestAmounts + pettyCashRequestDto.PettyClaimAmount <= empCurAvailBal 
-                || pettyCashRequestDto.PettyClaimAmount <= empCurAvailBal 
+            if (pendingPettCashRequestAmounts + pettyCashRequestDto.PettyClaimAmount <= empCurAvailBal
+                || pettyCashRequestDto.PettyClaimAmount <= empCurAvailBal
                 && pettyCashRequestDto.PettyClaimAmount > 0
                 || pendingPettCashRequestAmounts + pettyCashRequestDto.PettyClaimAmount <= empCurMaxLimit)
             {
-                await Task.Run(() => ProcessPettyCashRequestClaim(pettyCashRequestDto, empCurAvailBal));
-
-                return Created("PostPettyCashRequest", new RespStatus() { Status = "Success", Message = "Cash Advance Request Created" });
-
+                SuccessResult = await Task.Run(() => ProcessPettyCashRequestClaim(pettyCashRequestDto, empCurAvailBal));
             }
             else
             {
                 return Conflict(new RespStatus() { Status = "Failure", Message = "Invalid Cash Request Amount Or Limit Exceeded" });
             }
 
+            if (SuccessResult == 0)
+            {
+                _logger.LogInformation("Petty Cash Request - Process completed");
+
+                return Created("PostPettyCashRequest", new RespStatus() { Status = "Success", Message = "Cash Advance Request Created" });
+            }
+            else
+            {
+                _logger.LogError("Petty Cash Request creation failed -Check approval Role Map assignment!");
+
+                return BadRequest(new RespStatus { Status = "Failure", Message = "Petty Cash Request - Approval Role Map Undefined!" });
+            }
 
         }
 
@@ -522,15 +538,15 @@ namespace AtoCash.Controllers
 
         private Double GetEmpCurrentMaxCashBorrowLimit(PettyCashRequestDTO pettyCashRequest)
         {
-            Employee emp =  _context.Employees.Find(pettyCashRequest.EmployeeId);
+            Employee emp = _context.Employees.Find(pettyCashRequest.EmployeeId);
 
-            var empMaxLimit= _context.JobRoles.Where(e => e.Id == emp.RoleId).FirstOrDefault().MaxPettyCashAllowed;
+            var empMaxLimit = _context.JobRoles.Where(e => e.Id == emp.RoleId).FirstOrDefault().MaxPettyCashAllowed;
 
             if (empMaxLimit != 0)
             {
                 return empMaxLimit;
             }
-         
+
             return 0;
         }
 
@@ -556,7 +572,7 @@ namespace AtoCash.Controllers
                 SuccessResult = await Task.Run(() => DepartmentCashRequest(pettyCashRequestDto, empCurAvailBal));
             }
 
-
+           
             return SuccessResult;
         }
 
@@ -805,8 +821,39 @@ namespace AtoCash.Controllers
                 Employee reqEmp = _context.Employees.Find(reqEmpid);
                 int reqApprGroupId = reqEmp.ApprovalGroupId;
                 int reqRoleId = reqEmp.RoleId;
+
+                //if Approval Role Map list is null
+
+                var approRoleMap = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).FirstOrDefault();
+
+                if (approRoleMap == null)
+                {
+                    _logger.LogError("Approver Role Map Not defined, approval group id " + reqApprGroupId);
+                    return 1;
+                }
+                else
+                {
+                    var approRoleMaps = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).ToList();
+
+                    foreach (ApprovalRoleMap ApprMap in approRoleMaps)
+                    {
+                        int role_id = ApprMap.RoleId;
+                        var approver = _context.Employees.Where(e => e.RoleId == role_id && e.ApprovalGroupId == reqApprGroupId).FirstOrDefault();
+                        if (approver == null)
+                        {
+                            _logger.LogError("Approver employee not mapped for RoleMap RoleId:" + role_id + "ApprovalGroupId:" + reqApprGroupId);
+                            return 1;
+                        }
+
+                    }
+                }
                 int maxApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).ToList().Select(x => x.ApprovalLevel).Max(a => a.Level);
                 int reqApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId && a.RoleId == reqRoleId).Select(x => x.ApprovalLevel).FirstOrDefault().Level;
+
+                //var apprRolMap = _context.ApprovalRoleMaps.Where(a => a.ApprovalGroupId == reqApprGroupId && a.RoleId == reqRoleId).FirstOrDefault();
+                //var apprLevels = apprRolMap.ApprovalLevel;
+                //int reqApprLevel = apprLevels.Level;
+                //.Select(x => x.ApprovalLevel).FirstOrDefault().Level
                 bool isSelfApprovedRequest = false;
 
                 Double empReqAmount = pettyCashRequestDto.PettyClaimAmount;

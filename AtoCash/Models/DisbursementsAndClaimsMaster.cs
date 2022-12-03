@@ -105,6 +105,48 @@ namespace AtoCash.Models
 
     }
 
+
+    public class PostSAPAPIData
+    {
+        public int ClaimId { get; set; }
+
+        public string EmployeeName { get; set; }
+        public string EmployeeCode{ get; set; }
+        public string Department { get; set; }
+        public string BusinessArea { get; set; }
+        public string Project { get; set; }
+        public DateTime RequestDate { get; set; }
+        public double ClaimAmount { get; set; }
+        public double? AmountToWallet { get; set; }
+        public double? AmountToBank { get; set; }
+        public string Status { get; set; }
+        public  bool IsCashAdvanceRequest { get; set; }
+        public List<PostSubClaimItems> SubClaimItems { get; set; }
+       
+    }
+
+    public class PostSubClaimItems
+    {
+        public int SubClaimId { get; set; }
+        public string CostCentre { get; set; }
+        public string GeneralLedger { get; set; }
+        public double SubClaimAmount { get; set; }
+        public string Vendor { get; set; }
+        public string InvoiceNo { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public string ExpenseType { get; set; }
+       
+    }
+
+    public class ResponseSAPApiData
+    {
+        public string AdditionalData { get; set; }
+        public string SettlementComment { get; set; }
+        public bool isSettled { get; set; }
+
+    }
+
+
     public class DisbursementsAndClaimsMasterDTO
     {
 

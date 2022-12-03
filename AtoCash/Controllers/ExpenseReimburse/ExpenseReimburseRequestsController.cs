@@ -571,7 +571,7 @@ namespace AtoCash.Controllers
             if (expenseReimburseRequestDto == null)
             {
                 _logger.LogError("PostExpenseReimburseRequest - null request data");
-                return Conflict(new RespStatus { Status = "Failure", Message = "expenseReimburseRequest Id invalid!" });
+                return Conflict(new RespStatus { Status = "Failure", Message = "expenseReimburse Request invalid!" });
             }
 
             if (expenseReimburseRequestDto.ProjectId != null)
@@ -1418,8 +1418,8 @@ namespace AtoCash.Controllers
 
 
 
-            int maxApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).ToList().Select(x => x.ApprovalLevel).Max(a => a.Level);
-            int reqApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId && a.RoleId == reqRoleId).Select(x => x.ApprovalLevel).FirstOrDefault().Level;
+           // int maxApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId).ToList().Select(x => x.ApprovalLevel).Max(a => a.Level);
+           // int reqApprLevel = _context.ApprovalRoleMaps.Include("ApprovalLevel").Where(a => a.ApprovalGroupId == reqApprGroupId && a.RoleId == reqRoleId).Select(x => x.ApprovalLevel).FirstOrDefault().Level;
             bool isSelfApprovedRequest = false;
             ////
             ///
@@ -1514,7 +1514,7 @@ namespace AtoCash.Controllers
 
                 ///////////////////////////// Check if self Approved Request /////////////////////////////
                 //if highest approver is requesting Petty cash request himself
-                if (maxApprLevel == reqApprLevel || projManagerid == reqEmpid)
+                if (projManagerid == reqEmpid)
                 {
                     isSelfApprovedRequest = true;
                 }
